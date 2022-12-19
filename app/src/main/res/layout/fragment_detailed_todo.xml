@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_blue"
+    android:padding="@dimen/fragment_default_margin_horizontal">
+
+    <include
+        android:id="@+id/category_layout"
+        layout="@layout/item_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioButton
+        android:id="@+id/rb_is_completed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/tv_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_title" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/Headline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/rv_item_padding"
+        android:layout_marginTop="@dimen/fragment_default_margin_top"
+        android:maxLines="4"
+        app:layout_constraintEnd_toStartOf="@id/btn_delete"
+        app:layout_constraintStart_toEndOf="@id/rb_is_completed"
+        app:layout_constraintTop_toBottomOf="@id/category_layout"
+        tools:text="@tools:sample/lorem/random" />
+
+    <ImageButton
+        android:id="@+id/btn_delete"
+        android:contentDescription="@string/delete_todo"
+        style="@style/ButtonClearAll"
+        app:layout_constraintBottom_toBottomOf="@id/tv_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_title"
+        app:layout_constraintTop_toTopOf="@id/tv_title" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="tv_title, btn_delete, rb_is_completed" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_change_deadline_date"
+        style="@style/MaterialButtonWithIcon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/fragment_default_margin_top"
+        android:insetBottom="0dp"
+        tools:text="Tomorrow"
+        app:icon="@drawable/ic_schedule"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrier" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_change_reminder_time"
+        style="@style/MaterialButtonWithIcon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/add_reminder"
+        app:cornerRadius="0dp"
+        app:icon="@drawable/ic_baseline_notifications_none_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_change_deadline_date" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_change_repeat_period"
+        style="@style/MaterialButtonWithIcon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:insetTop="0dp"
+        android:text="@string/repeat"
+        app:icon="@drawable/ic_baseline_repeat_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_change_reminder_time" />
+
+    <include layout="@layout/state_loading"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

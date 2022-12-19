@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">NoteApp</string>
+    <string name="tasks_notes"><![CDATA[Tasks&Notes]]></string>
+    <string name="add_reminder">Add reminder</string>
+    <string name="repeat">Repeat</string>
+    <string name="delete_todo">Delete todo</string>
+    <string name="try_again">Try again</string>
 </resources>

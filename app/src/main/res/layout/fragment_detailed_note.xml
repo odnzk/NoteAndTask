@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_blue"
+    android:padding="@dimen/fragment_default_margin_horizontal">
+
+    <include
+        android:id="@+id/category_layout"
+        layout="@layout/item_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_date"
+        style="@style/AdditionalText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        app:layout_constraintBottom_toBottomOf="@id/category_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/category_layout"
+        app:layout_constraintTop_toTopOf="@id/category_layout"
+        tools:text="11.11.2022" />
+
+    <EditText
+        android:id="@+id/et_title"
+        style="@style/Headline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/rv_item_padding"
+        android:layout_marginTop="@dimen/fragment_default_margin_top"
+        app:layout_constraintEnd_toStartOf="@id/btn_delete"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/category_layout"
+        tools:text="Android notes" />
+
+    <ImageButton
+        android:id="@+id/btn_delete"
+        style="@style/ButtonClearAll"
+        app:layout_constraintBottom_toBottomOf="@id/et_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/et_title"
+        app:layout_constraintTop_toTopOf="@id/et_title" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="btn_delete, et_title" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/fragment_default_margin_top"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrier">
+
+        <EditText
+            android:id="@+id/et_content"
+            style="@style/ContentText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:text="@tools:sample/lorem/random" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <include layout="@layout/state_loading"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

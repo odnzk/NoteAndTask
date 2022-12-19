@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Headline" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/inter_bold</item>
+        <!--        <item name="android:textColor">@color/black</item>-->
+    </style>
+
+    <style name="Headline_small" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/inter_medium</item>
+        <!--        <item name="android:textColor">@color/black</item>-->
+    </style>
+
+    <style name="ContentTitle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/inter_medium</item>
+        <!--        <item name="android:textColor">@color/black</item>-->
+    </style>
+
+    <!--    main list -->
+    <style name="ContentText_small" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/inter_regular</item>
+        <!--        <item name="android:textColor">@color/black</item>-->
+    </style>
+
+    <!--    detailed fragment-->
+    <style name="ContentText" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">15sp</item>
+        <item name="fontFamily">@font/inter_regular</item>
+        <!--        <item name="android:textColor">@color/black</item>-->
+    </style>
+
+    <style name="AdditionalText" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/inter_light</item>
+        <item name="android:textColor">@color/dark_grey</item>
+    </style>
+
+    <style name="ButtonClearAll" parent="Widget.AppCompat.ImageButton">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:src">@drawable/ic_baseline_delete_24</item>
+    </style>
+
+    <style name="MaterialButtonWithIcon" parent="ThemeOverlay.Material3.Button">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="iconSize">20dp</item>
+        <item name="iconTint">@color/dark_grey</item>
+        <item name="android:strokeColor">@color/dark_grey</item>
+    </style>
+
+</resources>
