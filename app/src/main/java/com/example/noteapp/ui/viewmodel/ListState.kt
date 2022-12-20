@@ -1,10 +1,9 @@
-package com.example.noteapp.ui.util
+package com.example.noteapp.ui.viewmodel
 
-import com.example.domain.model.NoteItem
 
 sealed interface ListState {
     object Loading : ListState
-    data class Success(val list: List<NoteItem>) : ListState
+    data class Success<T>(val data: T) : ListState
     data class Error(val error: Throwable) : ListState
 }
 // Loading: holds nothing

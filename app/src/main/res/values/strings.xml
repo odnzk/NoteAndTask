@@ -5,4 +5,8 @@
     <string name="repeat">Repeat</string>
     <string name="delete_todo">Delete todo</string>
     <string name="try_again">Try again</string>
+
+    <string name="error_not_found">Nothing was found for this query</string>
+    <string name="error_unknown">Unknown error</string>
+    <string name="error_failed_loading_from_database">loading data from database was failed</string>
 </resources>

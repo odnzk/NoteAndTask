@@ -3,7 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
-
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -80,6 +80,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
 }
+
 
 kapt {
     correctErrorTypes true
