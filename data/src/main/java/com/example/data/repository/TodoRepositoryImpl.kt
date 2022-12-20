@@ -1,6 +1,7 @@
 package com.example.data.repository
 
 import com.example.data.dao.TodoDao
+import com.example.data.entity.TodoEntity
 import com.example.domain.model.Todo
 import com.example.domain.repository.TodoRepository
 import kotlinx.coroutines.flow.Flow
@@ -8,23 +9,23 @@ import kotlinx.coroutines.flow.map
 
 class TodoRepositoryImpl(private val dao: TodoDao) : TodoRepository {
     override suspend fun add(todo: Todo): Long {
-        return dao.add(EntityMapper.toTodoEntity(todo))
+        return dao.add(TodoEntity.from(todo))
     }
 
     override suspend fun delete(todo: Todo) {
-        dao.delete(EntityMapper.toTodoEntity(todo))
+        dao.delete(TodoEntity.from(todo))
     }
 
     override suspend fun update(todo: Todo) {
-        dao.update(EntityMapper.toTodoEntity(todo))
+        dao.update(TodoEntity.from(todo))
     }
 
     override fun getAll(): Flow<List<Todo>> {
-        return dao.getAll().map { list -> list.map { todoEntity -> todoEntity.maptoTodo() } }
+        return dao.getAll().map { list -> list.map { todoEntity -> todoEntity.toTodo() } }
     }
 
     override suspend fun getById(id: Long): Todo? {
-        return dao.getById(id)?.maptoTodo()
+        return dao.getById(id)?.toTodo()
     }
 
     override suspend fun deleteAll() {

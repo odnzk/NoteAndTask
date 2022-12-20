@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.example.domain.model.Note
 import com.example.noteapp.databinding.FragmentDetailedNoteBinding
 import com.example.noteapp.ui.viewmodel.MainViewModel
@@ -18,9 +19,11 @@ class NoteDetailFragment : Fragment() {
 
     private val viewModel: MainViewModel by viewModels()
 
-    // todo
-    private var displayedNote: Note =
-        Note(id = 1, title = "", content = "", category = null, date = null)
+//    private val args by navArgs<List>()
+//    private val userId by lazy { args.noteId }
+//    // todo
+private var displayedNote: Note =
+    Note(id = 1, title = "", content = "", category = emptyList(), date = null)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -8,13 +8,14 @@ import com.example.domain.model.Category
 data class CategoryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val title: String, val color: Int
+    val title: String,
+    val color: String
 ) {
     fun mapToCategory(): Category =
         Category(title, color)
 
     companion object{
-        fun toCategoryEntity(category: Category): CategoryEntity {
+        fun from(category: Category): CategoryEntity {
             return CategoryEntity(
                 title = category.title,
                 color = category.color

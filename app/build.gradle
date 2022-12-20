@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+
 }
 
 android {
@@ -73,8 +74,10 @@ dependencies {
     implementation "androidx.activity:activity-ktx:$activity_version"
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
-    // cicerone navigation
-    implementation("com.github.terrakok:cicerone:7.1")
+    // jetpack navigation
+    def nav_version = "2.5.3"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
 }
 

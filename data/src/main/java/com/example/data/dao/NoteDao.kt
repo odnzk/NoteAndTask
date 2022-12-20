@@ -25,8 +25,7 @@ interface NoteDao {
     @Query("SELECT * FROM notes WHERE id = :id LIMIT 1")
     suspend fun findById(id: Long): NoteEntity?
 
-    // todo
     @Query("SELECT * FROM notes WHERE title LIKE '%' || :searchQuery || '%'")
-    suspend fun getNoteByTitle(searchQuery: String)
+    suspend fun getNoteByTitle(searchQuery: String): List<NoteEntity>
 
 }

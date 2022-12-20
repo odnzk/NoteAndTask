@@ -1,4 +1,4 @@
-package com.example.noteapp.ui
+package com.example.noteapp.ui.recycler
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -7,11 +7,12 @@ import com.example.domain.model.Note
 import com.example.domain.model.NoteItem
 import com.example.domain.model.Todo
 import com.example.noteapp.R
-import com.example.noteapp.ui.recycler.NoteItemDiffUtilCallback
 import com.example.noteapp.ui.recycler.holder.NoteViewHolder
 import com.example.noteapp.ui.recycler.holder.TodoViewHolder
 
 class NoteItemAdapter : ListAdapter<NoteItem, RecyclerView.ViewHolder>(NoteItemDiffUtilCallback()) {
+    var onNoteClick: ((Long) -> Unit)? = null // (noteId: Long) -> Unit
+    var onTodoClick: ((Long) -> Unit)? = null // (todoId: Long) -> Unit
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
@@ -22,8 +23,8 @@ class NoteItemAdapter : ListAdapter<NoteItem, RecyclerView.ViewHolder>(NoteItemD
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.item_note -> NoteViewHolder.create(parent)
-            else -> TodoViewHolder.create(parent)
+            R.layout.item_note -> NoteViewHolder.create(parent, onNoteClick)
+            else -> TodoViewHolder.create(parent, onTodoClick)
         }
     }
 

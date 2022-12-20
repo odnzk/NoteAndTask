@@ -1,6 +1,7 @@
 package com.example.data.repository
 
 import com.example.data.dao.NoteDao
+import com.example.data.entity.NoteEntity
 import com.example.domain.model.Note
 import com.example.domain.repository.NoteRepository
 import com.example.domain.util.Filter
@@ -11,16 +12,17 @@ import kotlinx.coroutines.flow.map
 class NoteRepositoryImpl(
     private val dao: NoteDao
 ) : NoteRepository {
+
     override suspend fun add(note: Note): Long {
-        return dao.insert(EntityMapper.toNoteEntity(note))
+        return dao.insert(NoteEntity.from(note))
     }
 
     override suspend fun delete(note: Note) {
-        dao.delete(EntityMapper.toNoteEntity(note))
+        dao.delete(NoteEntity.from(note))
     }
 
     override suspend fun update(note: Note) {
-        dao.update(EntityMapper.toNoteEntity(note))
+        dao.update(NoteEntity.from(note))
     }
 
     override suspend fun getById(id: Long): Note? {

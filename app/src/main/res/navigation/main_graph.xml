@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/listFragment">
+
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.example.noteapp.ui.fragments.ListFragment"
+        android:label="ListFragment"
+        tools:layout="@layout/fragment_list">
+        <action
+            android:id="@+id/action_listFragment_to_noteDetailFragment"
+            app:destination="@id/noteDetailFragment">
+            <argument
+                android:name="noteId"
+                app:argType="long"
+                app:nullable="false" />
+        </action>
+        <action
+            android:id="@+id/action_listFragment_to_todoDetailFragment"
+            app:destination="@id/todoDetailFragment">
+            <argument
+                android:name="todoId"
+                app:argType="long"
+                app:nullable="false" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/noteDetailFragment"
+        android:name="com.example.noteapp.ui.fragments.NoteDetailFragment"
+        android:label="NoteDetailFragment"
+        tools:layout="@layout/fragment_detailed_note" />
+    <fragment
+        android:id="@+id/todoDetailFragment"
+        android:name="com.example.noteapp.ui.fragments.TodoDetailFragment"
+        android:label="TodoDetailFragment"
+        tools:layout="@layout/fragment_detailed_todo" />
+    <dialog
+        android:id="@+id/chooseCategoryDialog"
+        android:name="com.example.noteapp.ui.fragments.ChooseCategoryDialog"
+        android:label="ChooseCategoryDialog"
+        tools:layout="@layout/dialog_choose_category" />
+</navigation>

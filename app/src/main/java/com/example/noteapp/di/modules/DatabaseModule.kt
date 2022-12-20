@@ -12,15 +12,15 @@ import com.example.data.repository.TodoRepositoryImpl
 import com.example.domain.repository.CategoryRepository
 import com.example.domain.repository.NoteRepository
 import com.example.domain.repository.TodoRepository
-import com.example.noteapp.di.MainApplication
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 
 @Module
-@InstallIn(MainApplication::class)
+@InstallIn(SingletonComponent::class)
 object DatabaseModule {
 
     @Provides
@@ -30,10 +30,17 @@ object DatabaseModule {
             .fallbackToDestructiveMigration()
             .build()
 
-
     @Singleton
     @Provides
     fun providesNotesDao(database: AppDatabase) = database.noteDao()
+
+    @Singleton
+    @Provides
+    fun providesTodoDao(database: AppDatabase) = database.todoDao()
+
+    @Singleton
+    @Provides
+    fun providesCategoryDao(database: AppDatabase) = database.categoryDao()
 
     @Provides
     @Singleton
