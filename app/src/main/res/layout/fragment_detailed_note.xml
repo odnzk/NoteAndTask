@@ -7,12 +7,28 @@
     android:background="@color/main_blue"
     android:padding="@dimen/fragment_default_margin_horizontal">
 
-    <include
-        android:id="@+id/category_layout"
-        layout="@layout/item_category"
-        android:layout_width="wrap_content"
+    <!--    <include-->
+    <!--        android:id="@+id/category_layout"-->
+    <!--        layout="@layout/item_category"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/category"
+        style="@style/ChipCategoryStyle"
+        android:text="Android"
+        app:chipBackgroundColor="@color/category_red" />
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow_categories"
+        style="@style/CategoryFlow"
         android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        app:constraint_referenced_ids="category"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_date"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -21,10 +37,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="end"
-        app:layout_constraintBottom_toBottomOf="@id/category_layout"
+        app:layout_constraintBottom_toBottomOf="@id/flow_categories"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/category_layout"
-        app:layout_constraintTop_toTopOf="@id/category_layout"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="11.11.2022" />
 
     <EditText
@@ -36,7 +51,7 @@
         android:layout_marginTop="@dimen/fragment_default_margin_top"
         app:layout_constraintEnd_toStartOf="@id/btn_delete"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/category_layout"
+        app:layout_constraintTop_toBottomOf="@id/flow_categories"
         tools:text="Android notes" />
 
     <ImageButton

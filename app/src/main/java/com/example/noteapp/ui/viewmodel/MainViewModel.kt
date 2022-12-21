@@ -11,10 +11,7 @@ import com.example.domain.util.Filter
 import com.example.domain.util.SortOrder
 import com.example.noteapp.ui.util.PreferenceStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -40,30 +37,33 @@ class MainViewModel @Inject constructor(
     private val sortOrder = MutableStateFlow(SortOrder.BY_CATEGORY_PRIORITY)
     private val filter = MutableStateFlow(Filter.DEFAULT)
 
-     var noteItemsListState: ListState = ListState.Loading // todo observe state
+    private val _noteItemsListState: MutableStateFlow<ListState> =
+        MutableStateFlow(ListState.Loading)
+    val noteItemsListState: StateFlow<ListState> = _noteItemsListState
 
     init {
         loadData()
     }
 
-    private val noteItemFlow: Flow<List<Note>> = combine(
-        searchQuery,
-        sortOrder,
-        filter
-    ) { searchQuery, sortOrder, filter ->
-        Triple(searchQuery, sortOrder, filter)
-    }.flatMapLatest { (searchQuery, sortOrder, filter) ->
-        // todo map todo and notes to NoteItem
-        noteRepository.getAll(
-            searchQuery,
-            sortOrder,
-            filter
-        )
+
+    private fun combineTodosWithNotes(): Flow<List<NoteItem>> {
+        return combine(searchQuery, sortOrder, filter) { searchQuery, sortOrder, filter ->
+            Triple(searchQuery, sortOrder, filter)
+        }.flatMapLatest { (searchQuery, sortOrder, filter) ->
+            noteRepository.getAll(
+                searchQuery,
+                sortOrder,
+                filter
+            )
+        }
     }
 
     fun loadData() {
         // todo some loading
-        noteItemsListState = ListState.Success(noteItemFlow)
+        viewModelScope.launch {
+
+        }
+//        noteItemsListState = ListState.Success(noteItemFlow)
     }
 
 

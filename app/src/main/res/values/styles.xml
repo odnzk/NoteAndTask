@@ -4,38 +4,33 @@
     <style name="Headline" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">20sp</item>
         <item name="fontFamily">@font/inter_bold</item>
-        <!--        <item name="android:textColor">@color/black</item>-->
     </style>
 
     <style name="Headline_small" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">14sp</item>
         <item name="fontFamily">@font/inter_medium</item>
-        <!--        <item name="android:textColor">@color/black</item>-->
     </style>
 
     <style name="ContentTitle" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">14sp</item>
         <item name="fontFamily">@font/inter_medium</item>
-        <!--        <item name="android:textColor">@color/black</item>-->
     </style>
 
     <!--    main list -->
     <style name="ContentText_small" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">12sp</item>
         <item name="fontFamily">@font/inter_regular</item>
-        <!--        <item name="android:textColor">@color/black</item>-->
     </style>
 
     <!--    detailed fragment-->
     <style name="ContentText" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">15sp</item>
         <item name="fontFamily">@font/inter_regular</item>
-        <!--        <item name="android:textColor">@color/black</item>-->
     </style>
 
     <style name="AdditionalText" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">12sp</item>
-        <item name="fontFamily">@font/inter_light</item>
+        <item name="android:fontFamily">@font/inter_light</item>
         <item name="android:textColor">@color/dark_grey</item>
     </style>
 
@@ -54,6 +49,28 @@
         <item name="iconSize">20dp</item>
         <item name="iconTint">@color/dark_grey</item>
         <item name="android:strokeColor">@color/dark_grey</item>
+    </style>
+
+    <style name="ChipCategoryStyle" parent="ShapeAppearanceOverlay.Material3.Chip">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/inter_light</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="CategoryFlow" parent="">
+        <item name="android:orientation">horizontal</item>
+        <item name="flow_horizontalAlign">start</item>
+        <item name="flow_horizontalBias">0</item>
+        <item name="flow_wrapMode">none</item> <!-- todo -->
+        <item name="flow_horizontalGap">4dp</item>
+        <item name="flow_horizontalStyle">packed</item>
+        <!--        android:orientation="horizontal"-->
+        <!--        app:flow_horizontalAlign="start"-->
+        <!--        app:flow_horizontalBias=".0"-->
+        <!--        app:flow_horizontalGap="4dp"-->
+        <!--        app:flow_horizontalStyle="packed"-->
     </style>
 
 </resources>

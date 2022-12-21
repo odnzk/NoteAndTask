@@ -19,7 +19,7 @@
             android:maxLines="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/included_category"
+            app:layout_constraintTop_toBottomOf="@id/flow_categories"
             tools:text="Title Note" />
 
         <TextView
@@ -34,12 +34,22 @@
             app:layout_constraintTop_toBottomOf="@id/tv_title"
             tools:text="Some very very long long text very very long long text very very long long textvery very long long text" />
 
-        <include
-            android:id="@+id/included_category"
-            layout="@layout/item_category"
-            android:layout_width="wrap_content"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/category"
+            style="@style/ChipCategoryStyle"
+            android:text="Android"
+            app:chipBackgroundColor="@color/category_red" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow_categories"
+            style="@style/CategoryFlow"
             android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            app:constraint_referenced_ids="category"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
