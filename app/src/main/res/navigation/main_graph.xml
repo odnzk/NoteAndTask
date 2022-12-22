@@ -34,7 +34,7 @@
         tools:layout="@layout/fragment_detailed_note">
         <argument
             android:name="noteId"
-            android:nullable="false"
+            app:nullable="false"
             app:argType="long" />
     </fragment>
     <fragment

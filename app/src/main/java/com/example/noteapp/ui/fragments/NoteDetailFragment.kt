@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.helper.widget.Flow
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,13 +14,14 @@ import com.example.domain.model.NoteItem
 import com.example.noteapp.databinding.FragmentDetailedNoteBinding
 import com.example.noteapp.databinding.StateLoadingBinding
 import com.example.noteapp.ui.util.errorOccurred
+import com.example.noteapp.ui.util.ext.setCategoryStyle
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
-import com.example.noteapp.ui.viewmodel.ListState
 import com.example.noteapp.ui.viewmodel.MainViewModel
 import com.example.noteapp.ui.viewmodel.NoteItemEvent
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.example.noteapp.ui.viewmodel.handleState
+import com.google.android.material.chip.Chip
+import kotlinx.coroutines.flow.collectLatest
 
 class NoteDetailFragment : Fragment() {
     private var _binding: FragmentDetailedNoteBinding? = null
@@ -57,46 +57,45 @@ class NoteDetailFragment : Fragment() {
                 viewModel.onEvent(NoteItemEvent.UpdateNoteItem(selectedNote))
             }
 
-
-//            categoryLayout.category.setOnClickListener {
-//                // todo change category
-//                // 1) show dialog and get curr id to him
-//                // 2) viewModel.onEvent(NoteItemEvent.UpdateNoteItem(displayedNote)) from dialog
-//            }
         }
     }
 
     private fun observeState() {
         lifecycleScope.launchWhenCreated {
-            viewModel.noteItemsListState.collect { listState ->
-                withContext(Dispatchers.Main) {
-                    when (listState) {
-                        is ListState.Loading -> stateLoadingBinding.loadingStarted()
-                        is ListState.Success<*> -> {
-                            displaySelectedNote(listState.data as List<NoteItem>)
-                            stateLoadingBinding.loadingFinished()
-                        }
-                        is ListState.Error -> stateLoadingBinding.errorOccurred(listState.error) {
-                            viewModel.loadData()
-                        }
-                    }
-                }
+            viewModel.noteItemsListState.collectLatest { listState ->
+                listState.handleState(
+                    onErrorAction = ::onErrorAction,
+                    onLoadingAction = { stateLoadingBinding.loadingStarted() },
+                    onSuccessAction = ::onSuccessAction
+                )
             }
         }
     }
 
+    private fun onErrorAction(error: Throwable) {
+        stateLoadingBinding.errorOccurred(error) {
+            viewModel.loadData()
+        }
+    }
 
-    private fun displaySelectedNote(data: List<NoteItem>) {
+    private fun onSuccessAction(data: List<NoteItem>) {
         selectedNote = data.first { it.id == selectedNoteId } as Note
         with(binding) {
             etTitle.setText(selectedNote.title)
             etContent.setText(selectedNote.content)
             tvDate.text = selectedNote.date.toString()
-            // todo display category
-            if (selectedNote.category.isNotEmpty()){
-
+            selectedNote.category.takeIf { it.isNotEmpty() }?.let {
+                it.forEach { category ->
+                    val chipCategory = Chip(requireContext())
+                    chipCategory.setCategoryStyle(color = category.color, title = category.title)
+                    chipCategory.setOnClickListener {
+                        // todo
+                    }
+                    flowCategories.addView(chipCategory)
+                }
             }
         }
+        stateLoadingBinding.loadingFinished()
     }
 
 

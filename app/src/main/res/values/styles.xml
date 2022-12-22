@@ -66,11 +66,10 @@
         <item name="flow_wrapMode">none</item> <!-- todo -->
         <item name="flow_horizontalGap">4dp</item>
         <item name="flow_horizontalStyle">packed</item>
-        <!--        android:orientation="horizontal"-->
-        <!--        app:flow_horizontalAlign="start"-->
-        <!--        app:flow_horizontalBias=".0"-->
-        <!--        app:flow_horizontalGap="4dp"-->
-        <!--        app:flow_horizontalStyle="packed"-->
+    </style>
+
+    <style name="PrimaryButton" parent="ThemeOverlay.Material3.Button">
+        <item name="backgroundTint">@color/black</item>
     </style>
 
 </resources>

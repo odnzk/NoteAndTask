@@ -37,9 +37,9 @@ class MainViewModel @Inject constructor(
     private val sortOrder = MutableStateFlow(SortOrder.BY_CATEGORY_PRIORITY)
     private val filter = MutableStateFlow(Filter.DEFAULT)
 
-    private val _noteItemsListState: MutableStateFlow<ListState> =
-        MutableStateFlow(ListState.Loading)
-    val noteItemsListState: StateFlow<ListState> = _noteItemsListState
+    private val _noteItemsListState: MutableStateFlow<ListState<List<NoteItem>>> =
+        MutableStateFlow(ListState.Loading())
+    val noteItemsListState: StateFlow<ListState<List<NoteItem>>> = _noteItemsListState
 
     init {
         loadData()
