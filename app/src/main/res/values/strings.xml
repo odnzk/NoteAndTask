@@ -10,4 +10,7 @@
     <string name="error_unknown">Unknown error</string>
     <string name="error_failed_loading_from_database">loading data from database was failed</string>
     <string name="schedule_icon">Schedule icon</string>
+    <string name="btn_set_deadline">Add deadline</string>
+    <string name="btn_set_reminder">Add reminder</string>
+    <string name="btn_set_period">Add period</string>
 </resources>

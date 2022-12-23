@@ -2,5 +2,6 @@
 <resources>
     <dimen name="rv_item_padding">8dp</dimen>
     <dimen name="fragment_default_margin_horizontal">16dp</dimen>
+    <dimen name="fragment_add_todo_paddings">8dp</dimen>
     <dimen name="fragment_default_margin_top">24dp</dimen>
 </resources>

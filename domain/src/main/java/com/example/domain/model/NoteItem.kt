@@ -14,8 +14,12 @@ data class Note(
 
 data class Todo(
     override val id: Long,
-    val title: String,
+    var title: String,
     val isCompleted: Boolean = false,
     val category: List<Category>,
     val deadlineDate: Date?
-) : NoteItem(id)
+) : NoteItem(id) {
+    companion object {
+        fun defaultTodo() = Todo(0, "", false, emptyList(), null)
+    }
+}

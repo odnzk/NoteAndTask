@@ -16,15 +16,15 @@ fun Chip.setCategoryStyle(color: String, title: String): Chip =
     this.apply {
         setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
         text = title
-        val color = Color.parseColor(color)
+        val selectedCategoryColor = Color.parseColor(color)
         ColorStateList(
             arrayOf(
                 intArrayOf(android.R.attr.state_checked),
                 intArrayOf(android.R.attr.state_checkable)
             ),
             intArrayOf(
-                color,
-                ColorUtils.setAlphaComponent(color, CATEGORY_NOT_SELECTED_COLOR_ALPHA)
+                selectedCategoryColor,
+                ColorUtils.setAlphaComponent(selectedCategoryColor, CATEGORY_NOT_SELECTED_COLOR_ALPHA)
             )
         ).also { chipBackgroundColor = it }
         ResourcesCompat.getFont(context, R.font.inter_regular).also { typeface = it }
