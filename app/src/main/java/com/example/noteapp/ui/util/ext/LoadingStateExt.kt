@@ -9,6 +9,7 @@ fun StateLoadingBinding.loadingFinished() {
     pbLoading.hide()
     tvErrorLoading.isVisible = false
     btnTryLoadingAgain.isVisible = false
+//    this.root.isVisible = false
 }
 
 fun StateLoadingBinding.loadingStarted() {

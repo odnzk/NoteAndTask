@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.Todo
 import com.example.noteapp.databinding.ItemTodoBinding
+import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
 
 class TodoViewHolder(
     private val binding: ItemTodoBinding,
@@ -16,11 +17,11 @@ class TodoViewHolder(
             todo.run {
                 tvTitle.text = title
                 tvDeadlineDate.text = deadlineDate.toString()
-//                category?.let {
-//                    includedCategory.category.text = it.title
-//                    includedCategory.category.setChipBackgroundColorResource(R.color.category_blue)
-//                }
                 rbCompleted.isChecked = isCompleted
+
+//                selectedNote.categoriesToFlowCategories(flowCategories){
+//                    // todo on category click
+//                }
             }
             root.setOnClickListener {
                 onTodoClick?.invoke(todo.id)

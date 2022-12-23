@@ -2,18 +2,20 @@ package com.example.noteapp.ui.dialogs
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.DatePicker
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.domain.model.Todo
-import com.example.noteapp.R
 import com.example.noteapp.databinding.BottomSheetAddTodoBinding
 import com.example.noteapp.ui.viewmodel.MainViewModel
 import com.example.noteapp.ui.viewmodel.NoteItemEvent
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
-class AddTodoBottomSheetDialog : BottomSheetDialogFragment(R.layout.bottom_sheet_add_todo) {
+@AndroidEntryPoint
+class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
     private var _binding: BottomSheetAddTodoBinding? = null
     private val binding: BottomSheetAddTodoBinding get() = _binding!!
 
@@ -22,19 +24,19 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment(R.layout.bottom_sheet
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = BottomSheetAddTodoBinding.bind(view)
 
         with(binding) {
             btnAdd.setOnClickListener {
                 tilTitle.editText?.text?.let { currentTodo.title = it.toString() }
                 viewModel.onEvent(NoteItemEvent.AddItem(currentTodo))
+                this@AddTodoBottomSheetDialog.dismiss()
             }
 
             btnSetDeadline.setOnClickListener {
-                // todo show date picker
+                showDatePicker()
             }
             btnSetReminder.setOnClickListener {
-                // todo show date picker
+                // show time picker
             }
             btnSetRepeating.setOnClickListener {
                 // ??? new dialog...
@@ -42,21 +44,34 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment(R.layout.bottom_sheet
         }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = BottomSheetAddTodoBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     private fun showDatePicker() {
         val calendar = Calendar.getInstance()
-
-        val datePickerDialog: DatePickerDialog =
+        val datePickerDialog =
             DatePickerDialog(
                 requireContext(),
-                listener = object : DatePickerDialog.OnDateSetListener {
-                    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
-
+                { datePicker, year, month, day ->
+                    val date = Calendar.getInstance().apply {
+                        set(Calendar.YEAR, year)
+                        set(Calendar.MONTH, month)
+                        set(Calendar.DAY_OF_MONTH, day)
                     }
+                    // set deadline date
+                    currentTodo.deadlineDate = Date(date.timeInMillis)
                 },
-                year = calendar.get(Calendar.YEAR),
-                month = calendar.get(Calendar.MONTH),
-                dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
             )
+        datePickerDialog.show()
     }
 
     override fun onDestroyView() {

@@ -1,9 +1,11 @@
 package com.example.noteapp.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.Note
 import com.example.domain.model.NoteItem
+import com.example.domain.model.Todo
 import com.example.domain.repository.CategoryRepository
 import com.example.domain.repository.NoteRepository
 import com.example.domain.repository.TodoRepository
@@ -20,6 +22,7 @@ sealed interface NoteItemEvent {
     data class DeleteItem(val noteItem: NoteItem) : NoteItemEvent
     data class UpdateNoteItem(val noteItem: NoteItem) : NoteItemEvent
     object RestoreItem : NoteItemEvent
+    object ClearAll : NoteItemEvent
     class UpdateSortOrder(val sortOrder: SortOrder) : NoteItemEvent
     class UpdateFilter(val filter: Filter) : NoteItemEvent
 }
@@ -37,33 +40,38 @@ class MainViewModel @Inject constructor(
     private val sortOrder = MutableStateFlow(SortOrder.BY_CATEGORY_PRIORITY)
     private val filter = MutableStateFlow(Filter.DEFAULT)
 
-    private val _noteItemsListState: MutableStateFlow<ListState<List<NoteItem>>> =
+    private var _noteItemsListState: MutableStateFlow<ListState<List<NoteItem>>> =
         MutableStateFlow(ListState.Loading())
     val noteItemsListState: StateFlow<ListState<List<NoteItem>>> = _noteItemsListState
 
     init {
+        Log.d("TAGTAG", "${this.javaClass}: loading")
         loadData()
     }
 
 
-    private fun combineTodosWithNotes(): Flow<List<NoteItem>> {
+    private fun observeSearchAndFiltersStates(): Flow<List<NoteItem>> {
         return combine(searchQuery, sortOrder, filter) { searchQuery, sortOrder, filter ->
-            Triple(searchQuery, sortOrder, filter)
-        }.flatMapLatest { (searchQuery, sortOrder, filter) ->
-            noteRepository.getAll(
-                searchQuery,
-                sortOrder,
-                filter
-            )
+            val notes = noteRepository.getAll(searchQuery, sortOrder, filter)
+            val todo = todoRepository.getAll()
+
+            mutableListOf<NoteItem>().apply {
+                // todo
+                addAll(notes.first())
+                addAll(todo.first())
+            }
         }
     }
 
     fun loadData() {
-        // todo some loading
+        Log.d("TAGTAG", "${this.javaClass}: loading")
         viewModelScope.launch {
-
+            _noteItemsListState.emit(ListState.Loading())
+            observeSearchAndFiltersStates().collectLatest {
+                Log.d("TAGTAG", "${this.javaClass}: success")
+                _noteItemsListState.emit(ListState.Success(it))
+            }
         }
-//        noteItemsListState = ListState.Success(noteItemFlow)
     }
 
 
@@ -71,15 +79,17 @@ class MainViewModel @Inject constructor(
         when (event) {
             is NoteItemEvent.AddItem -> {
                 viewModelScope.launch {
-                    if (event.noteItem is Note) {
-                        noteRepository.add(event.noteItem)
+                    when (val noteItem = event.noteItem) {
+                        is Note -> noteRepository.add(noteItem)
+                        is Todo -> todoRepository.add(noteItem)
                     }
                 }
             }
             is NoteItemEvent.DeleteItem -> {
                 viewModelScope.launch {
-                    if (event.noteItem is Note) {
-                        noteRepository.delete(event.noteItem)
+                    when (val noteItem = event.noteItem) {
+                        is Note -> noteRepository.delete(noteItem)
+                        is Todo -> todoRepository.delete(noteItem)
                     }
                 }
             }
@@ -92,7 +102,12 @@ class MainViewModel @Inject constructor(
             is NoteItemEvent.UpdateFilter -> {
 
             }
-            is NoteItemEvent.UpdateNoteItem -> TODO()
+            is NoteItemEvent.UpdateNoteItem -> {
+
+            }
+            is NoteItemEvent.ClearAll -> {
+
+            }
         }
     }
 

@@ -14,15 +14,17 @@ import com.example.domain.model.NoteItem
 import com.example.noteapp.databinding.FragmentDetailedNoteBinding
 import com.example.noteapp.databinding.StateLoadingBinding
 import com.example.noteapp.ui.util.errorOccurred
-import com.example.noteapp.ui.util.ext.setCategoryStyle
+import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
+import com.example.noteapp.ui.util.ext.toChip
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
 import com.example.noteapp.ui.viewmodel.MainViewModel
 import com.example.noteapp.ui.viewmodel.NoteItemEvent
 import com.example.noteapp.ui.viewmodel.handleState
-import com.google.android.material.chip.Chip
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
+@AndroidEntryPoint
 class NoteDetailFragment : Fragment() {
     private var _binding: FragmentDetailedNoteBinding? = null
     private val binding get() = _binding!!
@@ -35,7 +37,7 @@ class NoteDetailFragment : Fragment() {
     private val noteDetailFragmentArgs: NoteDetailFragmentArgs by navArgs()
     private val selectedNoteId: Long by lazy { noteDetailFragmentArgs.noteId }
     private var selectedNote: Note =
-        Note(id = 1, title = "", content = "", category = emptyList(), date = null)
+        Note(id = 1, title = "", content = "", categories = emptyList(), date = null)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -84,16 +86,17 @@ class NoteDetailFragment : Fragment() {
             etTitle.setText(selectedNote.title)
             etContent.setText(selectedNote.content)
             tvDate.text = selectedNote.date.toString()
-            selectedNote.category.takeIf { it.isNotEmpty() }?.let {
-                it.forEach { category ->
-                    val chipCategory = Chip(requireContext())
-                    chipCategory.setCategoryStyle(color = category.color, title = category.title)
-                    chipCategory.setOnClickListener {
-                        // todo
-                    }
-                    flowCategories.addView(chipCategory)
-                }
+
+            selectedNote.categoriesToFlowCategories(flowCategories){
+                // todo on category click
             }
+//            selectedNote.categories.takeIf { it.isNotEmpty() }?.let {
+//                it.forEach { category ->
+//                    flowCategories.addView(category.toChip(requireContext()) {
+//
+//                    })
+//                }
+//            }
         }
         stateLoadingBinding.loadingFinished()
     }

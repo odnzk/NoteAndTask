@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.noteapp.databinding.FragmentDetailedTodoBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TodoDetailFragment : Fragment() {
     private var _binding: FragmentDetailedTodoBinding? = null
     private val binding get() = _binding!!

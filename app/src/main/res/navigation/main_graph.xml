@@ -26,6 +26,9 @@
                 app:argType="long"
                 app:nullable="false" />
         </action>
+        <action
+            android:id="@+id/action_listFragment_to_addTodoBottomSheetDialog"
+            app:destination="@id/addTodoBottomSheetDialog" />
     </fragment>
     <fragment
         android:id="@+id/noteDetailFragment"
@@ -47,4 +50,9 @@
         android:name="com.example.noteapp.ui.dialogs.ChooseCategoryDialog"
         android:label="ChooseCategoryDialog"
         tools:layout="@layout/dialog_choose_category" />
+    <dialog
+        android:id="@+id/addTodoBottomSheetDialog"
+        android:name="com.example.noteapp.ui.dialogs.AddTodoBottomSheetDialog"
+        android:label="AddTodoBottomSheetDialog"
+        tools:layout="@layout/bottom_sheet_add_todo" />
 </navigation>

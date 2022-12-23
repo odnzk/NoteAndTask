@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.Note
-import com.example.noteapp.R
 import com.example.noteapp.databinding.ItemNoteBinding
+import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
 
 class NoteViewHolder(
     private val binding: ItemNoteBinding,
@@ -17,14 +17,15 @@ class NoteViewHolder(
             note.run {
                 tvTitle.text = title
                 tvContent.text = content
-//                category?.let {
-//                    includedCategory.category.text = it.title
-//                    includedCategory.category.setChipBackgroundColorResource(R.color.category_blue)
-//                }
+
+                categoriesToFlowCategories(flowCategories) {
+                    // todo on category click
+                }
             }
             root.setOnClickListener {
                 onNoteClick?.invoke(note.id)
             }
+
         }
     }
 
