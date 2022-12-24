@@ -20,13 +20,13 @@ class TodoViewHolder(
                 tvTitle.text = title
                 tvDeadlineDate.text = deadlineDate?.convertTUiString()
                 ivDeadlineDateIcon.isVisible = deadlineDate != null
-                rbCompleted.isChecked = isCompleted
+                cbCompleted.isChecked = isCompleted
 
 //                selectedNote.categoriesToFlowCategories(flowCategories){
 //                    // todo on category click
 //                }
             }
-            rbCompleted.setOnClickListener {
+            cbCompleted.setOnClickListener {
                 onCheckboxClick?.invoke(todo.id, !todo.isCompleted)
             }
             root.setOnClickListener {

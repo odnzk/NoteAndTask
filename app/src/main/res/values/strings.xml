@@ -15,4 +15,5 @@
     <string name="btn_set_deadline">Add deadline</string>
     <string name="btn_set_reminder">Add reminder</string>
     <string name="btn_set_period">Add period</string>
+    <string name="unknown_todo">Unknown todo</string>
 </resources>

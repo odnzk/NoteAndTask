@@ -61,6 +61,16 @@ fun Note.categoriesToFlowCategories(flow: Flow, onCategoryChipClick: () -> Unit)
     }
 }
 
+fun List<Category>.insertToConstraintLayoutFlow(flow: Flow, onCategoryChipClick: () -> Unit) {
+    takeIf { it.isNotEmpty() }?.let {
+        it.forEach { category ->
+            flow.addView(category.toChip(flow.context) {
+                onCategoryChipClick()
+            })
+        }
+    }
+}
+
 fun Date.convertTUiString(pattern: String? = "EE, dd.MM"): String =
     SimpleDateFormat(pattern).format(this)
 

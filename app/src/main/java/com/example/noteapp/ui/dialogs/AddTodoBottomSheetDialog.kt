@@ -1,15 +1,16 @@
 package com.example.noteapp.ui.dialogs
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import androidx.fragment.app.viewModels
 import com.example.domain.model.Todo
 import com.example.noteapp.databinding.BottomSheetAddTodoBinding
+import com.example.noteapp.ui.fragments.Events.ListFragmentEvent
+import com.example.noteapp.ui.util.ext.showDatePicker
 import com.example.noteapp.ui.viewmodel.MainViewModel
-import com.example.noteapp.ui.viewmodel.NoteItemEvent
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -28,12 +29,12 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
         with(binding) {
             btnAdd.setOnClickListener {
                 tilTitle.editText?.text?.let { currentTodo.title = it.toString() }
-                viewModel.onEvent(NoteItemEvent.AddItem(currentTodo))
+                viewModel.onEvent(ListFragmentEvent.AddItem(currentTodo))
                 this@AddTodoBottomSheetDialog.dismiss()
             }
 
             btnSetDeadline.setOnClickListener {
-                showDatePicker()
+                context?.showDatePicker(::setDeadlineDate)
             }
             btnSetReminder.setOnClickListener {
                 // show time picker
@@ -53,25 +54,14 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
         return binding.root
     }
 
-    private fun showDatePicker() {
-        val calendar = Calendar.getInstance()
-        val datePickerDialog =
-            DatePickerDialog(
-                requireContext(),
-                { datePicker, year, month, day ->
-                    val date = Calendar.getInstance().apply {
-                        set(Calendar.YEAR, year)
-                        set(Calendar.MONTH, month)
-                        set(Calendar.DAY_OF_MONTH, day)
-                    }
-                    // set deadline date
-                    currentTodo.deadlineDate = Date(date.timeInMillis)
-                },
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-            )
-        datePickerDialog.show()
+    private fun setDeadlineDate(datePicker: DatePicker, year: Int, month: Int, day: Int) {
+        val date = Calendar.getInstance().apply {
+            set(Calendar.YEAR, year)
+            set(Calendar.MONTH, month)
+            set(Calendar.DAY_OF_MONTH, day)
+        }
+        // set deadline date
+        currentTodo.deadlineDate = Date(date.timeInMillis)
     }
 
     override fun onDestroyView() {

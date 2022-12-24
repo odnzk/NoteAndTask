@@ -17,53 +17,61 @@
         app:layout_constraintEnd_toStartOf="@id/tv_date"
         app:layout_constraintTop_toTopOf="parent" />
 
-        <RadioButton
-            android:id="@+id/rb_is_completed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/tv_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_title" />
+    <CheckBox
+        android:id="@+id/cb_is_completed"
+        style="@style/TodoCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/til_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/til_title" />
 
-        <TextView
-            android:id="@+id/tv_title"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/rv_item_padding"
+        android:layout_marginTop="@dimen/fragment_default_margin_top"
+        app:layout_constraintEnd_toStartOf="@id/btn_delete"
+        app:layout_constraintStart_toEndOf="@id/cb_is_completed"
+        app:layout_constraintTop_toBottomOf="@id/flow_categories">
+
+        <EditText
+            android:id="@+id/et_title"
             style="@style/Headline"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/rv_item_padding"
-            android:layout_marginTop="@dimen/fragment_default_margin_top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:maxLines="4"
-            app:layout_constraintEnd_toStartOf="@id/btn_delete"
-            app:layout_constraintStart_toEndOf="@id/rb_is_completed"
-            app:layout_constraintTop_toBottomOf="@id/flow_categories"
+            android:text="@string/unknown_todo"
             tools:text="@tools:sample/lorem/random" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageButton
-            android:id="@+id/btn_delete"
-            android:contentDescription="@string/delete_todo"
-            style="@style/ButtonClearAll"
-            app:layout_constraintBottom_toBottomOf="@id/tv_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_title"
-            app:layout_constraintTop_toTopOf="@id/tv_title" />
+    <ImageButton
+        android:id="@+id/btn_delete"
+        style="@style/ButtonClearAll"
+        android:contentDescription="@string/delete_todo"
+        app:layout_constraintBottom_toBottomOf="@id/til_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/til_title"
+        app:layout_constraintTop_toTopOf="@id/til_title" />
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="tv_title, btn_delete, rb_is_completed" />
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="til_title, btn_delete, cb_is_completed" />
 
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_change_deadline_date"
-            style="@style/MaterialButtonWithIcon"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/fragment_default_margin_top"
-            android:insetBottom="0dp"
-            android:text="@string/btn_set_deadline"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_change_deadline_date"
+        style="@style/MaterialButtonWithIcon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/fragment_default_margin_top"
+        android:insetBottom="0dp"
+        android:text="@string/btn_set_deadline"
             app:icon="@drawable/ic_schedule"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

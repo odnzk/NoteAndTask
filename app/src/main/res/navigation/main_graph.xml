@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/noteDetailFragment"
-        android:name="com.example.noteapp.ui.fragments.NoteDetailFragment"
+        android:name="com.example.noteapp.ui.fragments.NoteDetailedFragment"
         android:label="NoteDetailFragment"
         tools:layout="@layout/fragment_detailed_note">
         <argument
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/todoDetailFragment"
-        android:name="com.example.noteapp.ui.fragments.TodoDetailFragment"
+        android:name="com.example.noteapp.ui.fragments.TodoDetailedFragment"
         android:label="TodoDetailFragment"
         tools:layout="@layout/fragment_detailed_todo" >
         <argument

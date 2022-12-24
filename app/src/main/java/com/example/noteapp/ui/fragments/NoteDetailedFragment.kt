@@ -13,19 +13,18 @@ import com.example.domain.model.Note
 import com.example.domain.model.NoteItem
 import com.example.noteapp.databinding.FragmentDetailedNoteBinding
 import com.example.noteapp.databinding.StateLoadingBinding
+import com.example.noteapp.ui.fragments.Events.ListFragmentEvent
 import com.example.noteapp.ui.util.errorOccurred
 import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
-import com.example.noteapp.ui.util.ext.toChip
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
 import com.example.noteapp.ui.viewmodel.MainViewModel
-import com.example.noteapp.ui.viewmodel.NoteItemEvent
 import com.example.noteapp.ui.viewmodel.handleState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
-class NoteDetailFragment : Fragment() {
+class NoteDetailedFragment : Fragment() {
     private var _binding: FragmentDetailedNoteBinding? = null
     private val binding get() = _binding!!
 
@@ -33,8 +32,9 @@ class NoteDetailFragment : Fragment() {
         StateLoadingBinding.bind(binding.root)
     }
 
+    // todo move to view model
     private val viewModel: MainViewModel by viewModels()
-    private val noteDetailFragmentArgs: NoteDetailFragmentArgs by navArgs()
+    private val noteDetailFragmentArgs: NoteDetailedFragmentArgs by navArgs()
     private val selectedNoteId: Long by lazy { noteDetailFragmentArgs.noteId }
     private var selectedNote: Note = Note.defaultInstance()
 
@@ -45,17 +45,17 @@ class NoteDetailFragment : Fragment() {
             observeState()
 
             btnDelete.setOnClickListener {
-                viewModel.onEvent(NoteItemEvent.DeleteItem(selectedNote))
+                viewModel.onEvent(ListFragmentEvent.DeleteItem(selectedNote))
             }
 
             etContent.doAfterTextChanged {
                 selectedNote = selectedNote.copy(content = etContent.text.toString())
-                viewModel.onEvent(NoteItemEvent.UpdateNoteItem(selectedNote))
+//                viewModel.onEvent(ListFragmentEvent.UpdateNoteItem(selectedNote))
             }
 
             etTitle.doAfterTextChanged {
                 selectedNote = selectedNote.copy(title = etTitle.text.toString())
-                viewModel.onEvent(NoteItemEvent.UpdateNoteItem(selectedNote))
+//                viewModel.onEvent(ListFragmentEvent.UpdateNoteItem(selectedNote))
             }
 
         }

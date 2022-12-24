@@ -1,6 +1,5 @@
 package com.example.noteapp.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.Note
@@ -11,22 +10,12 @@ import com.example.domain.repository.NoteRepository
 import com.example.domain.repository.TodoRepository
 import com.example.domain.util.Filter
 import com.example.domain.util.SortOrder
+import com.example.noteapp.ui.fragments.Events.ListFragmentEvent
 import com.example.noteapp.ui.util.PreferenceStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-sealed interface NoteItemEvent {
-    data class AddItem(val noteItem: NoteItem) : NoteItemEvent
-    data class DeleteItem(val noteItem: NoteItem) : NoteItemEvent
-    data class UpdateNoteItem(val noteItem: NoteItem) : NoteItemEvent
-    object RestoreItem : NoteItemEvent
-    object ClearAll : NoteItemEvent
-    class UpdateSortOrder(val sortOrder: SortOrder) : NoteItemEvent
-    class UpdateFilter(val filter: Filter) : NoteItemEvent
-    data class UpdateTodoCompletedStatus(val todoId: Long, val isCompleted: Boolean) : NoteItemEvent
-}
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -46,7 +35,6 @@ class MainViewModel @Inject constructor(
     val noteItemsListState: StateFlow<UiState<List<NoteItem>>> = _noteItemsListState
 
     init {
-        Log.d("TAGTAG", "${this.javaClass}: loading")
         loadData()
     }
 
@@ -65,53 +53,47 @@ class MainViewModel @Inject constructor(
     }
 
     fun loadData() {
-        Log.d("TAGTAG", "${this.javaClass}: loading")
         viewModelScope.launch {
-            _noteItemsListState.emit(UiState.Loading())
+            _noteItemsListState.value = UiState.Loading()
             observeSearchAndFiltersStates().collectLatest {
-                Log.d("TAGTAG", "${this.javaClass}: success")
-                _noteItemsListState.emit(UiState.Success(it))
+                _noteItemsListState.value = UiState.Success(it)
             }
         }
     }
 
 
-    fun onEvent(event: NoteItemEvent) {
+    fun onEvent(event: ListFragmentEvent) {
         viewModelScope.launch {
             when (event) {
-                is NoteItemEvent.AddItem -> {
+                is ListFragmentEvent.AddItem -> {
                     when (val noteItem = event.noteItem) {
                         is Note -> noteRepository.add(noteItem)
                         is Todo -> todoRepository.add(noteItem)
                     }
                 }
-                is NoteItemEvent.DeleteItem -> {
+                is ListFragmentEvent.DeleteItem -> {
                     when (val noteItem = event.noteItem) {
                         is Note -> noteRepository.delete(noteItem)
                         is Todo -> todoRepository.delete(noteItem)
                     }
                 }
-                is NoteItemEvent.RestoreItem -> {
+                is ListFragmentEvent.RestoreItem -> {
 
                 }
-                is NoteItemEvent.UpdateSortOrder -> {
+                is ListFragmentEvent.UpdateSortOrder -> {
 
                 }
-                is NoteItemEvent.UpdateFilter -> {
+                is ListFragmentEvent.UpdateFilter -> {
 
                 }
-                is NoteItemEvent.UpdateNoteItem -> {
+                is ListFragmentEvent.ClearAll -> {
 
                 }
-                is NoteItemEvent.ClearAll -> {
-
-                }
-                is NoteItemEvent.UpdateTodoCompletedStatus -> {
+                is ListFragmentEvent.UpdateTodoCompletedStatus -> {
                     todoRepository.updateCompletedStatus(event.todoId, event.isCompleted)
                 }
             }
         }
     }
-
 
 }

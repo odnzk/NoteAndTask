@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.Todo
 import com.example.domain.repository.TodoRepository
+import com.example.noteapp.ui.fragments.Events.TodoDetailedEvent
 import com.example.noteapp.ui.util.exceptions.LostNavArgumentsException
 import com.example.noteapp.ui.util.exceptions.NotFoundException
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,8 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TodoDetailsViewModel @Inject constructor(
-    private val noteRepository: TodoRepository,
-    private val state: SavedStateHandle
+    private val todoRepository: TodoRepository, private val state: SavedStateHandle
 ) : ViewModel() {
 
     private val todoId: Long? by lazy { state.get<Long>("todoId") }
@@ -31,11 +31,25 @@ class TodoDetailsViewModel @Inject constructor(
         _todo.value = UiState.Loading()
         viewModelScope.launch {
             todoId?.let {
-                val repoNote = noteRepository.getById(it)
-                _todo.value = repoNote?.let { repoTodo -> UiState.Success(repoTodo) } ?: run {
+                val repoTodo = todoRepository.getById(it)
+                _todo.value = repoTodo?.let { repoTodo -> UiState.Success(repoTodo) } ?: run {
                     UiState.Error(NotFoundException())
                 }
             } ?: run { _todo.value = UiState.Error(LostNavArgumentsException()) }
+        }
+    }
+
+    fun onEvent(event: TodoDetailedEvent) = viewModelScope.launch {
+        when (event) {
+            is TodoDetailedEvent.UpdateTodo -> {
+
+            }
+            is TodoDetailedEvent.DeleteTodo -> {
+                // if UiState.Loading or UiState.Error do nothing
+                if (todo.value is UiState.Success) {
+                    todo.value.data?.let { todoRepository.delete(it) }
+                }
+            }
         }
     }
 

@@ -14,11 +14,12 @@ import com.example.domain.model.NoteItem
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentListBinding
 import com.example.noteapp.databinding.StateLoadingBinding
+import com.example.noteapp.ui.fragments.Events.ListFragmentEvent
 import com.example.noteapp.ui.recycler.NoteItemAdapter
 import com.example.noteapp.ui.util.errorOccurred
+import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
 import com.example.noteapp.ui.viewmodel.MainViewModel
-import com.example.noteapp.ui.viewmodel.NoteItemEvent
 import com.example.noteapp.ui.viewmodel.handleState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -44,7 +45,7 @@ class ListFragment : Fragment() {
             }
 
             btnClearAll.setOnClickListener {
-                viewModel.onEvent(NoteItemEvent.ClearAll)
+                viewModel.onEvent(ListFragmentEvent.ClearAll)
             }
         }
     }
@@ -94,6 +95,7 @@ class ListFragment : Fragment() {
     }
 
     private fun onSuccessAction(data: List<NoteItem>) {
+        stateLoadingBinding.loadingFinished()
         listAdapter.submitList(data)
     }
 
@@ -101,7 +103,7 @@ class ListFragment : Fragment() {
         listAdapter.onNoteClick = ::onNoteClick
         listAdapter.onTodoClick = ::onTodoClick
         listAdapter.onTodoCheckboxClick = { id, isCompleted ->
-            viewModel.onEvent(NoteItemEvent.UpdateTodoCompletedStatus(id, isCompleted))
+            viewModel.onEvent(ListFragmentEvent.UpdateTodoCompletedStatus(id, isCompleted))
         }
         listAdapter.submitList(emptyList())
     }

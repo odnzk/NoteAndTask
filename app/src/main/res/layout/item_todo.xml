@@ -12,8 +12,9 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/rv_item_padding">
 
-        <RadioButton
-            android:id="@+id/rb_completed"
+        <CheckBox
+            android:id="@+id/cb_completed"
+            style="@style/TodoCheckbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -27,10 +28,10 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="3"
-            app:layout_constraintBottom_toBottomOf="@id/rb_completed"
+            app:layout_constraintBottom_toBottomOf="@id/cb_completed"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/rb_completed"
-            app:layout_constraintTop_toTopOf="@id/rb_completed"
+            app:layout_constraintStart_toEndOf="@id/cb_completed"
+            app:layout_constraintTop_toTopOf="@id/cb_completed"
             tools:text="Some very very long long text very very long long text very very long long textvery very long long text" />
 
         <TextView
