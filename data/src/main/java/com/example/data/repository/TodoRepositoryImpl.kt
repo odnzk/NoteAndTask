@@ -31,4 +31,8 @@ class TodoRepositoryImpl(private val dao: TodoDao) : TodoRepository {
     override suspend fun deleteAll() {
         dao.deleteAll()
     }
+
+    override suspend fun updateCompletedStatus(id: Long, isCompleted: Boolean) {
+        dao.updateIsCompletedById(id, isCompleted)
+    }
 }

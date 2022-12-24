@@ -20,7 +20,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
     private val binding: BottomSheetAddTodoBinding get() = _binding!!
 
     private val viewModel by viewModels<MainViewModel>()
-    private val currentTodo: Todo = Todo.defaultTodo()
+    private val currentTodo: Todo = Todo.defaultInstance()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

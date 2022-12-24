@@ -25,6 +25,7 @@ sealed interface NoteItemEvent {
     object ClearAll : NoteItemEvent
     class UpdateSortOrder(val sortOrder: SortOrder) : NoteItemEvent
     class UpdateFilter(val filter: Filter) : NoteItemEvent
+    data class UpdateTodoCompletedStatus(val todoId: Long, val isCompleted: Boolean) : NoteItemEvent
 }
 
 @HiltViewModel
@@ -40,9 +41,9 @@ class MainViewModel @Inject constructor(
     private val sortOrder = MutableStateFlow(SortOrder.BY_CATEGORY_PRIORITY)
     private val filter = MutableStateFlow(Filter.DEFAULT)
 
-    private var _noteItemsListState: MutableStateFlow<ListState<List<NoteItem>>> =
-        MutableStateFlow(ListState.Loading())
-    val noteItemsListState: StateFlow<ListState<List<NoteItem>>> = _noteItemsListState
+    private var _noteItemsListState: MutableStateFlow<UiState<List<NoteItem>>> =
+        MutableStateFlow(UiState.Loading())
+    val noteItemsListState: StateFlow<UiState<List<NoteItem>>> = _noteItemsListState
 
     init {
         Log.d("TAGTAG", "${this.javaClass}: loading")
@@ -66,47 +67,48 @@ class MainViewModel @Inject constructor(
     fun loadData() {
         Log.d("TAGTAG", "${this.javaClass}: loading")
         viewModelScope.launch {
-            _noteItemsListState.emit(ListState.Loading())
+            _noteItemsListState.emit(UiState.Loading())
             observeSearchAndFiltersStates().collectLatest {
                 Log.d("TAGTAG", "${this.javaClass}: success")
-                _noteItemsListState.emit(ListState.Success(it))
+                _noteItemsListState.emit(UiState.Success(it))
             }
         }
     }
 
 
     fun onEvent(event: NoteItemEvent) {
-        when (event) {
-            is NoteItemEvent.AddItem -> {
-                viewModelScope.launch {
+        viewModelScope.launch {
+            when (event) {
+                is NoteItemEvent.AddItem -> {
                     when (val noteItem = event.noteItem) {
                         is Note -> noteRepository.add(noteItem)
                         is Todo -> todoRepository.add(noteItem)
                     }
                 }
-            }
-            is NoteItemEvent.DeleteItem -> {
-                viewModelScope.launch {
+                is NoteItemEvent.DeleteItem -> {
                     when (val noteItem = event.noteItem) {
                         is Note -> noteRepository.delete(noteItem)
                         is Todo -> todoRepository.delete(noteItem)
                     }
                 }
-            }
-            is NoteItemEvent.RestoreItem -> {
+                is NoteItemEvent.RestoreItem -> {
 
-            }
-            is NoteItemEvent.UpdateSortOrder -> {
+                }
+                is NoteItemEvent.UpdateSortOrder -> {
 
-            }
-            is NoteItemEvent.UpdateFilter -> {
+                }
+                is NoteItemEvent.UpdateFilter -> {
 
-            }
-            is NoteItemEvent.UpdateNoteItem -> {
+                }
+                is NoteItemEvent.UpdateNoteItem -> {
 
-            }
-            is NoteItemEvent.ClearAll -> {
+                }
+                is NoteItemEvent.ClearAll -> {
 
+                }
+                is NoteItemEvent.UpdateTodoCompletedStatus -> {
+                    todoRepository.updateCompletedStatus(event.todoId, event.isCompleted)
+                }
             }
         }
     }

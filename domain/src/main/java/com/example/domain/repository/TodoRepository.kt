@@ -16,4 +16,6 @@ interface TodoRepository {
     suspend fun getById(id: Long): Todo?
 
     suspend fun deleteAll()
+
+    suspend fun updateCompletedStatus(id: Long, isCompleted: Boolean)
 }

@@ -10,7 +10,11 @@ data class Note(
     val content: String,
     val categories: List<Category>,
     val date: Date?
-) : NoteItem(id)
+) : NoteItem(id) {
+    companion object {
+        fun defaultInstance() = Note(0, "", "", emptyList(), null)
+    }
+}
 
 data class Todo(
     override val id: Long,
@@ -20,6 +24,6 @@ data class Todo(
     var deadlineDate: Date?
 ) : NoteItem(id) {
     companion object {
-        fun defaultTodo() = Todo(0, "", false, emptyList(), null)
+        fun defaultInstance() = Todo(0, "", false, emptyList(), null)
     }
 }

@@ -28,16 +28,15 @@ import kotlinx.coroutines.flow.collectLatest
 class NoteDetailFragment : Fragment() {
     private var _binding: FragmentDetailedNoteBinding? = null
     private val binding get() = _binding!!
+
     private val stateLoadingBinding by lazy {
-        StateLoadingBinding.bind(binding.root) // todo memory leak?
+        StateLoadingBinding.bind(binding.root)
     }
 
     private val viewModel: MainViewModel by viewModels()
-
     private val noteDetailFragmentArgs: NoteDetailFragmentArgs by navArgs()
     private val selectedNoteId: Long by lazy { noteDetailFragmentArgs.noteId }
-    private var selectedNote: Note =
-        Note(id = 1, title = "", content = "", categories = emptyList(), date = null)
+    private var selectedNote: Note = Note.defaultInstance()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

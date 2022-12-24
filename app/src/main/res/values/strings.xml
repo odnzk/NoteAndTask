@@ -7,8 +7,10 @@
     <string name="try_again">Try again</string>
 
     <string name="error_not_found">Nothing was found for this query</string>
+    <string name="error_navigation_exception">Navigation exception occurred</string>
     <string name="error_unknown">Unknown error</string>
-    <string name="error_failed_loading_from_database">loading data from database was failed</string>
+    <string name="error_failed_loading_from_database">Loading data from database was failed</string>
+
     <string name="schedule_icon">Schedule icon</string>
     <string name="btn_set_deadline">Add deadline</string>
     <string name="btn_set_reminder">Add reminder</string>

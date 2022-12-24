@@ -11,8 +11,8 @@ class RoomTypeConverter {
     }
 
     @TypeConverter
-    fun fromTimestamp(timestamp: Long): Date {
-        return Date(timestamp)
+    fun fromTimestamp(timestamp: Long?): Date? {
+        return timestamp?.let { Date(it) }
     }
 
 }

@@ -12,6 +12,8 @@ import com.example.domain.model.Category
 import com.example.domain.model.Note
 import com.example.noteapp.R
 import com.google.android.material.chip.Chip
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 private const val CATEGORY_NOT_SELECTED_COLOR_ALPHA = 30
@@ -58,3 +60,7 @@ fun Note.categoriesToFlowCategories(flow: Flow, onCategoryChipClick: () -> Unit)
         }
     }
 }
+
+fun Date.convertTUiString(pattern: String? = "EE, dd.MM"): String =
+    SimpleDateFormat(pattern).format(this)
+

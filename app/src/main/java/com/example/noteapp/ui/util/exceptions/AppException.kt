@@ -5,3 +5,5 @@ open class AppException : RuntimeException()
 class LoadingFromDatabaseFailedException : AppException()
 
 class NotFoundException : AppException()
+
+class LostNavArgumentsException : AppException()

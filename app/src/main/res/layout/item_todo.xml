@@ -27,9 +27,10 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="3"
+            app:layout_constraintBottom_toBottomOf="@id/rb_completed"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/rb_completed"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/rb_completed"
             tools:text="Some very very long long text very very long long text very very long long textvery very long long text" />
 
         <TextView
@@ -39,6 +40,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
+            android:maxWidth="80dp"
             app:layout_constraintBottom_toBottomOf="@id/iv_deadline_date_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_deadline_date_icon"
@@ -58,7 +60,7 @@
         <ImageView
             android:id="@+id/iv_deadline_date_icon"
             android:layout_width="20dp"
-            android:layout_height="wrap_content"
+            android:layout_height="16dp"
             android:layout_marginStart="10dp"
             android:adjustViewBounds="true"
             android:src="@drawable/ic_schedule"

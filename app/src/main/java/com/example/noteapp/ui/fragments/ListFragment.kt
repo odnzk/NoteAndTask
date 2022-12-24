@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.NoteItem
 import com.example.noteapp.R
@@ -53,8 +54,12 @@ class ListFragment : Fragment() {
             recyclerView.run {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = listAdapter
-
-//            todo addItemDecoration() + itemAnimator
+                addItemDecoration(
+                    DividerItemDecoration(
+                        requireContext(),
+                        DividerItemDecoration.VERTICAL
+                    )
+                )
             }
         }
     }
@@ -95,6 +100,9 @@ class ListFragment : Fragment() {
     private fun initAdapter() {
         listAdapter.onNoteClick = ::onNoteClick
         listAdapter.onTodoClick = ::onTodoClick
+        listAdapter.onTodoCheckboxClick = { id, isCompleted ->
+            viewModel.onEvent(NoteItemEvent.UpdateTodoCompletedStatus(id, isCompleted))
+        }
         listAdapter.submitList(emptyList())
     }
 
