@@ -1,7 +1,6 @@
 package com.example.noteapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -79,7 +78,7 @@ class ListFragment : Fragment() {
     }
 
     private fun observeState() {
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launchWhenResumed {
             viewModel.noteItemsListState.collectLatest { listState ->
                 listState.handleState(
                     onErrorAction = ::onErrorAction,
