@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/btn_set_period"
-            app:icon="@drawable/ic_baseline_notifications_none_24" />
+            app:icon="@drawable/ic_baseline_repeat_24" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
 

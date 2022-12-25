@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.Note
 import com.example.domain.repository.NoteRepository
+import com.example.noteapp.ui.fragments.events.NoteDetailedEvent
 import com.example.noteapp.ui.util.exceptions.LostNavArgumentsException
 import com.example.noteapp.ui.util.exceptions.NotFoundException
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,6 +37,19 @@ class NoteDetailsViewModel @Inject constructor(
                     UiState.Error(NotFoundException())
                 }
             } ?: run { _note.value = UiState.Error(LostNavArgumentsException()) }
+        }
+    }
+
+    fun onEvent(event: NoteDetailedEvent) = viewModelScope.launch {
+        when (event) {
+            is NoteDetailedEvent.UpdateNote -> {
+                noteRepository.update(event.note)
+            }
+            is NoteDetailedEvent.DeleteNote -> {
+                // if UiState.Loading or UiState.Error do nothing
+                note.value.data?.let { noteRepository.delete(it) }
+            }
+            NoteDetailedEvent.TryLoadingNoteAgain -> loadData()
         }
     }
 

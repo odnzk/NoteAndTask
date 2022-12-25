@@ -1,12 +1,13 @@
 package com.example.data.dao
 
 import androidx.room.*
+import androidx.room.OnConflictStrategy.REPLACE
 import com.example.data.entity.TodoEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TodoDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = REPLACE)
     suspend fun add(todo: TodoEntity): Long
 
     @Delete

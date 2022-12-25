@@ -19,6 +19,7 @@ data class NoteEntity(
     companion object {
         fun from(note: Note): NoteEntity {
             return NoteEntity(
+                id = note.id,
                 title = note.title,
                 content = note.content
             )

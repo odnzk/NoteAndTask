@@ -1,6 +1,7 @@
 package com.example.noteapp.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,7 @@ import com.example.domain.model.NoteItem
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentListBinding
 import com.example.noteapp.databinding.StateLoadingBinding
-import com.example.noteapp.ui.fragments.Events.ListFragmentEvent
+import com.example.noteapp.ui.fragments.events.ListFragmentEvent
 import com.example.noteapp.ui.recycler.NoteItemAdapter
 import com.example.noteapp.ui.util.errorOccurred
 import com.example.noteapp.ui.util.loadingFinished
@@ -28,6 +29,7 @@ import kotlinx.coroutines.flow.collectLatest
 class ListFragment : Fragment() {
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
+
     private var _stateLoadingBinding: StateLoadingBinding? = null
     private val stateLoadingBinding: StateLoadingBinding get() = _stateLoadingBinding!!
 
@@ -120,7 +122,7 @@ class ListFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
         _stateLoadingBinding = null
+        _binding = null
     }
 }

@@ -16,4 +16,7 @@
     <string name="btn_set_reminder">Add reminder</string>
     <string name="btn_set_period">Add period</string>
     <string name="unknown_todo">Unknown todo</string>
+    <string name="change_category">Change category</string>
+    <string name="btn_add_new_category">Add</string>
+    <string name="new_category">New category</string>
 </resources>

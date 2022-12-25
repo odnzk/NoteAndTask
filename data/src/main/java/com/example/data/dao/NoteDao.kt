@@ -1,13 +1,14 @@
 package com.example.data.dao
 
 import androidx.room.*
+import androidx.room.OnConflictStrategy.REPLACE
 import com.example.data.entity.NoteEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NoteDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = REPLACE)
     suspend fun insert(note: NoteEntity): Long
 
     @Delete
@@ -16,7 +17,7 @@ interface NoteDao {
     @Query("SELECT * FROM notes")
     fun getAll(): Flow<List<NoteEntity>>
 
-    @Update
+    @Update(onConflict = REPLACE)
     suspend fun update(note: NoteEntity)
 
     @Query("DELETE FROM notes")

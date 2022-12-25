@@ -54,7 +54,7 @@
         android:id="@+id/chooseCategoryDialog"
         android:name="com.example.noteapp.ui.dialogs.ChooseCategoryDialog"
         android:label="ChooseCategoryDialog"
-        tools:layout="@layout/dialog_choose_category" />
+        tools:layout="@layout/dialog_change_category" />
     <dialog
         android:id="@+id/addTodoBottomSheetDialog"
         android:name="com.example.noteapp.ui.dialogs.AddTodoBottomSheetDialog"

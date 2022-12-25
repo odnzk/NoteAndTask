@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.Todo
 import com.example.domain.repository.TodoRepository
-import com.example.noteapp.ui.fragments.Events.TodoDetailedEvent
+import com.example.noteapp.ui.fragments.events.TodoDetailedEvent
 import com.example.noteapp.ui.util.exceptions.LostNavArgumentsException
 import com.example.noteapp.ui.util.exceptions.NotFoundException
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,7 +27,7 @@ class TodoDetailsViewModel @Inject constructor(
         loadData()
     }
 
-    fun loadData() {
+    private fun loadData() {
         _todo.value = UiState.Loading()
         viewModelScope.launch {
             todoId?.let {
@@ -42,14 +42,15 @@ class TodoDetailsViewModel @Inject constructor(
     fun onEvent(event: TodoDetailedEvent) = viewModelScope.launch {
         when (event) {
             is TodoDetailedEvent.UpdateTodo -> {
-
+                todoRepository.update(event.todo)
             }
             is TodoDetailedEvent.DeleteTodo -> {
                 // if UiState.Loading or UiState.Error do nothing
-                if (todo.value is UiState.Success) {
-                    todo.value.data?.let { todoRepository.delete(it) }
+                todo.value.data?.let {
+                    todoRepository.delete(it)
                 }
             }
+            is TodoDetailedEvent.TryLoadingTodoAgain -> loadData()
         }
     }
 

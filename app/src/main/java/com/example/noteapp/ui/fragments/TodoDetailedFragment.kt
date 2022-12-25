@@ -1,6 +1,7 @@
 package com.example.noteapp.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.domain.model.Todo
 import com.example.noteapp.databinding.FragmentDetailedTodoBinding
 import com.example.noteapp.databinding.StateLoadingBinding
-import com.example.noteapp.ui.fragments.Events.TodoDetailedEvent
+import com.example.noteapp.ui.fragments.events.TodoDetailedEvent
 import com.example.noteapp.ui.util.errorOccurred
 import com.example.noteapp.ui.util.ext.convertTUiString
 import com.example.noteapp.ui.util.ext.insertToConstraintLayoutFlow
@@ -30,22 +31,18 @@ class TodoDetailedFragment : Fragment() {
     private var _binding: FragmentDetailedTodoBinding? = null
     private val binding get() = _binding!!
 
-    private val stateLoadingBinding by lazy {
-        StateLoadingBinding.bind(binding.root)
-    }
+    private var _stateLoadingBinding: StateLoadingBinding? = null
+    private val stateLoadingBinding: StateLoadingBinding get() = _stateLoadingBinding!!
 
     private val viewModel: TodoDetailsViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initTodo()
-        with(binding) {
-
-        }
     }
 
     private fun initTodo() {
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenResumed {
             viewModel.todo.collect { state ->
                 state.handleState(
                     onLoadingAction = stateLoadingBinding::loadingStarted,
@@ -57,7 +54,7 @@ class TodoDetailedFragment : Fragment() {
     }
 
     private fun errorOccurred(error: Throwable) {
-        stateLoadingBinding.errorOccurred(error) { viewModel.loadData() }
+        stateLoadingBinding.errorOccurred(error) { viewModel.onEvent(TodoDetailedEvent.TryLoadingTodoAgain) }
     }
 
     private fun showTodo(todo: Todo) {
@@ -97,6 +94,7 @@ class TodoDetailedFragment : Fragment() {
         viewModel.todo.value.data?.let { todo ->
             viewModel.onEvent(TodoDetailedEvent.UpdateTodo(todo.copy(deadlineDate = Date(date.timeInMillis))))
         }
+        binding.btnChangeDeadlineDate.text = Date(date.timeInMillis).convertTUiString()
     }
 
 
@@ -106,11 +104,13 @@ class TodoDetailedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailedTodoBinding.inflate(inflater, container, false)
+        _stateLoadingBinding = StateLoadingBinding.bind(binding.root)
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        _stateLoadingBinding = null
         _binding = null
     }
 }

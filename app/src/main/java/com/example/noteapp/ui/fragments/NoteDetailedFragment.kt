@@ -8,36 +8,28 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.navArgs
 import com.example.domain.model.Note
-import com.example.domain.model.NoteItem
 import com.example.noteapp.databinding.FragmentDetailedNoteBinding
 import com.example.noteapp.databinding.StateLoadingBinding
-import com.example.noteapp.ui.fragments.Events.ListFragmentEvent
+import com.example.noteapp.ui.fragments.events.NoteDetailedEvent
 import com.example.noteapp.ui.util.errorOccurred
 import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
-import com.example.noteapp.ui.viewmodel.MainViewModel
+import com.example.noteapp.ui.viewmodel.NoteDetailsViewModel
 import com.example.noteapp.ui.viewmodel.handleState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class NoteDetailedFragment : Fragment() {
     private var _binding: FragmentDetailedNoteBinding? = null
     private val binding get() = _binding!!
 
-    private val stateLoadingBinding by lazy {
-        StateLoadingBinding.bind(binding.root)
-    }
+    private var _stateLoadingBinding: StateLoadingBinding? = null
+    private val stateLoadingBinding: StateLoadingBinding get() = _stateLoadingBinding!!
 
-    // todo move to view model
-    private val viewModel: MainViewModel by viewModels()
-    private val noteDetailFragmentArgs: NoteDetailedFragmentArgs by navArgs()
-    private val selectedNoteId: Long by lazy { noteDetailFragmentArgs.noteId }
-    private var selectedNote: Note = Note.defaultInstance()
-
+    private val viewModel: NoteDetailsViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,29 +37,24 @@ class NoteDetailedFragment : Fragment() {
             observeState()
 
             btnDelete.setOnClickListener {
-                viewModel.onEvent(ListFragmentEvent.DeleteItem(selectedNote))
             }
 
             etContent.doAfterTextChanged {
-                selectedNote = selectedNote.copy(content = etContent.text.toString())
-//                viewModel.onEvent(ListFragmentEvent.UpdateNoteItem(selectedNote))
             }
 
             etTitle.doAfterTextChanged {
-                selectedNote = selectedNote.copy(title = etTitle.text.toString())
-//                viewModel.onEvent(ListFragmentEvent.UpdateNoteItem(selectedNote))
             }
 
         }
     }
 
     private fun observeState() {
-        lifecycleScope.launchWhenCreated {
-            viewModel.noteItemsListState.collectLatest { listState ->
-                listState.handleState(
-                    onErrorAction = ::onErrorAction,
-                    onLoadingAction = { stateLoadingBinding.loadingStarted() },
-                    onSuccessAction = ::onSuccessAction
+        lifecycleScope.launch {
+            viewModel.note.collect { state ->
+                state.handleState(
+                    onLoadingAction = stateLoadingBinding::loadingStarted,
+                    onSuccessAction = ::showNote,
+                    onErrorAction = ::onErrorAction
                 )
             }
         }
@@ -75,27 +62,21 @@ class NoteDetailedFragment : Fragment() {
 
     private fun onErrorAction(error: Throwable) {
         stateLoadingBinding.errorOccurred(error) {
-            viewModel.loadData()
+            viewModel.onEvent(NoteDetailedEvent.TryLoadingNoteAgain)
         }
     }
 
-    private fun onSuccessAction(data: List<NoteItem>) {
-        selectedNote = data.first { it.id == selectedNoteId } as Note
+    private fun showNote(note: Note) {
+        stateLoadingBinding.loadingFinished()
         with(binding) {
-            etTitle.setText(selectedNote.title)
-            etContent.setText(selectedNote.content)
-            tvDate.text = selectedNote.date.toString()
-
-            selectedNote.categoriesToFlowCategories(flowCategories){
-                // todo on category click
+            note.run {
+                etTitle.setText(title)
+                etContent.setText(content)
+                tvDate.text = date.toString()
+                categoriesToFlowCategories(flowCategories) {
+                    // todo on category click
+                }
             }
-//            selectedNote.categories.takeIf { it.isNotEmpty() }?.let {
-//                it.forEach { category ->
-//                    flowCategories.addView(category.toChip(requireContext()) {
-//
-//                    })
-//                }
-//            }
         }
         stateLoadingBinding.loadingFinished()
     }
@@ -105,11 +86,13 @@ class NoteDetailedFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailedNoteBinding.inflate(inflater, container, false)
+        _stateLoadingBinding = StateLoadingBinding.bind(binding.root)
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        _stateLoadingBinding = null
         _binding = null
     }
 }

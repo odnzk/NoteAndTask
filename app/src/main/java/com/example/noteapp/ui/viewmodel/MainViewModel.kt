@@ -10,7 +10,7 @@ import com.example.domain.repository.NoteRepository
 import com.example.domain.repository.TodoRepository
 import com.example.domain.util.Filter
 import com.example.domain.util.SortOrder
-import com.example.noteapp.ui.fragments.Events.ListFragmentEvent
+import com.example.noteapp.ui.fragments.events.ListFragmentEvent
 import com.example.noteapp.ui.util.PreferenceStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -40,17 +40,26 @@ class MainViewModel @Inject constructor(
 
 
     private fun observeSearchAndFiltersStates(): Flow<List<NoteItem>> {
-        return combine(searchQuery, sortOrder, filter) { searchQuery, sortOrder, filter ->
-            val notes = noteRepository.getAll(searchQuery, sortOrder, filter)
-            val todo = todoRepository.getAll()
-
-            mutableListOf<NoteItem>().apply {
-                // todo
-                addAll(notes.first())
-                addAll(todo.first())
+        return combine(
+            todoRepository.getAll(),
+            noteRepository.getAll(searchQuery.value, sortOrder.value, filter.value)
+        ) { todos, notes ->
+            return@combine mutableListOf<NoteItem>().apply {
+                addAll(todos)
+                addAll(notes)
             }
         }
     }
+//        return combine(searchQuery, sortOrder, filter) { searchQuery, sortOrder, filter ->
+//            val notes = noteRepository.getAll(searchQuery, sortOrder, filter)
+//            val todo = todoRepository.getAll()
+//
+//            mutableListOf<NoteItem>().apply {
+//                // todo
+//                addAll(notes.first())
+//                addAll(todo.first())
+//            }
+//        } }
 
     fun loadData() {
         viewModelScope.launch {
