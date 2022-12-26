@@ -33,7 +33,17 @@ class NoteRepositoryImpl(
         dao.deleteAll()
     }
 
-    override fun getAll(searchQuery: String, sortOrder: SortOrder, filter: Filter): Flow<List<Note>> {
+    override fun getAll(
+        searchQuery: String,
+        sortOrder: SortOrder,
+        filter: Filter
+    ): Flow<List<Note>> {
+        return dao.getAll().map {
+            it.map { noteEntity -> noteEntity.mapToNote() } // todo
+        }
+    }
+
+    override fun getAll(): Flow<List<Note>> {
         return dao.getAll().map {
             it.map { noteEntity -> noteEntity.mapToNote() }
         }

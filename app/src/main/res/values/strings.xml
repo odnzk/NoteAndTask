@@ -11,6 +11,11 @@
     <string name="error_unknown">Unknown error</string>
     <string name="error_failed_loading_from_database">Loading data from database was failed</string>
 
+    <string name="success_delete">Successfully deleted</string>
+
+    <string name="hint_note_title">Enter note title</string>
+    <string name="hint_note_content">Enter note content</string>
+
     <string name="schedule_icon">Schedule icon</string>
     <string name="btn_set_deadline">Add deadline</string>
     <string name="btn_set_reminder">Add reminder</string>
@@ -19,4 +24,7 @@
     <string name="change_category">Change category</string>
     <string name="btn_add_new_category">Add</string>
     <string name="new_category">New category</string>
+    <string name="home">Home</string>
+    <string name="notes">Notes</string>
+    <string name="settings">Settings</string>
 </resources>

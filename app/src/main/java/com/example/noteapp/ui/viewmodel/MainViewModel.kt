@@ -64,7 +64,7 @@ class MainViewModel @Inject constructor(
     fun loadData() {
         viewModelScope.launch {
             _noteItemsListState.value = UiState.Loading()
-            observeSearchAndFiltersStates().collectLatest {
+            observeSearchAndFiltersStates().collect {
                 _noteItemsListState.value = UiState.Success(it)
             }
         }

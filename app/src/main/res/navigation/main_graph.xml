@@ -60,4 +60,13 @@
         android:name="com.example.noteapp.ui.dialogs.AddTodoBottomSheetDialog"
         android:label="AddTodoBottomSheetDialog"
         tools:layout="@layout/bottom_sheet_add_todo" />
+    <fragment
+        android:id="@+id/notesListFragment"
+        tools:layout="@layout/fragment_notes_list"
+        android:name="com.example.noteapp.ui.fragments.NotesListFragment"
+        android:label="NotesListFragment" >
+        <action
+            android:id="@+id/action_notesListFragment_to_noteDetailFragment"
+            app:destination="@id/noteDetailFragment" />
+    </fragment>
 </navigation>

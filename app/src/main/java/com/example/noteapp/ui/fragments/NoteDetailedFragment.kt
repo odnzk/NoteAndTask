@@ -9,11 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.domain.model.Note
+import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentDetailedNoteBinding
 import com.example.noteapp.databinding.StateLoadingBinding
 import com.example.noteapp.ui.fragments.events.NoteDetailedEvent
 import com.example.noteapp.ui.util.errorOccurred
 import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
+import com.example.noteapp.ui.util.ext.convertTUiString
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
 import com.example.noteapp.ui.viewmodel.NoteDetailsViewModel
@@ -36,15 +38,19 @@ class NoteDetailedFragment : Fragment() {
         with(binding) {
             observeState()
 
+            // !! validate empty edit text
+
             btnDelete.setOnClickListener {
+                viewModel.onEvent(NoteDetailedEvent.DeleteNote)
             }
 
             etContent.doAfterTextChanged {
+
             }
 
             etTitle.doAfterTextChanged {
-            }
 
+            }
         }
     }
 
@@ -69,10 +75,14 @@ class NoteDetailedFragment : Fragment() {
     private fun showNote(note: Note) {
         stateLoadingBinding.loadingFinished()
         with(binding) {
+            etTitle.hint = getString(R.string.hint_note_title)
+            etContent.hint = getString(R.string.hint_note_content)
             note.run {
                 etTitle.setText(title)
                 etContent.setText(content)
-                tvDate.text = date.toString()
+                date?.let {
+                    tvDate.text = it.convertTUiString()
+                }
                 categoriesToFlowCategories(flowCategories) {
                     // todo on category click
                 }

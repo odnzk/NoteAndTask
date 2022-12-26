@@ -75,6 +75,7 @@
         <EditText
             android:id="@+id/et_content"
             style="@style/ContentText"
+            android:gravity="start"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:text="@tools:sample/lorem/random" />

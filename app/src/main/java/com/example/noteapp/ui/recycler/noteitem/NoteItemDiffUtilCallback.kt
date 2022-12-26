@@ -1,4 +1,4 @@
-package com.example.noteapp.ui.recycler
+package com.example.noteapp.ui.recycler.noteitem
 
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import com.example.domain.model.Note

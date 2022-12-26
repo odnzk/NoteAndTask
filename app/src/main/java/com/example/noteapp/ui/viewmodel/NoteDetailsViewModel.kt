@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.model.Note
 import com.example.domain.repository.NoteRepository
 import com.example.noteapp.ui.fragments.events.NoteDetailedEvent
-import com.example.noteapp.ui.util.exceptions.LostNavArgumentsException
 import com.example.noteapp.ui.util.exceptions.NotFoundException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,7 +35,7 @@ class NoteDetailsViewModel @Inject constructor(
                 _note.value = repoNote?.let { repoNote -> UiState.Success(repoNote) } ?: run {
                     UiState.Error(NotFoundException())
                 }
-            } ?: run { _note.value = UiState.Error(LostNavArgumentsException()) }
+            } ?: run { _note.value = UiState.Success(Note.defaultInstance()) }
         }
     }
 

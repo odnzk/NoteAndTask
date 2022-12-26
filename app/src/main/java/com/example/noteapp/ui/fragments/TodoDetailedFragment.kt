@@ -1,7 +1,6 @@
 package com.example.noteapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.domain.model.Todo
+import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentDetailedTodoBinding
 import com.example.noteapp.databinding.StateLoadingBinding
 import com.example.noteapp.ui.fragments.events.TodoDetailedEvent
@@ -18,12 +18,12 @@ import com.example.noteapp.ui.util.errorOccurred
 import com.example.noteapp.ui.util.ext.convertTUiString
 import com.example.noteapp.ui.util.ext.insertToConstraintLayoutFlow
 import com.example.noteapp.ui.util.ext.showDatePicker
+import com.example.noteapp.ui.util.ext.showSnackbar
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
 import com.example.noteapp.ui.viewmodel.TodoDetailsViewModel
 import com.example.noteapp.ui.viewmodel.handleState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import java.util.*
 
 @AndroidEntryPoint
@@ -73,6 +73,7 @@ class TodoDetailedFragment : Fragment() {
             // init listeners only if loading finished successfully
             btnDelete.setOnClickListener {
                 viewModel.onEvent(TodoDetailedEvent.DeleteTodo)
+                binding.root.showSnackbar(getString(R.string.success_delete))
             }
             etTitle.doAfterTextChanged {
                 viewModel.todo.value.data?.let { todo ->

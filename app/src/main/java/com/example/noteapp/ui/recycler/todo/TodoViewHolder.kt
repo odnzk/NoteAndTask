@@ -1,4 +1,4 @@
-package com.example.noteapp.ui.recycler.holder
+package com.example.noteapp.ui.recycler.todo
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

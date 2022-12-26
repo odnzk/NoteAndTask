@@ -18,4 +18,6 @@ interface NoteRepository {
     suspend fun deleteAll()
 
     fun getAll(searchQuery: String, sortOrder: SortOrder, filter: Filter): Flow<List<Note>>
+
+    fun getAll(): Flow<List<Note>>
 }

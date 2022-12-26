@@ -15,7 +15,7 @@ import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentListBinding
 import com.example.noteapp.databinding.StateLoadingBinding
 import com.example.noteapp.ui.fragments.events.ListFragmentEvent
-import com.example.noteapp.ui.recycler.NoteItemAdapter
+import com.example.noteapp.ui.recycler.noteitem.NoteItemAdapter
 import com.example.noteapp.ui.util.errorOccurred
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
@@ -78,7 +78,7 @@ class ListFragment : Fragment() {
     }
 
     private fun observeState() {
-        lifecycleScope.launchWhenResumed {
+        lifecycleScope.launchWhenStarted {
             viewModel.noteItemsListState.collectLatest { listState ->
                 listState.handleState(
                     onErrorAction = ::onErrorAction,

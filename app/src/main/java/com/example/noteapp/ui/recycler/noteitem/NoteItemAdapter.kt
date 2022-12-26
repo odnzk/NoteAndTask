@@ -1,4 +1,4 @@
-package com.example.noteapp.ui.recycler
+package com.example.noteapp.ui.recycler.noteitem
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -7,8 +7,8 @@ import com.example.domain.model.Note
 import com.example.domain.model.NoteItem
 import com.example.domain.model.Todo
 import com.example.noteapp.R
-import com.example.noteapp.ui.recycler.holder.NoteViewHolder
-import com.example.noteapp.ui.recycler.holder.TodoViewHolder
+import com.example.noteapp.ui.recycler.note.NoteViewHolder
+import com.example.noteapp.ui.recycler.todo.TodoViewHolder
 
 class NoteItemAdapter : ListAdapter<NoteItem, RecyclerView.ViewHolder>(NoteItemDiffUtilCallback()) {
     var onNoteClick: ((Long) -> Unit)? = null // (noteId: Long) -> Unit
