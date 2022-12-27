@@ -16,6 +16,10 @@ class CategoryRepositoryImpl(private val dao: CategoryDao) : CategoryRepository 
         dao.delete(CategoryEntity.from(category))
     }
 
+    override suspend fun deleteById(id: Long?) {
+        dao.deleteById(id)
+    }
+
     override suspend fun update(category: Category) {
         dao.update(CategoryEntity.from(category))
     }

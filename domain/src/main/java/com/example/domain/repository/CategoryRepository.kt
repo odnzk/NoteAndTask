@@ -9,6 +9,8 @@ interface CategoryRepository {
 
     suspend fun delete(category: Category)
 
+    suspend fun deleteById(id: Long?)
+
     suspend fun update(category: Category)
 
     suspend fun getById(id: Long): Category?

@@ -8,10 +8,12 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.domain.model.Note
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentDetailedNoteBinding
 import com.example.noteapp.databinding.StateLoadingBinding
+import com.example.noteapp.ui.dialogs.ChooseCategoryDialog
 import com.example.noteapp.ui.fragments.events.NoteDetailedEvent
 import com.example.noteapp.ui.util.errorOccurred
 import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
@@ -84,7 +86,7 @@ class NoteDetailedFragment : Fragment() {
                     tvDate.text = it.convertTUiString()
                 }
                 categoriesToFlowCategories(flowCategories) {
-                    // todo on category click
+//                    findNavController().
                 }
             }
         }

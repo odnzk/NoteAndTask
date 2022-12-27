@@ -39,22 +39,34 @@
             android:name="noteId"
             app:nullable="false"
             app:argType="long" />
+        <action
+            android:id="@+id/action_noteDetailFragment_to_chooseCategoryDialog"
+            app:destination="@id/chooseCategoryDialog" />
     </fragment>
     <fragment
         android:id="@+id/todoDetailFragment"
         android:name="com.example.noteapp.ui.fragments.TodoDetailedFragment"
         android:label="TodoDetailFragment"
-        tools:layout="@layout/fragment_detailed_todo" >
+        tools:layout="@layout/fragment_detailed_todo">
         <argument
             android:name="todoId"
             app:nullable="false"
             app:argType="long" />
+        <action
+            android:id="@+id/action_todoDetailFragment_to_chooseCategoryDialog"
+            app:destination="@id/chooseCategoryDialog" />
     </fragment>
     <dialog
         android:id="@+id/chooseCategoryDialog"
         android:name="com.example.noteapp.ui.dialogs.ChooseCategoryDialog"
         android:label="ChooseCategoryDialog"
-        tools:layout="@layout/dialog_change_category" />
+        tools:layout="@layout/dialog_change_category">
+        <argument
+            android:name="type"
+            app:argType="com.example.noteapp.ui.util.nav"
+            app:nullable="false">
+        </argument>
+    </dialog>
     <dialog
         android:id="@+id/addTodoBottomSheetDialog"
         android:name="com.example.noteapp.ui.dialogs.AddTodoBottomSheetDialog"
