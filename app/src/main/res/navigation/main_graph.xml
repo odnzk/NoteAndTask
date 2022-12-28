@@ -64,8 +64,17 @@
         <argument
             android:name="type"
             app:argType="com.example.noteapp.ui.util.CategoryOwnerType"
-            app:nullable="false">
-        </argument>
+            app:nullable="false"></argument>
+        <argument
+            android:name="noteId"
+            android:defaultValue="-1L"
+            app:argType="long"
+            app:nullable="false"></argument>
+        <argument
+            android:name="todoId"
+            android:defaultValue="-1L"
+            app:argType="long"
+            app:nullable="false"></argument>
     </dialog>
     <dialog
         android:id="@+id/addTodoBottomSheetDialog"

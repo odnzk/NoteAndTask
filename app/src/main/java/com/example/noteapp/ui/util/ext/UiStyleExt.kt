@@ -9,7 +9,6 @@ import androidx.constraintlayout.helper.widget.Flow
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.ColorUtils
 import com.example.domain.model.Category
-import com.example.domain.model.Note
 import com.example.noteapp.R
 import com.example.noteapp.model.UiCategory
 import com.google.android.material.chip.Chip
@@ -38,10 +37,6 @@ fun Chip.setCategoryStyle(color: String, title: String): Chip =
             )
         ).also { chipBackgroundColor = it }
         ResourcesCompat.getFont(context, R.font.inter_regular).also { typeface = it }
-//        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 65);
-//        <item name="android:textSize">12sp</item>
-//        <item name="android:fontFamily">@font/inter_light</item>
-//        <item name="android:textColor">@color/white</item>
     }
 
 fun Category.toChip(context: Context, onCategoryChipClick: () -> Unit) = Chip(context).apply {
@@ -56,13 +51,14 @@ fun UiCategory.toChip(context: Context) = Chip(context).apply {
     setCategoryStyle(color = this@toChip.category.color, title = this@toChip.category.title)
 }
 
-
-fun Note.categoriesToFlowCategories(flow: Flow, onCategoryChipClick: () -> Unit) {
-    categories.takeIf { it.isNotEmpty() }?.let {
+fun List<Category>.categoriesToFlowCategories(
+    flow: Flow,
+    onCategoryChipClick: (() -> Unit)? = null
+) {
+    takeIf { it.isNotEmpty() }?.let {
         it.forEach { category ->
             flow.addView(category.toChip(flow.context) {
-                onCategoryChipClick()
-                // todo maybe replace to List<Category> extension
+                onCategoryChipClick?.invoke()
             })
         }
     }
@@ -76,16 +72,9 @@ fun List<UiCategory>.toFlowCategories(flow: Flow) {
     }
 }
 
-fun List<Category>.insertToConstraintLayoutFlow(flow: Flow, onCategoryChipClick: () -> Unit) {
-    takeIf { it.isNotEmpty() }?.let {
-        it.forEach { category ->
-            flow.addView(category.toChip(flow.context) {
-                onCategoryChipClick()
-            })
-        }
-    }
-}
+fun Date.formatToTodoDate(pattern: String? = "EE, dd.MM"): String =
+    SimpleDateFormat(pattern).format(this)
 
-fun Date.convertTUiString(pattern: String? = "EE, dd.MM"): String =
+fun Date.formatToNoteDate(pattern: String? = "dd.MM.yy"): String =
     SimpleDateFormat(pattern).format(this)
 

@@ -21,6 +21,7 @@
             android:id="@+id/flow_categories"
             style="@style/CategoryFlow"
             android:layout_width="0dp"
+            android:layout_marginEnd="4dp"
             android:layout_height="wrap_content"
             app:constraint_referenced_ids="category"
             app:layout_constraintEnd_toStartOf="@id/tv_date"

@@ -20,7 +20,7 @@ data class Todo(
     override val id: Long,
     var title: String,
     val isCompleted: Boolean = false,
-    val category: List<Category>,
+    val categories: List<Category>,
     var deadlineDate: Date?
 ) : NoteItem(id) {
     companion object {

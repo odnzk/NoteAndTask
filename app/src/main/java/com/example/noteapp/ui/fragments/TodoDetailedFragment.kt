@@ -9,19 +9,17 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.domain.model.Todo
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentDetailedTodoBinding
 import com.example.noteapp.databinding.StateLoadingBinding
 import com.example.noteapp.ui.fragments.events.TodoDetailedEvent
-import com.example.noteapp.ui.util.errorOccurred
-import com.example.noteapp.ui.util.ext.convertTUiString
-import com.example.noteapp.ui.util.ext.insertToConstraintLayoutFlow
+import com.example.noteapp.ui.util.*
+import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
+import com.example.noteapp.ui.util.ext.formatToTodoDate
 import com.example.noteapp.ui.util.ext.showDatePicker
 import com.example.noteapp.ui.util.ext.showSnackbar
-import com.example.noteapp.ui.util.handleState
-import com.example.noteapp.ui.util.loadingFinished
-import com.example.noteapp.ui.util.loadingStarted
 import com.example.noteapp.ui.viewmodel.TodoDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -64,10 +62,15 @@ class TodoDetailedFragment : Fragment() {
                 etTitle.setText(title)
                 cbIsCompleted.isChecked = isCompleted
                 deadlineDate?.let {
-                    btnChangeDeadlineDate.text = it.convertTUiString()
+                    btnChangeDeadlineDate.text = it.formatToTodoDate()
                 }
-                category.insertToConstraintLayoutFlow(flowCategories) {
-                    // todo onCategoryClick: update category?
+                categories.categoriesToFlowCategories(flowCategories) {
+                    val action = TodoDetailedFragmentDirections
+                        .actionTodoDetailFragmentToChooseCategoryDialog(
+                            type = CategoryOwnerType.TODO_TYPE,
+                            todoId = todo.id
+                        )
+                    findNavController().navigate(action)
                 }
             }
             // init listeners only if loading finished successfully
@@ -95,7 +98,7 @@ class TodoDetailedFragment : Fragment() {
         viewModel.todo.value.data?.let { todo ->
             viewModel.onEvent(TodoDetailedEvent.UpdateTodo(todo.copy(deadlineDate = Date(date.timeInMillis))))
         }
-        binding.btnChangeDeadlineDate.text = Date(date.timeInMillis).convertTUiString()
+        binding.btnChangeDeadlineDate.text = Date(date.timeInMillis).formatToTodoDate()
     }
 
 

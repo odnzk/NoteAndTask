@@ -20,7 +20,7 @@ data class TodoEntity(
         id = id,
         title = title,
         isCompleted = isCompleted,
-        category = emptyList(),
+        categories = emptyList(),
         deadlineDate = deadlineDate,
     )
 

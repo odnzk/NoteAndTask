@@ -6,7 +6,8 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.Todo
 import com.example.noteapp.databinding.ItemTodoBinding
-import com.example.noteapp.ui.util.ext.convertTUiString
+import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
+import com.example.noteapp.ui.util.ext.formatToTodoDate
 
 class TodoViewHolder(
     private val binding: ItemTodoBinding,
@@ -18,13 +19,11 @@ class TodoViewHolder(
         with(binding) {
             todo.run {
                 tvTitle.text = title
-                tvDeadlineDate.text = deadlineDate?.convertTUiString()
+                tvDeadlineDate.text = deadlineDate?.formatToTodoDate()
                 ivDeadlineDateIcon.isVisible = deadlineDate != null
                 cbCompleted.isChecked = isCompleted
 
-//                selectedNote.categoriesToFlowCategories(flowCategories){
-//                    // todo on category click
-//                }
+                categories.categoriesToFlowCategories(flowCategories)
             }
             cbCompleted.setOnClickListener {
                 onCheckboxClick?.invoke(todo.id, !todo.isCompleted)

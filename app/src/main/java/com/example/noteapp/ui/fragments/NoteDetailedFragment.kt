@@ -7,18 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.domain.model.Note
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentDetailedNoteBinding
 import com.example.noteapp.databinding.StateLoadingBinding
 import com.example.noteapp.ui.fragments.events.NoteDetailedEvent
-import com.example.noteapp.ui.util.errorOccurred
+import com.example.noteapp.ui.util.*
 import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
-import com.example.noteapp.ui.util.ext.convertTUiString
+import com.example.noteapp.ui.util.ext.formatToNoteDate
 import com.example.noteapp.ui.util.ext.showSnackbar
-import com.example.noteapp.ui.util.handleState
-import com.example.noteapp.ui.util.loadingFinished
-import com.example.noteapp.ui.util.loadingStarted
 import com.example.noteapp.ui.viewmodel.NoteDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -87,10 +85,14 @@ class NoteDetailedFragment : Fragment() {
                 etTitle.setText(title)
                 etContent.setText(content)
                 date?.let {
-                    tvDate.text = it.convertTUiString()
+                    tvDate.text = it.formatToNoteDate()
                 }
-                categoriesToFlowCategories(flowCategories) {
-//                    findNavController().findDestination(ChooseCateg) // todo
+                categories.categoriesToFlowCategories(flowCategories) {
+                    val action =
+                        NoteDetailedFragmentDirections.actionNoteDetailFragmentToChooseCategoryDialog(
+                            type = CategoryOwnerType.NOTE_TYPE, noteId = note.id
+                        )
+                    findNavController().navigate(action)
                 }
             }
         }

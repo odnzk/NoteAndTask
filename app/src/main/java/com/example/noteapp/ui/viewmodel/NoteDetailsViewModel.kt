@@ -9,6 +9,7 @@ import com.example.noteapp.ui.fragments.events.NoteDetailedEvent
 import com.example.noteapp.ui.util.UiState
 import com.example.noteapp.ui.util.exceptions.NotFoundException
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -45,7 +46,8 @@ class NoteDetailsViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(event: NoteDetailedEvent) = viewModelScope.launch {
+    // todo ?? Dispatchers.Default
+    fun onEvent(event: NoteDetailedEvent) = viewModelScope.launch(Dispatchers.Default) {
         when (event) {
             is NoteDetailedEvent.UpdateNote -> {
                 if (isNewNote) {
