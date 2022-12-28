@@ -4,24 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.example.domain.model.Note
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentDetailedNoteBinding
 import com.example.noteapp.databinding.StateLoadingBinding
-import com.example.noteapp.ui.dialogs.ChooseCategoryDialog
 import com.example.noteapp.ui.fragments.events.NoteDetailedEvent
 import com.example.noteapp.ui.util.errorOccurred
 import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
 import com.example.noteapp.ui.util.ext.convertTUiString
+import com.example.noteapp.ui.util.ext.showSnackbar
+import com.example.noteapp.ui.util.handleState
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
 import com.example.noteapp.ui.viewmodel.NoteDetailsViewModel
-import com.example.noteapp.ui.viewmodel.handleState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -40,18 +38,24 @@ class NoteDetailedFragment : Fragment() {
         with(binding) {
             observeState()
 
-            // !! validate empty edit text
-
             btnDelete.setOnClickListener {
                 viewModel.onEvent(NoteDetailedEvent.DeleteNote)
+                root.showSnackbar(getString(R.string.success_delete))
             }
 
-            etContent.doAfterTextChanged {
-
-            }
-
-            etTitle.doAfterTextChanged {
-
+            btnSaveNote.setOnClickListener {
+                val content = etContent.text.toString()
+                val title = etTitle.text.toString()
+                viewModel.note.value.data?.let { note ->
+                    viewModel.onEvent(
+                        NoteDetailedEvent.UpdateNote(
+                            note.copy(
+                                title = title, content = content
+                            )
+                        )
+                    )
+                }
+                root.showSnackbar(getString(R.string.success_save))
             }
         }
     }
@@ -86,7 +90,7 @@ class NoteDetailedFragment : Fragment() {
                     tvDate.text = it.convertTUiString()
                 }
                 categoriesToFlowCategories(flowCategories) {
-//                    findNavController().
+//                    findNavController().findDestination(ChooseCateg) // todo
                 }
             }
         }

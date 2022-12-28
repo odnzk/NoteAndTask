@@ -17,10 +17,10 @@ import com.example.noteapp.databinding.StateLoadingBinding
 import com.example.noteapp.ui.fragments.events.ListFragmentEvent
 import com.example.noteapp.ui.recycler.noteitem.NoteItemAdapter
 import com.example.noteapp.ui.util.errorOccurred
+import com.example.noteapp.ui.util.handleState
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
 import com.example.noteapp.ui.viewmodel.MainViewModel
-import com.example.noteapp.ui.viewmodel.handleState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 

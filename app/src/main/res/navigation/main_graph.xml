@@ -63,7 +63,7 @@
         tools:layout="@layout/dialog_change_category">
         <argument
             android:name="type"
-            app:argType="com.example.noteapp.ui.util.nav"
+            app:argType="com.example.noteapp.ui.util.CategoryOwnerType"
             app:nullable="false">
         </argument>
     </dialog>

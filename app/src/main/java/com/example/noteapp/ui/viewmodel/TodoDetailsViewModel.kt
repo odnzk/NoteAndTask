@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.model.Todo
 import com.example.domain.repository.TodoRepository
 import com.example.noteapp.ui.fragments.events.TodoDetailedEvent
+import com.example.noteapp.ui.util.UiState
 import com.example.noteapp.ui.util.exceptions.LostNavArgumentsException
 import com.example.noteapp.ui.util.exceptions.NotFoundException
 import dagger.hilt.android.lifecycle.HiltViewModel

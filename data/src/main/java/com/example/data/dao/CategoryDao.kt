@@ -24,4 +24,16 @@ interface CategoryDao {
 
     @Query("SELECT * FROM categories")
     fun getAll(): Flow<List<CategoryEntity>>
+
+
+    // notes + categories
+//    @Query(
+//        "SELECT * from categories " +
+//                " inner join note_categories_table" +
+//                " where note_categories_table.category_id = categories.id" +
+//                " and note_categories_table.note_id = :noteId"
+//    )
+//    fun getLinkedCategoriesByNoteId(noteId: Long): Flow<List<CategoryEntity>>
+
+
 }

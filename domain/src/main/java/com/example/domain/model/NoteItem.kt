@@ -12,7 +12,7 @@ data class Note(
     val date: Date?
 ) : NoteItem(id) {
     companion object {
-        fun defaultInstance() = Note(0, "", "", emptyList(), null)
+        fun defaultInstance() = Note(0, "", "", emptyList(), Date())
     }
 }
 

@@ -48,4 +48,12 @@ class NoteRepositoryImpl(
             it.map { noteEntity -> noteEntity.mapToNote() }
         }
     }
+
+    override suspend fun addCategory(noteId: Long, categoryId: Long) {
+        dao.insertNoteCategory(noteId, categoryId)
+    }
+
+    override suspend fun removeCategory(noteId: Long, categoryId: Long) {
+        dao.removeNoteCategory(noteId, categoryId)
+    }
 }

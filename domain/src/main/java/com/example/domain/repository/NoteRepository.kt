@@ -20,4 +20,8 @@ interface NoteRepository {
     fun getAll(searchQuery: String, sortOrder: SortOrder, filter: Filter): Flow<List<Note>>
 
     fun getAll(): Flow<List<Note>>
+
+    suspend fun addCategory(noteId: Long, categoryId: Long)
+
+    suspend fun removeCategory(noteId: Long, categoryId: Long)
 }

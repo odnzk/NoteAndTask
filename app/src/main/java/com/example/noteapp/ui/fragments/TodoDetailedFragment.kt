@@ -19,10 +19,10 @@ import com.example.noteapp.ui.util.ext.convertTUiString
 import com.example.noteapp.ui.util.ext.insertToConstraintLayoutFlow
 import com.example.noteapp.ui.util.ext.showDatePicker
 import com.example.noteapp.ui.util.ext.showSnackbar
+import com.example.noteapp.ui.util.handleState
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
 import com.example.noteapp.ui.viewmodel.TodoDetailsViewModel
-import com.example.noteapp.ui.viewmodel.handleState
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 

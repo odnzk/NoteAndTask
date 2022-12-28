@@ -1,7 +1,6 @@
 package com.example.noteapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +17,10 @@ import com.example.noteapp.databinding.StateLoadingBinding
 import com.example.noteapp.ui.fragments.events.ListNoteEvent
 import com.example.noteapp.ui.recycler.note.NoteAdapter
 import com.example.noteapp.ui.util.errorOccurred
+import com.example.noteapp.ui.util.handleState
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
 import com.example.noteapp.ui.viewmodel.ListNoteViewModel
-import com.example.noteapp.ui.viewmodel.handleState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

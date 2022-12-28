@@ -29,4 +29,9 @@ interface NoteDao {
     @Query("SELECT * FROM notes WHERE title LIKE '%' || :searchQuery || '%'")
     suspend fun getNoteByTitle(searchQuery: String): List<NoteEntity>
 
+    @Query("delete from note_categories_table where note_id = :noteId AND category_id =:categoryId")
+    suspend fun removeNoteCategory(noteId: Long, categoryId: Long)
+
+    @Query("insert into note_categories_table values (:noteId, :categoryId)")
+    suspend fun insertNoteCategory(noteId: Long, categoryId: Long)
 }

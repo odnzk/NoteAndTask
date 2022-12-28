@@ -6,27 +6,53 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.noteapp.databinding.DialogChangeCategoryBinding
-import com.example.noteapp.ui.viewmodel.NoteDetailsViewModel
+import com.example.noteapp.model.UiCategory
+import com.example.noteapp.ui.util.ext.toFlowCategories
+import com.example.noteapp.ui.util.handleState
+import com.example.noteapp.ui.viewmodel.ChooseCategoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class ChooseCategoryDialog : DialogFragment() {
     private var _binding: DialogChangeCategoryBinding? = null
     private val binding: DialogChangeCategoryBinding get() = _binding!!
 
-    private val viewModel: NoteDetailsViewModel by viewModels()
+    private val viewModel: ChooseCategoryViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // enum (type) + id
-        //
-
-        // 1) init categories from data base by noteId or todoId
-        // 2) init btn add new category listener
+        observeNoteItem()
     }
 
+    private fun observeNoteItem() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.noteItem.collectLatest { state ->
+                state.handleState(
+                    onLoadingAction = ::onLoadingState,
+                    onErrorAction = ::onErrorState,
+                    onSuccessAction = ::onSuccessState
+                )
+            }
+        }
+    }
+
+    private fun onLoadingState() {
+
+    }
+
+    private fun onErrorState(error: Throwable) {
+        //
+    }
+
+    private fun onSuccessState(uiCategoryList: List<UiCategory>) {
+        with(binding) {
+            uiCategoryList.toFlowCategories(flowCategories)
+
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

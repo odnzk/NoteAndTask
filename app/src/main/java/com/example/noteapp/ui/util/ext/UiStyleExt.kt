@@ -11,6 +11,7 @@ import androidx.core.graphics.ColorUtils
 import com.example.domain.model.Category
 import com.example.domain.model.Note
 import com.example.noteapp.R
+import com.example.noteapp.model.UiCategory
 import com.google.android.material.chip.Chip
 import java.text.SimpleDateFormat
 import java.util.*
@@ -43,20 +44,34 @@ fun Chip.setCategoryStyle(color: String, title: String): Chip =
 //        <item name="android:textColor">@color/white</item>
     }
 
-fun Category.toChip(context: Context, onCategoryChipClick: () -> Unit) =
-    Chip(context).apply {
-        setCategoryStyle(color = color, title = title)
-        setOnClickListener {
-            onCategoryChipClick()
-        }
+fun Category.toChip(context: Context, onCategoryChipClick: () -> Unit) = Chip(context).apply {
+    setCategoryStyle(color = color, title = title)
+    setOnClickListener {
+        onCategoryChipClick()
     }
+}
+
+fun UiCategory.toChip(context: Context) = Chip(context).apply {
+    isSelected = this@toChip.isSelected
+    setCategoryStyle(color = this@toChip.category.color, title = this@toChip.category.title)
+}
+
 
 fun Note.categoriesToFlowCategories(flow: Flow, onCategoryChipClick: () -> Unit) {
     categories.takeIf { it.isNotEmpty() }?.let {
         it.forEach { category ->
             flow.addView(category.toChip(flow.context) {
                 onCategoryChipClick()
+                // todo maybe replace to List<Category> extension
             })
+        }
+    }
+}
+
+fun List<UiCategory>.toFlowCategories(flow: Flow) {
+    takeIf { it.isNotEmpty() }?.let {
+        it.forEach { category ->
+            flow.addView(category.toChip(flow.context))
         }
     }
 }

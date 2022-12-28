@@ -12,6 +12,7 @@ import com.example.domain.util.Filter
 import com.example.domain.util.SortOrder
 import com.example.noteapp.ui.fragments.events.ListFragmentEvent
 import com.example.noteapp.ui.util.PreferenceStorage
+import com.example.noteapp.ui.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

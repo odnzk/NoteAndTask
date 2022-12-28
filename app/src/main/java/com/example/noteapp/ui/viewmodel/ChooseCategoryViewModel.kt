@@ -3,12 +3,14 @@ package com.example.noteapp.ui.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.model.Category
 import com.example.domain.repository.CategoryRepository
 import com.example.domain.repository.NoteRepository
 import com.example.domain.repository.TodoRepository
+import com.example.noteapp.model.UiCategory
 import com.example.noteapp.ui.fragments.events.ChooseCategoryEvent
-import com.example.noteapp.ui.util.nav.CategoryOwnerType
+import com.example.noteapp.ui.util.CategoryOwnerType
+import com.example.noteapp.ui.util.UiState
+import com.example.noteapp.ui.util.exceptions.LostNavArgumentsException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,19 +26,22 @@ class ChooseCategoryViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val type: CategoryOwnerType by lazy {
-//            state.get<CategoryOwnerType>("type")
-        CategoryOwnerType.NOTE_TYPE
+        state["type"] ?: throw LostNavArgumentsException()
     }
-    private val todoId: Long? by lazy { state.get<Long>("todoId") }
+    private val noteItemId: Long? by lazy {
+        type.let { state.get<Long>(it.key) }
+    }
 
-    private var _categories: MutableStateFlow<UiState<List<Category>>> =
+    private var _uiCategoryList: MutableStateFlow<UiState<List<UiCategory>>> =
         MutableStateFlow(UiState.Loading())
-    val categories: StateFlow<UiState<List<Category>>> = _categories
+    val noteItem: StateFlow<UiState<List<UiCategory>>> = _uiCategoryList
 
     init {
-        when (type) {
-            CategoryOwnerType.NOTE_TYPE -> noteRepository.getAll() // get categories
-            CategoryOwnerType.TODO_TYPE -> todoRepository.getAll() // get categories
+        viewModelScope.launch {
+            when (type) {
+                CategoryOwnerType.NOTE_TYPE -> noteItemId?.let { noteRepository.getById(it) }
+                CategoryOwnerType.TODO_TYPE -> noteItemId?.let { todoRepository.getById(it) }
+            }
         }
     }
 
@@ -51,9 +56,27 @@ class ChooseCategoryViewModel @Inject constructor(
             is ChooseCategoryEvent.DeleteCategory -> {
                 categoryRepository.deleteById(event.categoryId)
             }
-            is ChooseCategoryEvent.UpdateNoteItemCategories -> {
-                // todo
-                // check what type -> find selected repository -> update categories with that table
+            is ChooseCategoryEvent.DeleteNoteItemCategory -> {
+//                when (type) {
+//                    CategoryOwnerType.NOTE_TYPE -> noteItemId?.let {
+//                        noteRepository.removeCategory(
+//                            it,
+//                            event.categoryId
+//                        )
+//                    }
+//                    CategoryOwnerType.TODO_TYPE -> noteItemId?.let { todoRepository.getById(it) } // todo
+//                }
+            }
+            is ChooseCategoryEvent.AddNoteItemCategory -> {
+                when (type) {
+                    CategoryOwnerType.NOTE_TYPE -> noteItemId?.let {
+                        noteRepository.addCategory(
+                            it,
+                            event.categoryId
+                        )
+                    }
+                    CategoryOwnerType.TODO_TYPE -> noteItemId?.let { todoRepository.getById(it) } // todo
+                }
             }
         }
     }

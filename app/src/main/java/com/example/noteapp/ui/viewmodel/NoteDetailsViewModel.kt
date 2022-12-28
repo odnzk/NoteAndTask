@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.model.Note
 import com.example.domain.repository.NoteRepository
 import com.example.noteapp.ui.fragments.events.NoteDetailedEvent
+import com.example.noteapp.ui.util.UiState
 import com.example.noteapp.ui.util.exceptions.NotFoundException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +24,8 @@ class NoteDetailsViewModel @Inject constructor(
     private var _note: MutableStateFlow<UiState<Note>> = MutableStateFlow(UiState.Loading())
     val note: StateFlow<UiState<Note>> = _note
 
+    private var isNewNote: Boolean = false
+
     init {
         loadData()
     }
@@ -35,14 +38,22 @@ class NoteDetailsViewModel @Inject constructor(
                 _note.value = repoNote?.let { repoNote -> UiState.Success(repoNote) } ?: run {
                     UiState.Error(NotFoundException())
                 }
-            } ?: run { _note.value = UiState.Success(Note.defaultInstance()) }
+            } ?: run {
+                isNewNote = true
+                _note.value = UiState.Success(Note.defaultInstance())
+            }
         }
     }
 
     fun onEvent(event: NoteDetailedEvent) = viewModelScope.launch {
         when (event) {
             is NoteDetailedEvent.UpdateNote -> {
-                noteRepository.update(event.note)
+                if (isNewNote) {
+                    noteRepository.add(event.note)
+                    isNewNote = false
+                } else {
+                    noteRepository.update(event.note)
+                }
             }
             is NoteDetailedEvent.DeleteNote -> {
                 // if UiState.Loading or UiState.Error do nothing

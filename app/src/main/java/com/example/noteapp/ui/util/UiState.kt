@@ -1,4 +1,4 @@
-package com.example.noteapp.ui.viewmodel
+package com.example.noteapp.ui.util
 
 
 sealed class UiState<T>(val data: T? = null, val error: Throwable? = null) {

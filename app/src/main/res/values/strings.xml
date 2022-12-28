@@ -12,6 +12,7 @@
     <string name="error_failed_loading_from_database">Loading data from database was failed</string>
 
     <string name="success_delete">Successfully deleted</string>
+    <string name="success_save">Successfully saved</string>
 
     <string name="hint_note_title">Enter note title</string>
     <string name="hint_note_content">Enter note content</string>
@@ -27,4 +28,6 @@
     <string name="home">Home</string>
     <string name="notes">Notes</string>
     <string name="settings">Settings</string>
+    <string name="save_note">Save note</string>
+    <string name="delete_note">Delete note</string>
 </resources>
