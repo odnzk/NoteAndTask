@@ -80,7 +80,11 @@
         android:id="@+id/addTodoBottomSheetDialog"
         android:name="com.example.noteapp.ui.dialogs.AddTodoBottomSheetDialog"
         android:label="AddTodoBottomSheetDialog"
-        tools:layout="@layout/bottom_sheet_add_todo" />
+        tools:layout="@layout/bottom_sheet_add_todo" >
+        <action
+            android:id="@+id/action_addTodoBottomSheetDialog_to_chooseCategoryDialog"
+            app:destination="@id/chooseCategoryDialog" />
+    </dialog>
     <fragment
         android:id="@+id/notesListFragment"
         tools:layout="@layout/fragment_notes_list"

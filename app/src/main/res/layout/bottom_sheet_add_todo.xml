@@ -43,38 +43,83 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/til_title" />
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
+    <!--    todo fix nested hierarchy-->
+    <HorizontalScrollView
         android:layout_width="0dp"
-        android:gravity="center"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_title">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_set_deadline"
-            style="@style/MaterialButtonWithIcon.Small"
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_set_deadline"
-            app:icon="@drawable/ic_schedule" />
+            android:layout_height="wrap_content">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_set_reminder"
-            style="@style/MaterialButtonWithIcon.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_set_reminder"
-            app:icon="@drawable/ic_baseline_notifications_none_24" />
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_set_repeating"
-            style="@style/MaterialButtonWithIcon.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_set_period"
-            app:icon="@drawable/ic_baseline_repeat_24" />
-    </com.google.android.material.button.MaterialButtonToggleGroup>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_set_categories"
+                    style="@style/MaterialButtonWithIcon.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_set_categories"
+                    app:icon="@drawable/ic_categories" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_set_deadline"
+                    style="@style/MaterialButtonWithIcon.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_set_deadline"
+                    app:icon="@drawable/ic_schedule" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_set_reminder"
+                    style="@style/MaterialButtonWithIcon.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_set_reminder"
+                    app:icon="@drawable/ic_baseline_notifications_none_24" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_set_repeating"
+                    style="@style/MaterialButtonWithIcon.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_set_period"
+                    app:icon="@drawable/ic_baseline_repeat_24" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+        </FrameLayout>
+    </HorizontalScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--        <com.google.android.material.button.MaterialButton-->
+    <!--            android:id="@+id/btn_set_deadline"-->
+    <!--            style="@style/MaterialButtonWithIcon.Small"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="@string/btn_set_deadline"-->
+    <!--            app:icon="@drawable/ic_schedule" />-->
+
+    <!--        <com.google.android.material.button.MaterialButton-->
+    <!--            android:id="@+id/btn_set_reminder"-->
+    <!--            style="@style/MaterialButtonWithIcon.Small"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="@string/btn_set_reminder"-->
+    <!--            app:icon="@drawable/ic_baseline_notifications_none_24" />-->
+
+    <!--        <com.google.android.material.button.MaterialButton-->
+    <!--            android:id="@+id/btn_set_repeating"-->
+    <!--            style="@style/MaterialButtonWithIcon.Small"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="@string/btn_set_period"-->
+    <!--            app:icon="@drawable/ic_baseline_repeat_24" />-->
+    <!--    </com.google.android.material.button.MaterialButtonToggleGroup>-->
+
+

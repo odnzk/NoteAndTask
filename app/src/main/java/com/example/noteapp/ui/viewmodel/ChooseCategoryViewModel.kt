@@ -10,6 +10,7 @@ import com.example.noteapp.model.UiCategory
 import com.example.noteapp.ui.fragments.events.ChooseCategoryEvent
 import com.example.noteapp.ui.util.CategoryOwnerType
 import com.example.noteapp.ui.util.UiState
+import com.example.noteapp.ui.util.exceptions.AppException
 import com.example.noteapp.ui.util.exceptions.LostNavArgumentsException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +27,7 @@ class ChooseCategoryViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val type: CategoryOwnerType by lazy {
-        state["type"] ?: throw LostNavArgumentsException()
+        state.get<CategoryOwnerType>("type") ?: throw LostNavArgumentsException()
     }
     private val noteItemId: Long? by lazy {
         type.let { state.get<Long>(it.key) }

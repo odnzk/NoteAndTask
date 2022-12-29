@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.domain.model.Todo
 import com.example.noteapp.databinding.BottomSheetAddTodoBinding
 import com.example.noteapp.ui.fragments.events.ListFragmentEvent
+import com.example.noteapp.ui.util.CategoryOwnerType
 import com.example.noteapp.ui.util.ext.showDatePicker
 import com.example.noteapp.ui.viewmodel.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -33,6 +35,14 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
                 this@AddTodoBottomSheetDialog.dismiss()
             }
 
+            btnSetCategories.setOnClickListener {
+                val action = AddTodoBottomSheetDialogDirections
+                    .actionAddTodoBottomSheetDialogToChooseCategoryDialog(
+                        type = CategoryOwnerType.TODO_TYPE,
+                        todoId = 1L // todo
+                    )
+                findNavController().navigate(action)
+            }
             btnSetDeadline.setOnClickListener {
                 context?.showDatePicker(::setDeadlineDate)
             }
