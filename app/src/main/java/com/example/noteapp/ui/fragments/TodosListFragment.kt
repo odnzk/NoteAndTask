@@ -8,65 +8,61 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.domain.model.Note
+import com.example.domain.model.Todo
 import com.example.noteapp.R
-import com.example.noteapp.databinding.FragmentNotesListBinding
+import com.example.noteapp.databinding.FragmentTodosListBinding
 import com.example.noteapp.databinding.StateLoadingBinding
-import com.example.noteapp.ui.fragments.events.ListNoteEvent
-import com.example.noteapp.ui.recycler.note.NoteAdapter
+import com.example.noteapp.ui.fragments.events.ListTodoEvent
+import com.example.noteapp.ui.recycler.todo.TodoAdapter
 import com.example.noteapp.ui.util.errorOccurred
+import com.example.noteapp.ui.util.ext.initStandardVerticalRecyclerView
 import com.example.noteapp.ui.util.handleState
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
-import com.example.noteapp.ui.viewmodel.ListNoteViewModel
+import com.example.noteapp.ui.viewmodel.ListTodoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NotesListFragment : Fragment() {
-    private var _binding: FragmentNotesListBinding? = null
-    private val binding: FragmentNotesListBinding get() = _binding!!
+class TodosListFragment : Fragment() {
+    private var _binding: FragmentTodosListBinding? = null
+    private val binding: FragmentTodosListBinding get() = _binding!!
 
     private var _stateLoadingBinding: StateLoadingBinding? = null
     private val stateLoadingBinding: StateLoadingBinding get() = _stateLoadingBinding!!
 
-    private val viewModel: ListNoteViewModel by viewModels()
-    private val notesAdapter: NoteAdapter = NoteAdapter()
+    private val viewModel: ListTodoViewModel by viewModels()
+    private val todosAdapter = TodoAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeNotes()
+
+        observeTodos()
         initRecyclerView()
+
         with(binding) {
             btnAdd.setOnClickListener {
-                findNavController().navigate(R.id.action_notesListFragment_to_noteDetailFragment)
+                findNavController().navigate(R.id.action_todosListFragment_to_addTodoBottomSheetDialog)
             }
             btnClearAll.setOnClickListener {
-                viewModel.onEvent(ListNoteEvent.ClearAll)
+                viewModel.onEvent(ListTodoEvent.ClearAll)
             }
         }
     }
 
     private fun initRecyclerView() {
         binding.recyclerViewNotes.run {
-            layoutManager = LinearLayoutManager(context)
-            addItemDecoration(
-                DividerItemDecoration(
-                    requireContext(),
-                    DividerItemDecoration.VERTICAL
-                )
-            )
-            adapter = notesAdapter
+            // todo replace all recycler view initialising to initVerticalRecyclerView()
+            initStandardVerticalRecyclerView()
+            adapter = todosAdapter
         }
     }
 
-    private fun observeNotes() {
+    private fun observeTodos() {
         lifecycleScope.launchWhenStarted {
-            viewModel.notes.collect { state ->
+            viewModel.todos.collect { state ->
                 state.handleState(
                     onLoadingAction = stateLoadingBinding::loadingStarted,
-                    onSuccessAction = ::showNotes,
+                    onSuccessAction = ::showTodos,
                     onErrorAction = ::showError,
                 )
             }
@@ -75,13 +71,13 @@ class NotesListFragment : Fragment() {
 
     private fun showError(throwable: Throwable) {
         stateLoadingBinding.errorOccurred(throwable) {
-            viewModel.onEvent(ListNoteEvent.TryAgain)
+            viewModel.onEvent(ListTodoEvent.TryAgain)
         }
     }
 
-    private fun showNotes(notes: List<Note>) {
+    private fun showTodos(notes: List<Todo>) {
         stateLoadingBinding.loadingFinished()
-        notesAdapter.submitList(notes)
+        todosAdapter.submitList(notes)
     }
 
     override fun onCreateView(
@@ -89,20 +85,21 @@ class NotesListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentNotesListBinding.inflate(inflater, container, false)
+        _binding = FragmentTodosListBinding.inflate(inflater, container, false)
         _stateLoadingBinding = StateLoadingBinding.bind(binding.root)
         initAdapter()
         return binding.root
     }
 
     private fun initAdapter() {
-        notesAdapter.apply {
-            onNoteClick = { noteId ->
-                findNavController().navigate(
-                    NotesListFragmentDirections.actionNotesListFragmentToNoteDetailFragment(
-                        noteId
-                    )
-                )
+        todosAdapter.apply {
+            onTodoClick = { todoId ->
+                val action =
+                    TodosListFragmentDirections.actionTodosListFragmentToTodoDetailFragment(todoId)
+                findNavController().navigate(action)
+            }
+            onCheckboxClick = { todoId, isCompleted ->
+                viewModel.onEvent(ListTodoEvent.UpdateTodoCompletedStatus(todoId, isCompleted))
             }
             submitList(emptyList())
         }

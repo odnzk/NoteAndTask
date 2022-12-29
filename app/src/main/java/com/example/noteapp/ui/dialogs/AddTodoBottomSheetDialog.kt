@@ -36,12 +36,12 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
             }
 
             btnSetCategories.setOnClickListener {
-                val action = AddTodoBottomSheetDialogDirections
-                    .actionAddTodoBottomSheetDialogToChooseCategoryDialog(
-                        type = CategoryOwnerType.TODO_TYPE,
-                        todoId = 1L // todo
-                    )
-                findNavController().navigate(action)
+//                val action = AddTodoBottomSheetDialogDirections
+//                    .actionAddTodoBottomSheetDialogToChooseCategoryDialog(
+//                        type = CategoryOwnerType.TODO_TYPE,
+//                        todoId = 1L // todo
+//                    )
+//                findNavController().navigate(action)
             }
             btnSetDeadline.setOnClickListener {
                 context?.showDatePicker(::setDeadlineDate)

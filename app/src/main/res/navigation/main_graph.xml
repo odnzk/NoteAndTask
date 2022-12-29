@@ -26,9 +26,6 @@
                 app:argType="long"
                 app:nullable="false" />
         </action>
-        <action
-            android:id="@+id/action_listFragment_to_addTodoBottomSheetDialog"
-            app:destination="@id/addTodoBottomSheetDialog" />
     </fragment>
     <fragment
         android:id="@+id/noteDetailFragment"
@@ -89,9 +86,21 @@
         android:id="@+id/notesListFragment"
         tools:layout="@layout/fragment_notes_list"
         android:name="com.example.noteapp.ui.fragments.NotesListFragment"
-        android:label="NotesListFragment" >
+        android:label="NotesListFragment">
         <action
             android:id="@+id/action_notesListFragment_to_noteDetailFragment"
             app:destination="@id/noteDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/todosListFragment"
+        android:name="com.example.noteapp.ui.fragments.TodosListFragment"
+        android:label="TodosListFragment"
+        tools:layout="@layout/fragment_todos_list">
+        <action
+            android:id="@+id/action_todosListFragment_to_addTodoBottomSheetDialog"
+            app:destination="@id/addTodoBottomSheetDialog" />
+        <action
+            android:id="@+id/action_todosListFragment_to_todoDetailFragment"
+            app:destination="@id/todoDetailFragment" />
     </fragment>
 </navigation>

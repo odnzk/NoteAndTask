@@ -40,7 +40,13 @@
         <item name="android:background">@android:color/transparent</item>
         <item name="android:src">@drawable/ic_baseline_delete_24</item>
     </style>
-<!--    todo button clear all ?? replace to just PrimaryImageButton-->
+
+    <style name="ButtonSort" parent="Widget.AppCompat.ImageButton">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:src">@drawable/ic_round_sort_24</item>
+    </style>
 
     <style name="PrimaryImageButton" parent="Widget.AppCompat.ImageButton">
         <item name="android:layout_width">48dp</item>
