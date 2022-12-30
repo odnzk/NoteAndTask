@@ -49,8 +49,6 @@ class ChooseCategoryDialog : DialogFragment() {
     private fun onSuccessState(uiCategoryList: List<UiCategory>) {
         with(binding) {
             //todo
-//            uiCategoryList.toFlowCategories(flowCategories)
-
         }
     }
 

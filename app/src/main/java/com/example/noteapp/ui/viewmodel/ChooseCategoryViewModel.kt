@@ -47,14 +47,8 @@ class ChooseCategoryViewModel @Inject constructor(
 
     fun onEvent(event: ChooseCategoryEvent) = viewModelScope.launch {
         when (event) {
-            is ChooseCategoryEvent.AddCategory -> {
-                categoryRepository.add(event.category)
-            }
             is ChooseCategoryEvent.UpdateCategory -> {
                 categoryRepository.update(event.category)
-            }
-            is ChooseCategoryEvent.DeleteCategory -> {
-                categoryRepository.deleteById(event.categoryId)
             }
             is ChooseCategoryEvent.DeleteNoteItemCategory -> {
 //                when (type) {

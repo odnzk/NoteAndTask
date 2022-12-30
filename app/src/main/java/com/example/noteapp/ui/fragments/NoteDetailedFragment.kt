@@ -85,14 +85,13 @@ class NoteDetailedFragment : Fragment() {
                 date?.let {
                     tvDate.text = it.formatToNoteDate()
                 }
-                    // todo
-//                categories.categoriesToFlowCategories(flowCategories) {
-//                    val action =
-//                        NoteDetailedFragmentDirections.actionNoteDetailFragmentToChooseCategoryDialog(
-//                            type = CategoryOwnerType.NOTE_TYPE, noteId = note.id
-//                        )
-//                    findNavController().navigate(action)
-//                }
+                categories.categoriesToFlowCategories(constraintLayout, flowCategories) {
+                    val action =
+                        NoteDetailedFragmentDirections.actionNoteDetailFragmentToChooseCategoryDialog(
+                            type = CategoryOwnerType.NOTE_TYPE, noteId = note.id
+                        )
+                    findNavController().navigate(action)
+                }
             }
         }
         stateLoadingBinding.loadingFinished()

@@ -33,18 +33,14 @@ class AddCategoryDialog : DialogFragment(R.layout.dialog_add_category) {
                     etCategoryTitle.error = getString(R.string.error_empty_or_blanc_category_title)
                 } else {
                     // todo children filtering??
+                    // todo check all dispatchers
                     val selectedId = rgColors.checkedRadioButtonId
                     rgColors.children.filterIsInstance<RadioButton>().find { it.id == selectedId }
                         ?.let { selectedRadioButton ->
-                            // todo check all dispatchers
-                            // -8286721
-                            val colorRgbInteger: Int? =
-                                selectedRadioButton.buttonTintList?.defaultColor
-                            lifecycleScope.launch {
-                                // todo color:String to color:Int
-                                colorRgbInteger?.let {
+                            selectedRadioButton.buttonTintList?.defaultColor?.let {
+                                lifecycleScope.launch {
                                     categoryRepository.add(
-                                        Category(title = title, color = colorRgbInteger)
+                                        Category(title = title, color = it)
                                     )
                                 }
                                 dismiss()

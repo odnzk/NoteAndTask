@@ -86,6 +86,7 @@ class ListFragment : Fragment() {
         viewModel.categoryList.collect { categories ->
             categories.categoriesToFlowCategories(binding.root, binding.flowCategories) {
                 // todo on category click
+                // 1) save it to view model to filter todos and notes
             }
         }
     }

@@ -19,8 +19,8 @@ class NoteViewHolder(
                 tvTitle.text = title
                 tvContent.text = content
                 date?.let { tvDate.text = it.formatToNoteDate() }
-                //todo
-//                categories.categoriesToFlowCategories(flowCategories)
+
+                categories.categoriesToFlowCategories(constraintLayout, flowCategories)
             }
             root.setOnClickListener {
                 onNoteClick?.invoke(note.id)
