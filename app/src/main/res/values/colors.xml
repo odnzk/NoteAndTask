@@ -10,6 +10,8 @@
 
     <color name="main_blue">#DEE5FD</color>
     <color name="dark_grey">#575757</color>
+    <color name="light_grey">#979797</color>
+
     <color name="category_blue">#818DFF</color>
     <color name="category_red">#FF8181</color>
     <color name="category_orange">#FFBE81</color>

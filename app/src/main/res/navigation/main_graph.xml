@@ -26,6 +26,9 @@
                 app:argType="long"
                 app:nullable="false" />
         </action>
+        <action
+            android:id="@+id/action_listFragment_to_addCategoryDialog"
+            app:destination="@id/addCategoryDialog" />
     </fragment>
     <fragment
         android:id="@+id/noteDetailFragment"
@@ -103,4 +106,9 @@
             android:id="@+id/action_todosListFragment_to_todoDetailFragment"
             app:destination="@id/todoDetailFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/addCategoryDialog"
+        tools:layout="@layout/dialog_add_category"
+        android:name="com.example.noteapp.ui.dialogs.AddCategoryDialog"
+        android:label="AddCategoryDialog" />
 </navigation>

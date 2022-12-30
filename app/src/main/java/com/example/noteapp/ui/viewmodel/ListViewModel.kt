@@ -2,6 +2,7 @@ package com.example.noteapp.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.model.Category
 import com.example.domain.model.Note
 import com.example.domain.model.NoteItem
 import com.example.domain.model.Todo
@@ -14,12 +15,15 @@ import com.example.noteapp.ui.fragments.events.ListFragmentEvent
 import com.example.noteapp.ui.util.PreferenceStorage
 import com.example.noteapp.ui.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class ListViewModel @Inject constructor(
     private val noteRepository: NoteRepository,
     private val categoryRepository: CategoryRepository,
     private val todoRepository: TodoRepository,
@@ -30,6 +34,10 @@ class MainViewModel @Inject constructor(
     private val searchQuery = MutableStateFlow("")
     private val sortOrder = MutableStateFlow(SortOrder.BY_CATEGORY_PRIORITY)
     private val filter = MutableStateFlow(Filter.DEFAULT)
+
+    // todo (unite to one state?)
+    private var _categoriesList: MutableStateFlow<List<Category>> = MutableStateFlow(emptyList())
+    val categoryList: StateFlow<List<Category>> = MutableStateFlow(emptyList())
 
     private var _noteItemsListState: MutableStateFlow<UiState<List<NoteItem>>> =
         MutableStateFlow(UiState.Loading())
@@ -67,6 +75,9 @@ class MainViewModel @Inject constructor(
             _noteItemsListState.value = UiState.Loading()
             observeSearchAndFiltersStates().collect {
                 _noteItemsListState.value = UiState.Success(it)
+            }
+            categoryRepository.getAll().collect {
+                _categoriesList.value = it
             }
         }
     }

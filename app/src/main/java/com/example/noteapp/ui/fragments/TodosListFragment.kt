@@ -49,15 +49,13 @@ class TodosListFragment : Fragment() {
         }
     }
 
-    private fun initRecyclerView() {
+    private fun initRecyclerView() =
         binding.recyclerViewNotes.run {
-            // todo replace all recycler view initialising to initVerticalRecyclerView()
             initStandardVerticalRecyclerView()
             adapter = todosAdapter
         }
-    }
 
-    private fun observeTodos() {
+    private fun observeTodos() =
         lifecycleScope.launchWhenStarted {
             viewModel.todos.collect { state ->
                 state.handleState(
@@ -67,7 +65,6 @@ class TodosListFragment : Fragment() {
                 )
             }
         }
-    }
 
     private fun showError(throwable: Throwable) {
         stateLoadingBinding.errorOccurred(throwable) {
@@ -91,7 +88,7 @@ class TodosListFragment : Fragment() {
         return binding.root
     }
 
-    private fun initAdapter() {
+    private fun initAdapter() =
         todosAdapter.apply {
             onTodoClick = { todoId ->
                 val action =
@@ -103,7 +100,6 @@ class TodosListFragment : Fragment() {
             }
             submitList(emptyList())
         }
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

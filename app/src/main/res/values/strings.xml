@@ -10,6 +10,7 @@
     <string name="error_navigation_exception">Navigation exception occurred</string>
     <string name="error_unknown">Unknown error</string>
     <string name="error_failed_loading_from_database">Loading data from database was failed</string>
+    <string name="error_empty_or_blanc_category_title">Cannot be empty or blanc</string>
 
     <string name="success_delete">Successfully deleted</string>
     <string name="success_save">Successfully saved</string>
@@ -27,7 +28,7 @@
     <string name="unknown_todo">Unknown todo</string>
     <string name="change_category">Change category</string>
     <string name="btn_add_new_category">Add</string>
-    <string name="new_category">New category</string>
+    <string name="new_category">Category title</string>
     <string name="home">Home</string>
     <string name="notes">Notes</string>
     <string name="settings">Settings</string>
@@ -42,4 +43,7 @@
     <string name="add_task">Add task</string>
 
     <string name="tasks">Tasks</string>
+    <string name="clear_all">Clear both tasks and notes</string>
+    <string name="add_category">Add</string>
+    <string name="add">Add</string>
 </resources>

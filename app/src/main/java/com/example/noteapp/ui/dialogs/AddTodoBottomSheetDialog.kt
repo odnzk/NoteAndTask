@@ -6,13 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.example.domain.model.Todo
 import com.example.noteapp.databinding.BottomSheetAddTodoBinding
 import com.example.noteapp.ui.fragments.events.ListFragmentEvent
-import com.example.noteapp.ui.util.CategoryOwnerType
 import com.example.noteapp.ui.util.ext.showDatePicker
-import com.example.noteapp.ui.viewmodel.MainViewModel
+import com.example.noteapp.ui.viewmodel.ListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -22,7 +20,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
     private var _binding: BottomSheetAddTodoBinding? = null
     private val binding: BottomSheetAddTodoBinding get() = _binding!!
 
-    private val viewModel by viewModels<MainViewModel>()
+    private val viewModel by viewModels<ListViewModel>()
     private val currentTodo: Todo = Todo.defaultInstance()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,21 +34,16 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
             }
 
             btnSetCategories.setOnClickListener {
-//                val action = AddTodoBottomSheetDialogDirections
-//                    .actionAddTodoBottomSheetDialogToChooseCategoryDialog(
-//                        type = CategoryOwnerType.TODO_TYPE,
-//                        todoId = 1L // todo
-//                    )
-//                findNavController().navigate(action)
+                // todo show spinner with existing categories
             }
             btnSetDeadline.setOnClickListener {
                 context?.showDatePicker(::setDeadlineDate)
             }
             btnSetReminder.setOnClickListener {
-                // show time picker
+                // todo show time picker (or date picker)
             }
             btnSetRepeating.setOnClickListener {
-                // ??? new dialog...
+                // todo show spinner??
             }
         }
     }

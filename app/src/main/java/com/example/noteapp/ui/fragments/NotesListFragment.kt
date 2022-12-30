@@ -8,8 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.Note
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentNotesListBinding
@@ -17,6 +15,7 @@ import com.example.noteapp.databinding.StateLoadingBinding
 import com.example.noteapp.ui.fragments.events.ListNoteEvent
 import com.example.noteapp.ui.recycler.note.NoteAdapter
 import com.example.noteapp.ui.util.errorOccurred
+import com.example.noteapp.ui.util.ext.initStandardVerticalRecyclerView
 import com.example.noteapp.ui.util.handleState
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
@@ -48,20 +47,13 @@ class NotesListFragment : Fragment() {
         }
     }
 
-    private fun initRecyclerView() {
+    private fun initRecyclerView() =
         binding.recyclerViewNotes.run {
-            layoutManager = LinearLayoutManager(context)
-            addItemDecoration(
-                DividerItemDecoration(
-                    requireContext(),
-                    DividerItemDecoration.VERTICAL
-                )
-            )
+            initStandardVerticalRecyclerView()
             adapter = notesAdapter
         }
-    }
 
-    private fun observeNotes() {
+    private fun observeNotes() =
         lifecycleScope.launchWhenStarted {
             viewModel.notes.collect { state ->
                 state.handleState(
@@ -71,13 +63,11 @@ class NotesListFragment : Fragment() {
                 )
             }
         }
-    }
 
-    private fun showError(throwable: Throwable) {
+    private fun showError(throwable: Throwable) =
         stateLoadingBinding.errorOccurred(throwable) {
             viewModel.onEvent(ListNoteEvent.TryAgain)
         }
-    }
 
     private fun showNotes(notes: List<Note>) {
         stateLoadingBinding.loadingFinished()
@@ -98,11 +88,11 @@ class NotesListFragment : Fragment() {
     private fun initAdapter() {
         notesAdapter.apply {
             onNoteClick = { noteId ->
-                findNavController().navigate(
+                val action =
                     NotesListFragmentDirections.actionNotesListFragmentToNoteDetailFragment(
                         noteId
                     )
-                )
+                findNavController().navigate(action)
             }
             submitList(emptyList())
         }

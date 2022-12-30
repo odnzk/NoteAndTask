@@ -58,7 +58,7 @@ class NoteDetailedFragment : Fragment() {
         }
     }
 
-    private fun observeState() {
+    private fun observeState() =
         lifecycleScope.launch {
             viewModel.note.collect { state ->
                 state.handleState(
@@ -68,12 +68,10 @@ class NoteDetailedFragment : Fragment() {
                 )
             }
         }
-    }
 
-    private fun onErrorAction(error: Throwable) {
+    private fun onErrorAction(error: Throwable) =
         stateLoadingBinding.errorOccurred(error) {
             viewModel.onEvent(NoteDetailedEvent.TryLoadingNoteAgain)
-        }
     }
 
     private fun showNote(note: Note) {
