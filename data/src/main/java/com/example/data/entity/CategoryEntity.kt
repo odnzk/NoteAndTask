@@ -9,7 +9,7 @@ data class CategoryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val title: String,
-    val color: String
+    val color: Int
 ) {
     fun mapToCategory(): Category =
         Category(title, color)

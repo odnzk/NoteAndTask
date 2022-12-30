@@ -6,4 +6,6 @@ class LoadingFromDatabaseFailedException : AppException()
 
 class NotFoundException : AppException()
 
-class LostNavArgumentsException : AppException()
+class InvalidNavArgumentsException : AppException()
+
+class ParsingColorException : AppException()

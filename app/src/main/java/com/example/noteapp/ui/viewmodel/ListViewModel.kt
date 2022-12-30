@@ -15,6 +15,7 @@ import com.example.noteapp.ui.fragments.events.ListFragmentEvent
 import com.example.noteapp.ui.util.PreferenceStorage
 import com.example.noteapp.ui.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,7 +38,7 @@ class ListViewModel @Inject constructor(
 
     // todo (unite to one state?)
     private var _categoriesList: MutableStateFlow<List<Category>> = MutableStateFlow(emptyList())
-    val categoryList: StateFlow<List<Category>> = MutableStateFlow(emptyList())
+    val categoryList: StateFlow<List<Category>> = _categoriesList
 
     private var _noteItemsListState: MutableStateFlow<UiState<List<NoteItem>>> =
         MutableStateFlow(UiState.Loading())
@@ -71,11 +72,14 @@ class ListViewModel @Inject constructor(
 //        } }
 
     fun loadData() {
-        viewModelScope.launch {
+        // todo check hierarchy
+        viewModelScope.async {
             _noteItemsListState.value = UiState.Loading()
             observeSearchAndFiltersStates().collect {
                 _noteItemsListState.value = UiState.Success(it)
             }
+        }
+        viewModelScope.async {
             categoryRepository.getAll().collect {
                 _categoriesList.value = it
             }

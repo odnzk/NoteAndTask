@@ -7,7 +7,7 @@ import com.example.domain.model.Todo
 import com.example.domain.repository.TodoRepository
 import com.example.noteapp.ui.fragments.events.TodoDetailedEvent
 import com.example.noteapp.ui.util.UiState
-import com.example.noteapp.ui.util.exceptions.LostNavArgumentsException
+import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
 import com.example.noteapp.ui.util.exceptions.NotFoundException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,7 +36,7 @@ class TodoDetailsViewModel @Inject constructor(
                 _todo.value = repoTodo?.let { repoTodo -> UiState.Success(repoTodo) } ?: run {
                     UiState.Error(NotFoundException())
                 }
-            } ?: run { _todo.value = UiState.Error(LostNavArgumentsException()) }
+            } ?: run { _todo.value = UiState.Error(InvalidNavArgumentsException()) }
         }
     }
 

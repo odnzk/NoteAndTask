@@ -1,7 +1,6 @@
 package com.example.noteapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -85,7 +84,7 @@ class ListFragment : Fragment() {
 
     private fun observeCategories() = lifecycleScope.launchWhenStarted {
         viewModel.categoryList.collect { categories ->
-            categories.categoriesToFlowCategories(binding.flowCategories) {
+            categories.categoriesToFlowCategories(binding.root, binding.flowCategories) {
                 // todo on category click
             }
         }

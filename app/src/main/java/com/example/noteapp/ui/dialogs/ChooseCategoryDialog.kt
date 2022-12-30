@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.noteapp.databinding.DialogChangeCategoryBinding
 import com.example.noteapp.model.UiCategory
-import com.example.noteapp.ui.util.ext.toFlowCategories
 import com.example.noteapp.ui.util.handleState
 import com.example.noteapp.ui.viewmodel.ChooseCategoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,7 +48,8 @@ class ChooseCategoryDialog : DialogFragment() {
 
     private fun onSuccessState(uiCategoryList: List<UiCategory>) {
         with(binding) {
-            uiCategoryList.toFlowCategories(flowCategories)
+            //todo
+//            uiCategoryList.toFlowCategories(flowCategories)
 
         }
     }

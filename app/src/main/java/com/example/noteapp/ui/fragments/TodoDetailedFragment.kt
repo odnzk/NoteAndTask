@@ -64,14 +64,15 @@ class TodoDetailedFragment : Fragment() {
                 deadlineDate?.let {
                     btnChangeDeadlineDate.text = it.formatToTodoDate()
                 }
-                categories.categoriesToFlowCategories(flowCategories) {
-                    val action = TodoDetailedFragmentDirections
-                        .actionTodoDetailFragmentToChooseCategoryDialog(
-                            type = CategoryOwnerType.TODO_TYPE,
-                            todoId = todo.id
-                        )
-                    findNavController().navigate(action)
-                }
+                // todo
+//                categories.categoriesToFlowCategories(flowCategories) {
+//                    val action = TodoDetailedFragmentDirections
+//                        .actionTodoDetailFragmentToChooseCategoryDialog(
+//                            type = CategoryOwnerType.TODO_TYPE,
+//                            todoId = todo.id
+//                        )
+//                    findNavController().navigate(action)
+//                }
             }
             // init listeners only if loading finished successfully
             btnDelete.setOnClickListener {

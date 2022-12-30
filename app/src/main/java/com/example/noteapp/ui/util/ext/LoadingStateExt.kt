@@ -4,7 +4,7 @@ import androidx.core.view.isVisible
 import com.example.noteapp.R
 import com.example.noteapp.databinding.StateLoadingBinding
 import com.example.noteapp.ui.util.exceptions.LoadingFromDatabaseFailedException
-import com.example.noteapp.ui.util.exceptions.LostNavArgumentsException
+import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
 import com.example.noteapp.ui.util.exceptions.NotFoundException
 
 fun StateLoadingBinding.loadingFinished() {
@@ -23,7 +23,7 @@ fun StateLoadingBinding.errorOccurred(error: Throwable, tryAgainAction: () -> Un
     val resId = when (error) {
         is NotFoundException -> R.string.error_not_found
         is LoadingFromDatabaseFailedException -> R.string.error_failed_loading_from_database
-        is LostNavArgumentsException -> R.string.error_navigation_exception
+        is InvalidNavArgumentsException -> R.string.error_navigation_exception
         else -> R.string.error_unknown
     }
     tvErrorLoading.text = root.context.getString(resId)
