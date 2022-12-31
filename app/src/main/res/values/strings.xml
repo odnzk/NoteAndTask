@@ -46,4 +46,9 @@
     <string name="clear_all">Clear both tasks and notes</string>
     <string name="add_category">Add</string>
     <string name="add">Add</string>
+
+    <!--    notification channel settings-->
+    <string name="notification_channel_reminders_name">Reminder notification</string>
+    <string name="notification_channel_reminders_description">All notifications which are related to tasks</string>
+    <string name="notification_channel_reminders_id">1213298</string>
 </resources>

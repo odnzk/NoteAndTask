@@ -17,7 +17,7 @@ import com.example.noteapp.ui.util.*
 import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
 import com.example.noteapp.ui.util.ext.formatToNoteDate
 import com.example.noteapp.ui.util.ext.showSnackbar
-import com.example.noteapp.ui.viewmodel.NoteDetailsViewModel
+import com.example.noteapp.viewmodel.NoteDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

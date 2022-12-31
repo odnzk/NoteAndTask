@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.noteapp.databinding.DialogChangeCategoryBinding
 import com.example.noteapp.model.UiCategory
 import com.example.noteapp.ui.util.handleState
-import com.example.noteapp.ui.viewmodel.ChooseCategoryViewModel
+import com.example.noteapp.viewmodel.ChooseCategoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 

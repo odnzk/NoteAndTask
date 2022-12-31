@@ -20,7 +20,7 @@ import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
 import com.example.noteapp.ui.util.ext.formatToTodoDate
 import com.example.noteapp.ui.util.ext.showDatePicker
 import com.example.noteapp.ui.util.ext.showSnackbar
-import com.example.noteapp.ui.viewmodel.TodoDetailsViewModel
+import com.example.noteapp.viewmodel.TodoDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 

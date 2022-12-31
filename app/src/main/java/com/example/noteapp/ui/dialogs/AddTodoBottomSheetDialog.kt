@@ -10,7 +10,7 @@ import com.example.domain.model.Todo
 import com.example.noteapp.databinding.BottomSheetAddTodoBinding
 import com.example.noteapp.ui.fragments.events.ListFragmentEvent
 import com.example.noteapp.ui.util.ext.showDatePicker
-import com.example.noteapp.ui.viewmodel.ListViewModel
+import com.example.noteapp.viewmodel.ListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*

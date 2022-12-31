@@ -1,4 +1,4 @@
-package com.example.noteapp.ui.viewmodel
+package com.example.noteapp.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

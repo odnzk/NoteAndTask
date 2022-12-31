@@ -19,7 +19,7 @@ import com.example.noteapp.ui.util.ext.initStandardVerticalRecyclerView
 import com.example.noteapp.ui.util.handleState
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
-import com.example.noteapp.ui.viewmodel.ListViewModel
+import com.example.noteapp.viewmodel.ListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -84,9 +84,11 @@ class ListFragment : Fragment() {
 
     private fun observeCategories() = lifecycleScope.launchWhenStarted {
         viewModel.categoryList.collect { categories ->
-            categories.categoriesToFlowCategories(binding.root, binding.flowCategories) {
-                // todo on category click
-                // 1) save it to view model to filter todos and notes
+            with(binding){
+                categories.categoriesToFlowCategories(root, flowCategories) {
+                    // todo on category click
+                    // 1) save it to view model to filter todos and notes
+                }
             }
         }
     }
