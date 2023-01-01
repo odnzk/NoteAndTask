@@ -4,8 +4,8 @@ import com.example.data.dao.NoteDao
 import com.example.data.entity.NoteEntity
 import com.example.domain.model.Note
 import com.example.domain.repository.NoteRepository
-import com.example.domain.util.Filter
-import com.example.domain.util.SortOrder
+import com.example.domain.model.Filter
+import com.example.domain.model.SortOrder
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

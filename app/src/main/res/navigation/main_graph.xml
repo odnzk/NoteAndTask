@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.example.noteapp.ui.list.ListFragment"
+        android:name="com.example.noteapp.ui.fragments.list.ListFragment"
         android:label="ListFragment"
         tools:layout="@layout/fragment_list">
         <action
@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/noteDetailFragment"
-        android:name="com.example.noteapp.ui.fragments.NoteDetailedFragment"
+        android:name="com.example.noteapp.ui.fragments.note.detailed.NoteDetailedFragment"
         android:label="NoteDetailFragment"
         tools:layout="@layout/fragment_detailed_note">
         <argument
@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/todoDetailFragment"
-        android:name="com.example.noteapp.ui.fragments.TodoDetailedFragment"
+        android:name="com.example.noteapp.ui.fragments.todo.detailed.TodoDetailedFragment"
         android:label="TodoDetailFragment"
         tools:layout="@layout/fragment_detailed_todo">
         <argument
@@ -58,7 +58,7 @@
     </fragment>
     <dialog
         android:id="@+id/chooseCategoryDialog"
-        android:name="com.example.noteapp.ui.dialogs.ChooseCategoryDialog"
+        android:name="com.example.noteapp.ui.dialogs.category.choose.ChooseCategoryDialog"
         android:label="ChooseCategoryDialog"
         tools:layout="@layout/dialog_change_category">
         <argument
@@ -78,7 +78,7 @@
     </dialog>
     <dialog
         android:id="@+id/addTodoBottomSheetDialog"
-        android:name="com.example.noteapp.ui.dialogs.AddTodoBottomSheetDialog"
+        android:name="com.example.noteapp.ui.dialogs.todo.AddTodoBottomSheetDialog"
         android:label="AddTodoBottomSheetDialog"
         tools:layout="@layout/bottom_sheet_add_todo" >
         <action
@@ -88,7 +88,7 @@
     <fragment
         android:id="@+id/notesListFragment"
         tools:layout="@layout/fragment_notes_list"
-        android:name="com.example.noteapp.ui.fragments.NotesListFragment"
+        android:name="com.example.noteapp.ui.fragments.note.list.NotesListFragment"
         android:label="NotesListFragment">
         <action
             android:id="@+id/action_notesListFragment_to_noteDetailFragment"
@@ -96,7 +96,7 @@
     </fragment>
     <fragment
         android:id="@+id/todosListFragment"
-        android:name="com.example.noteapp.ui.fragments.TodosListFragment"
+        android:name="com.example.noteapp.ui.fragments.todo.list.TodosListFragment"
         android:label="TodosListFragment"
         tools:layout="@layout/fragment_todos_list">
         <action
@@ -109,6 +109,6 @@
     <dialog
         android:id="@+id/addCategoryDialog"
         tools:layout="@layout/dialog_add_category"
-        android:name="com.example.noteapp.ui.dialogs.AddCategoryDialog"
+        android:name="com.example.noteapp.ui.dialogs.category.add.AddCategoryDialog"
         android:label="AddCategoryDialog" />
 </navigation>

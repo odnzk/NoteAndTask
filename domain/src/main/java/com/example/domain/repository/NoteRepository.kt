@@ -1,8 +1,8 @@
 package com.example.domain.repository
 
 import com.example.domain.model.Note
-import com.example.domain.util.Filter
-import com.example.domain.util.SortOrder
+import com.example.domain.model.Filter
+import com.example.domain.model.SortOrder
 import kotlinx.coroutines.flow.Flow
 
 
