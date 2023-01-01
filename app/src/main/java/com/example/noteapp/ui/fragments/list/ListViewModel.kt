@@ -2,37 +2,29 @@ package com.example.noteapp.ui.fragments.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.model.Category
-import com.example.domain.model.Note
-import com.example.domain.model.NoteItem
-import com.example.domain.model.Todo
-import com.example.domain.repository.CategoryRepository
-import com.example.domain.repository.NoteRepository
-import com.example.domain.repository.TodoRepository
-import com.example.domain.model.Filter
-import com.example.domain.model.SortOrder
+import com.example.domain.application.usecase.category.CategoryUseCases
+import com.example.domain.application.usecase.note.NoteUseCases
+import com.example.domain.application.usecase.todo.TodoUseCases
+import com.example.domain.model.*
 import com.example.noteapp.ui.util.PreferenceStorage
 import com.example.noteapp.ui.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ListViewModel @Inject constructor(
-    private val noteRepository: NoteRepository,
-    private val categoryRepository: CategoryRepository,
-    private val todoRepository: TodoRepository,
-    private val preferenceStorage: PreferenceStorage
+    private val preferenceStorage: PreferenceStorage, // saved state handler
+    private val noteUseCases: NoteUseCases,
+    private val todoUseCases: TodoUseCases,
+    private val categoryUseCases: CategoryUseCases
 ) :
     ViewModel() {
 
     private val searchQuery = MutableStateFlow("")
-    private val sortOrder = MutableStateFlow(SortOrder.BY_CATEGORY_PRIORITY)
+    private val sortOrder = MutableStateFlow(SortOrder.DEFAULT)
     private val filter = MutableStateFlow(Filter.DEFAULT)
 
     // todo (unite to one state?)
@@ -43,6 +35,8 @@ class ListViewModel @Inject constructor(
         MutableStateFlow(UiState.Loading())
     val noteItemsListState: StateFlow<UiState<List<NoteItem>>> = _noteItemsListState
 
+    private var lastDeletedItem: NoteItem? = null
+
     init {
         loadData()
     }
@@ -50,8 +44,8 @@ class ListViewModel @Inject constructor(
 
     private fun observeSearchAndFiltersStates(): Flow<List<NoteItem>> {
         return combine(
-            todoRepository.getAll(),
-            noteRepository.getAll(searchQuery.value, sortOrder.value, filter.value)
+            todoUseCases.getAllTodos(),
+            noteUseCases.getAllNotes(searchQuery.value, emptyList(), sortOrder.value) // filter??
         ) { todos, notes ->
             return@combine mutableListOf<NoteItem>().apply {
                 addAll(todos)
@@ -61,12 +55,12 @@ class ListViewModel @Inject constructor(
     }
 //        return combine(searchQuery, sortOrder, filter) { searchQuery, sortOrder, filter ->
 //            val notes = noteRepository.getAll(searchQuery, sortOrder, filter)
-//            val todo = todoRepository.getAll()
+//            val todoitem = todoRepository.getAll()
 //
 //            mutableListOf<NoteItem>().apply {
-//                // todo
+//                // todoitem
 //                addAll(notes.first())
-//                addAll(todo.first())
+//                addAll(todoitem.first())
 //            }
 //        } }
 
@@ -79,7 +73,7 @@ class ListViewModel @Inject constructor(
             }
         }
         viewModelScope.async {
-            categoryRepository.getAll().collect {
+            categoryUseCases.getAllCategories().collectLatest {
                 _categoriesList.value = it
             }
         }
@@ -91,30 +85,33 @@ class ListViewModel @Inject constructor(
             when (event) {
                 is ListFragmentEvent.AddItem -> {
                     when (val noteItem = event.noteItem) {
-                        is Note -> noteRepository.add(noteItem)
-                        is Todo -> todoRepository.add(noteItem)
+                        is Note -> noteUseCases.addNote(noteItem)
+                        is Todo -> todoUseCases.addTodo(noteItem)
                     }
                 }
                 is ListFragmentEvent.DeleteItem -> {
                     when (val noteItem = event.noteItem) {
-                        is Note -> noteRepository.delete(noteItem)
-                        is Todo -> todoRepository.delete(noteItem)
+                        is Note -> noteUseCases.deleteNote(noteItem)
+                        is Todo -> todoUseCases.deleteTodo(noteItem)
                     }
+                    lastDeletedItem = event.noteItem
                 }
                 is ListFragmentEvent.RestoreItem -> {
-
+                    lastDeletedItem?.let { noteItem ->
+                        when (noteItem) {
+                            is Note -> noteUseCases.addNote(noteItem)
+                            is Todo -> todoUseCases.addTodo(noteItem)
+                        }
+                    }
                 }
-                is ListFragmentEvent.UpdateSortOrder -> {
-
-                }
-                is ListFragmentEvent.UpdateFilter -> {
-
-                }
+                is ListFragmentEvent.UpdateSortOrder -> sortOrder.value = event.sortOrder
+                is ListFragmentEvent.UpdateFilter -> filter.value = event.filter
                 is ListFragmentEvent.ClearAll -> {
-
+                    noteUseCases.deleteAllNotes()
+                    todoUseCases.deleteAllTodo()
                 }
                 is ListFragmentEvent.UpdateTodoCompletedStatus -> {
-                    todoRepository.updateCompletedStatus(event.todoId, event.isCompleted)
+                    todoUseCases.updateIsCompleted(event.todoId, event.isCompleted)
                 }
             }
         }

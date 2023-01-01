@@ -3,11 +3,11 @@ package com.example.noteapp.ui.dialogs.category.choose
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.model.CategoryOwnerType
 import com.example.domain.repository.CategoryRepository
 import com.example.domain.repository.NoteRepository
 import com.example.domain.repository.TodoRepository
 import com.example.noteapp.model.UiCategory
-import com.example.noteapp.ui.util.CategoryOwnerType
 import com.example.noteapp.ui.util.UiState
 import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -50,15 +50,15 @@ class ChooseCategoryViewModel @Inject constructor(
                 categoryRepository.update(event.category)
             }
             is ChooseCategoryEvent.DeleteNoteItemCategory -> {
-//                when (type) {
-//                    CategoryOwnerType.NOTE_TYPE -> noteItemId?.let {
-//                        noteRepository.removeCategory(
-//                            it,
-//                            event.categoryId
-//                        )
-//                    }
-//                    CategoryOwnerType.TODO_TYPE -> noteItemId?.let { todoRepository.getById(it) } // todo
-//                }
+                when (type) {
+                    CategoryOwnerType.NOTE_TYPE -> noteItemId?.let {
+                        noteRepository.removeCategory(
+                            it,
+                            event.categoryId
+                        )
+                    }
+                    CategoryOwnerType.TODO_TYPE -> noteItemId?.let { todoRepository.getById(it) } // todo
+                }
             }
             is ChooseCategoryEvent.AddNoteItemCategory -> {
                 when (type) {

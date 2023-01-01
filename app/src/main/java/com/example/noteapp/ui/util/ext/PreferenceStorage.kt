@@ -23,7 +23,7 @@ class PreferenceStorage @Inject constructor(@ApplicationContext private val appl
     private val preferenceFlow = applicationContext.dataStore.data
         .map { preferences ->
             val sortOrder =
-                SortOrder.valueOf(preferences[PreferenceKeys.SORT_ORDER] ?: SortOrder.BY_DATE.name)
+                SortOrder.valueOf(preferences[PreferenceKeys.SORT_ORDER] ?: SortOrder.DEFAULT.name)
             val filter =
                 Filter.valueOf(preferences[PreferenceKeys.FILTER] ?: Filter.DEFAULT.name)
             FilterInfo(sortOrder, filter)

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.domain.model.CategoryOwnerType
 import com.example.domain.model.Todo
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentDetailedTodoBinding
