@@ -1,4 +1,4 @@
-package com.example.noteapp.ui.fragments.events
+package com.example.noteapp.ui.list
 
 import com.example.domain.model.NoteItem
 import com.example.domain.util.Filter

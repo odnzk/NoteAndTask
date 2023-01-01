@@ -1,6 +1,7 @@
 package com.example.domain.model
 
 import java.util.*
+import kotlin.time.Duration
 
 sealed class NoteItem(open val id: Long)
 
@@ -21,9 +22,12 @@ data class Todo(
     var title: String,
     val isCompleted: Boolean = false,
     val categories: List<Category>,
-    var deadlineDate: Date?
+    var deadlineDate: Date? = null,
+    val notificationCalendar: Calendar? = null, // todo
+    val periodDuration: Duration? = null // todo
 ) : NoteItem(id) {
     companion object {
         fun defaultInstance() = Todo(0, "", false, emptyList(), null)
     }
 }
+

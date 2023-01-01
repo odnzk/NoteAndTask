@@ -1,4 +1,4 @@
-package com.example.noteapp.viewmodel
+package com.example.noteapp.ui.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +11,6 @@ import com.example.domain.repository.NoteRepository
 import com.example.domain.repository.TodoRepository
 import com.example.domain.util.Filter
 import com.example.domain.util.SortOrder
-import com.example.noteapp.ui.fragments.events.ListFragmentEvent
 import com.example.noteapp.ui.util.PreferenceStorage
 import com.example.noteapp.ui.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel

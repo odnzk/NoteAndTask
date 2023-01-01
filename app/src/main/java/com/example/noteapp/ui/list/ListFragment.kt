@@ -1,4 +1,4 @@
-package com.example.noteapp.ui.fragments
+package com.example.noteapp.ui.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.domain.model.NoteItem
 import com.example.noteapp.databinding.FragmentListBinding
 import com.example.noteapp.databinding.StateLoadingBinding
-import com.example.noteapp.ui.fragments.events.ListFragmentEvent
 import com.example.noteapp.ui.recycler.noteitem.NoteItemAdapter
 import com.example.noteapp.ui.util.errorOccurred
 import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
@@ -19,7 +18,6 @@ import com.example.noteapp.ui.util.ext.initStandardVerticalRecyclerView
 import com.example.noteapp.ui.util.handleState
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
-import com.example.noteapp.viewmodel.ListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

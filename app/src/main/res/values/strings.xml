@@ -51,4 +51,8 @@
     <string name="notification_channel_reminders_name">Reminder notification</string>
     <string name="notification_channel_reminders_description">All notifications which are related to tasks</string>
     <string name="notification_channel_reminders_id">1213298</string>
+
+    <string name="deadline_today">Today</string>
+    <string name="date_picker_dialog_tab1_title_date">Date</string>
+    <string name="date_picker_dialog_tab1_title_time">Time</string>
 </resources>

@@ -6,14 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import androidx.fragment.app.viewModels
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
+import androidx.work.workDataOf
 import com.example.domain.model.Todo
 import com.example.noteapp.databinding.BottomSheetAddTodoBinding
-import com.example.noteapp.ui.fragments.events.ListFragmentEvent
+import com.example.noteapp.notifications.NotificationWorker
+import com.example.noteapp.ui.list.ListFragmentEvent
 import com.example.noteapp.ui.util.ext.showDatePicker
-import com.example.noteapp.viewmodel.ListViewModel
+import com.example.noteapp.ui.util.ext.showDateTimePicker
+import com.example.noteapp.ui.list.ListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+
 
 @AndroidEntryPoint
 class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
@@ -36,11 +43,12 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
             btnSetCategories.setOnClickListener {
                 // todo show spinner with existing categories
             }
+
             btnSetDeadline.setOnClickListener {
                 context?.showDatePicker(::setDeadlineDate)
             }
             btnSetReminder.setOnClickListener {
-                // todo show time picker (or date picker)
+                createReminderNotification()
             }
             btnSetRepeating.setOnClickListener {
                 // todo show spinner??
@@ -67,8 +75,28 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
         currentTodo.deadlineDate = Date(date.timeInMillis)
     }
 
+    private fun createReminderNotification() {
+        context?.showDateTimePicker { calendar ->
+            // todo check todoItem validity
+            val notificationWorkRequest: WorkRequest =
+                OneTimeWorkRequestBuilder<NotificationWorker>()
+                    .setInputData(
+                        workDataOf(
+                            NotificationWorker.NOTIFICATION_TITLE_KEY to "",
+                            NotificationWorker.NOTIFICATION_CONTENT_KEY to ""
+                        )
+                    )
+                    .build()
+            // 1) set constraints  or .setInitialDelay(10, TimeUnit.MINUTES)
+            // 2) set information about todoItem to Worker
+            WorkManager.getInstance(requireContext()).enqueue(notificationWorkRequest)
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+
 }

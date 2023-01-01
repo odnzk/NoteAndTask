@@ -12,6 +12,11 @@
     <color name="dark_grey">#575757</color>
     <color name="light_grey">#979797</color>
 
+    <!--    color for overdue todoItem-->
+    <color name="todo_item_overdue_red">#FF5151</color>
+    <!--    color for today todoItem-->
+    <color name="todo_item_today_blue">#1D2DCA</color>
+
     <color name="category_blue">#818DFF</color>
     <color name="category_red">#FF8181</color>
     <color name="category_orange">#FFBE81</color>

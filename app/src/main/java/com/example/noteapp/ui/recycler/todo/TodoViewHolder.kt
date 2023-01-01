@@ -8,6 +8,8 @@ import com.example.domain.model.Todo
 import com.example.noteapp.databinding.ItemTodoBinding
 import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
 import com.example.noteapp.ui.util.ext.formatToTodoDate
+import com.example.noteapp.ui.util.ext.setTodoDateStyle
+import com.example.noteapp.ui.util.ext.setTodoIsCompletedStyle
 
 class TodoViewHolder(
     private val binding: ItemTodoBinding,
@@ -19,7 +21,10 @@ class TodoViewHolder(
         with(binding) {
             todo.run {
                 tvTitle.text = title
-                tvDeadlineDate.text = deadlineDate?.formatToTodoDate()
+                tvTitle.setTodoIsCompletedStyle(isCompleted)
+                deadlineDate?.let {
+                    tvDeadlineDate.setTodoDateStyle(it, ivDeadlineDateIcon)
+                }
                 ivDeadlineDateIcon.isVisible = deadlineDate != null
                 cbCompleted.isChecked = isCompleted
 
