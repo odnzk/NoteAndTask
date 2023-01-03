@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.domain.model.CategoryOwnerType
+import com.example.noteapp.ui.util.CategoryOwnerType
 import com.example.domain.model.Todo
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentDetailedTodoBinding
@@ -21,6 +21,7 @@ import com.example.noteapp.ui.util.ext.formatToTodoDate
 import com.example.noteapp.ui.util.ext.showDatePicker
 import com.example.noteapp.ui.util.ext.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import java.util.*
 
 @AndroidEntryPoint
@@ -40,7 +41,7 @@ class TodoDetailedFragment : Fragment() {
 
     private fun initTodo() {
         lifecycleScope.launchWhenResumed {
-            viewModel.todo.collect { state ->
+            viewModel.todo.collectLatest { state ->
                 state.handleState(
                     onLoadingAction = stateLoadingBinding::loadingStarted,
                     onSuccessAction = ::showTodo,

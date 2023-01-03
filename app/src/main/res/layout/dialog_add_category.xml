@@ -39,36 +39,6 @@
                 android:buttonTint="@color/category_blue" />
 
             <RadioButton
-                android:id="@+id/rb_blue1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/category_blue" />
-
-            <RadioButton
-                android:id="@+id/rb_blue2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/category_blue" />
-
-            <RadioButton
-                android:id="@+id/rb_blue3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/category_blue" />
-
-            <RadioButton
-                android:id="@+id/rb_blue5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/category_blue" />
-
-            <RadioButton
-                android:id="@+id/rb_blue6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/category_blue" />
-
-            <RadioButton
                 android:id="@+id/rb_purple"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

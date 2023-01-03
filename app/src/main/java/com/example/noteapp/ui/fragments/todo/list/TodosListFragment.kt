@@ -19,6 +19,7 @@ import com.example.noteapp.ui.util.handleState
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class TodosListFragment : Fragment() {
@@ -55,7 +56,7 @@ class TodosListFragment : Fragment() {
 
     private fun observeTodos() =
         lifecycleScope.launchWhenStarted {
-            viewModel.todos.collect { state ->
+            viewModel.todos.collectLatest { state ->
                 state.handleState(
                     onLoadingAction = stateLoadingBinding::loadingStarted,
                     onSuccessAction = ::showTodos,

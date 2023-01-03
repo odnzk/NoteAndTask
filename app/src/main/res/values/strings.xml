@@ -55,4 +55,5 @@
     <string name="deadline_today">Today</string>
     <string name="date_picker_dialog_tab1_title_date">Date</string>
     <string name="date_picker_dialog_tab1_title_time">Time</string>
+    <string name="hint_task_title">Task title</string>
 </resources>

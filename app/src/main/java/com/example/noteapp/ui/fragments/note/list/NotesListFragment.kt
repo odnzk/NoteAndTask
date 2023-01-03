@@ -19,6 +19,7 @@ import com.example.noteapp.ui.util.handleState
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class NotesListFragment : Fragment() {
@@ -53,7 +54,7 @@ class NotesListFragment : Fragment() {
 
     private fun observeNotes() =
         lifecycleScope.launchWhenStarted {
-            viewModel.notes.collect { state ->
+            viewModel.notes.collectLatest { state ->
                 state.handleState(
                     onLoadingAction = stateLoadingBinding::loadingStarted,
                     onSuccessAction = ::showNotes,

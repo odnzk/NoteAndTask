@@ -3,7 +3,7 @@ package com.example.noteapp.ui.dialogs.category.choose
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.model.CategoryOwnerType
+import com.example.noteapp.ui.util.CategoryOwnerType
 import com.example.domain.repository.CategoryRepository
 import com.example.domain.repository.NoteRepository
 import com.example.domain.repository.TodoRepository

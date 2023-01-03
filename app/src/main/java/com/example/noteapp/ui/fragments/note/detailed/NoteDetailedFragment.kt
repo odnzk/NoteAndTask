@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.domain.model.CategoryOwnerType
 import com.example.domain.model.Note
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentDetailedNoteBinding
@@ -18,6 +17,7 @@ import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
 import com.example.noteapp.ui.util.ext.formatToNoteDate
 import com.example.noteapp.ui.util.ext.showSnackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -59,7 +59,7 @@ class NoteDetailedFragment : Fragment() {
 
     private fun observeState() =
         lifecycleScope.launch {
-            viewModel.note.collect { state ->
+            viewModel.note.collectLatest { state ->
                 state.handleState(
                     onLoadingAction = stateLoadingBinding::loadingStarted,
                     onSuccessAction = ::showNote,

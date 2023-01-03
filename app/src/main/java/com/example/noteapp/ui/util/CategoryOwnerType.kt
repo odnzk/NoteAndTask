@@ -1,6 +1,5 @@
-package com.example.domain.model
+package com.example.noteapp.ui.util
 
-// todo move to app module??
 enum class CategoryOwnerType(val key: String) {
     NOTE_TYPE(key = "noteId"), TODO_TYPE(key = "todoId")
 }

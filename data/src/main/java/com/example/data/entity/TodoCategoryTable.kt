@@ -6,12 +6,12 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 
 @Entity(
-    tableName = "note_categories_table",
+    tableName = "todo_categories_table",
     foreignKeys = [
         ForeignKey(
-            entity = NoteEntity::class,
+            entity = TodoEntity::class,
             parentColumns = ["id"],
-            childColumns = ["note_id"],
+            childColumns = ["todo_id"],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
         ),
@@ -23,15 +23,15 @@ import androidx.room.Index
             onUpdate = ForeignKey.CASCADE,
         )
     ],
-    primaryKeys = ["note_id", "category_id"],
+    primaryKeys = ["todo_id", "category_id"],
     indices = [
-        Index("note_id"),
+        Index("todo_id"),
         Index("category_id")
     ]
 )
-data class NoteCategoryTable(
-    @ColumnInfo(name = "note_id")
-    val noteId: Long,
+data class TodoCategoryTable(
+    @ColumnInfo(name = "todo_id")
+    val todoId: Long,
     @ColumnInfo(name = "category_id")
     val categoryId: Long
 )

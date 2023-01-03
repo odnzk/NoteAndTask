@@ -27,4 +27,10 @@ interface TodoDao {
 
     @Query("SELECT * FROM todos")
     fun getAll(): Flow<List<TodoEntity>>
+
+    @Query("delete from todo_categories_table where todo_id = :todoId AND category_id =:categoryId")
+    suspend fun removeTodoCategory(todoId: Long, categoryId: Long)
+
+    @Query("insert into todo_categories_table values (:todoId, :categoryId)")
+    suspend fun insertTodoCategory(todoId: Long, categoryId: Long)
 }

@@ -19,6 +19,7 @@ import com.example.noteapp.ui.util.handleState
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class ListFragment : Fragment() {
@@ -71,7 +72,7 @@ class ListFragment : Fragment() {
 
     private fun observeState() =
         lifecycleScope.launchWhenStarted {
-            viewModel.noteItemsListState.collect { listState ->
+            viewModel.noteItemsListState.collectLatest { listState ->
                 listState.handleState(
                     onErrorAction = ::onErrorAction,
                     onLoadingAction = { stateLoadingBinding.loadingStarted() },
@@ -81,8 +82,8 @@ class ListFragment : Fragment() {
         }
 
     private fun observeCategories() = lifecycleScope.launchWhenStarted {
-        viewModel.categoryList.collect { categories ->
-            with(binding){
+        viewModel.categoryList.collectLatest { categories ->
+            with(binding) {
                 categories.categoriesToFlowCategories(root, flowCategories) {
                     // todo on category click
                     // 1) save it to view model to filter todos and notes
