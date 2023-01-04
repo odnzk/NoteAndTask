@@ -48,6 +48,13 @@
         <item name="android:src">@drawable/ic_round_sort_24</item>
     </style>
 
+    <style name="IconSpinnerImageView">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="tint">@color/dark_grey</item>
+    </style>
+
     <style name="PrimaryImageButton" parent="Widget.AppCompat.ImageButton">
         <item name="android:layout_width">48dp</item>
         <item name="android:layout_height">48dp</item>

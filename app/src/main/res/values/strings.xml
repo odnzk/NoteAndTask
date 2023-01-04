@@ -56,4 +56,5 @@
     <string name="date_picker_dialog_tab1_title_date">Date</string>
     <string name="date_picker_dialog_tab1_title_time">Time</string>
     <string name="hint_task_title">Task title</string>
+    <string name="spinner_item">spinner item</string>
 </resources>

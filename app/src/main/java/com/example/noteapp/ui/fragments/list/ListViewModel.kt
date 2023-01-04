@@ -29,7 +29,7 @@ class ListViewModel @Inject constructor(
 
     // todo (unite to one state?)
     private var _categoriesList: MutableStateFlow<List<Category>> = MutableStateFlow(emptyList())
-    val categoryList: StateFlow<List<Category>> = _categoriesList
+    val categoryList: StateFlow<List<Category>> = _categoriesList.asStateFlow()
 
     private var _noteItemsListState: MutableStateFlow<UiState<List<NoteItem>>> =
         MutableStateFlow(UiState.Loading())
@@ -83,12 +83,6 @@ class ListViewModel @Inject constructor(
     fun onEvent(event: ListFragmentEvent) {
         viewModelScope.launch {
             when (event) {
-                is ListFragmentEvent.AddItem -> {
-                    when (val noteItem = event.noteItem) {
-                        is Note -> noteUseCases.addNote(noteItem)
-                        is Todo -> todoUseCases.addTodo(noteItem)
-                    }
-                }
                 is ListFragmentEvent.DeleteItem -> {
                     when (val noteItem = event.noteItem) {
                         is Note -> noteUseCases.deleteNote(noteItem)

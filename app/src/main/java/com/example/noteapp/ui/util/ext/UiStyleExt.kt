@@ -62,6 +62,9 @@ fun List<Category>.categoriesToFlowCategories(
 fun Date.formatToTodoDate(pattern: String? = "EE, dd.MM"): String =
     SimpleDateFormat(pattern).format(this)
 
+fun Calendar.formatToReminderString(): String =
+    SimpleDateFormat("Reminder dd.MM.yy at HH:mm").format(this)
+
 fun Date.formatToNoteDate(pattern: String? = "dd.MM.yy"): String =
     SimpleDateFormat(pattern).format(this)
 

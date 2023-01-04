@@ -10,16 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.noteapp.ui.util.CategoryOwnerType
 import com.example.domain.model.Todo
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentDetailedTodoBinding
 import com.example.noteapp.databinding.StateLoadingBinding
 import com.example.noteapp.ui.util.*
-import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
-import com.example.noteapp.ui.util.ext.formatToTodoDate
-import com.example.noteapp.ui.util.ext.showDatePicker
-import com.example.noteapp.ui.util.ext.showSnackbar
+import com.example.noteapp.ui.util.ext.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import java.util.*
@@ -71,6 +67,9 @@ class TodoDetailedFragment : Fragment() {
                             todoId = todo.id
                         )
                     findNavController().navigate(action)
+                }
+                notificationCalendar?.let {
+                    btnChangeReminderTime.text = it.formatToReminderString()
                 }
             }
             // init listeners only if loading finished successfully

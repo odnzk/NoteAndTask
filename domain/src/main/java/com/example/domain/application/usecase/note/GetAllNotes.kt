@@ -11,9 +11,9 @@ class GetAllNotes(private val noteRepository: NoteRepository) {
 
     // todo
     operator fun invoke(
-        searhQuery: String,
-        selectedCategories: List<Category>,
-        sortOrder: SortOrder
+        searhQuery: String? = "",
+        selectedCategories: List<Category> = emptyList(),
+        sortOrder: SortOrder = SortOrder.DEFAULT
     ): Flow<List<Note>> =
         noteRepository.getAll("", sortOrder, Filter.DEFAULT)
 }

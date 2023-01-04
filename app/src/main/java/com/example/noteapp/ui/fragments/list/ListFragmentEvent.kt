@@ -5,7 +5,6 @@ import com.example.domain.model.Filter
 import com.example.domain.model.SortOrder
 
 sealed interface ListFragmentEvent {
-    data class AddItem(val noteItem: NoteItem) : ListFragmentEvent
     data class UpdateTodoCompletedStatus(val todoId: Long, val isCompleted: Boolean) :
         ListFragmentEvent
 

@@ -1,24 +1,30 @@
 package com.example.noteapp.ui.dialogs.todo
 
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import androidx.work.workDataOf
 import com.example.domain.model.Todo
+import com.example.noteapp.R
 import com.example.noteapp.databinding.BottomSheetAddTodoBinding
 import com.example.noteapp.notifications.NotificationWorker
-import com.example.noteapp.ui.fragments.list.ListFragmentEvent
+import com.example.noteapp.ui.fragments.todo.list.ListTodoEvent
+import com.example.noteapp.ui.fragments.todo.list.ListTodoViewModel
+import com.example.noteapp.ui.util.ext.formatToTodoDate
 import com.example.noteapp.ui.util.ext.showDatePicker
 import com.example.noteapp.ui.util.ext.showDateTimePicker
-import com.example.noteapp.ui.fragments.list.ListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import java.util.*
 
 
@@ -27,16 +33,19 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
     private var _binding: BottomSheetAddTodoBinding? = null
     private val binding: BottomSheetAddTodoBinding get() = _binding!!
 
-    private val viewModel by viewModels<ListViewModel>()
+    private val viewModel by viewModels<ListTodoViewModel>()
+
     private val currentTodo: Todo = Todo.defaultInstance()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        observeCategories()
+
         with(binding) {
             btnAdd.setOnClickListener {
                 tilTitle.editText?.text?.let { currentTodo.title = it.toString() }
-                viewModel.onEvent(ListFragmentEvent.AddItem(currentTodo))
+                viewModel.onEvent(ListTodoEvent.AddItem(currentTodo))
                 this@AddTodoBottomSheetDialog.dismiss()
             }
 
@@ -51,15 +60,30 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
                 createReminderNotification()
             }
             btnSetRepeating.setOnClickListener {
-                // todo show spinner??
+                // todo show spinner
+            }
+        }
+    }
+
+    private fun observeCategories() {
+        with(binding) {
+            lifecycleScope.launchWhenResumed {
+                viewModel.categories.collectLatest {
+                    val categoriesTitleArray = it.map { category -> category.title }.toTypedArray()
+                    val adapter: ArrayAdapter<String> = ArrayAdapter(
+                        requireContext(),
+                        R.layout.item_spinner_row,
+                        R.id.tv_item_spinner,
+                        categoriesTitleArray
+                    )
+                    spinnerCategories.adapter = adapter
+                }
             }
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = BottomSheetAddTodoBinding.inflate(inflater, container, false)
         return binding.root
@@ -72,6 +96,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
             set(Calendar.DAY_OF_MONTH, day)
         }
         // set deadline date
+        binding.btnSetDeadline.text = Date(date.timeInMillis).formatToTodoDate()
         currentTodo.deadlineDate = Date(date.timeInMillis)
     }
 
@@ -79,17 +104,18 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
         context?.showDateTimePicker { calendar ->
             // todo check todoItem validity
             val notificationWorkRequest: WorkRequest =
-                OneTimeWorkRequestBuilder<NotificationWorker>()
-                    .setInputData(
-                        workDataOf(
-                            NotificationWorker.NOTIFICATION_TITLE_KEY to "",
-                            NotificationWorker.NOTIFICATION_CONTENT_KEY to ""
-                        )
+                OneTimeWorkRequestBuilder<NotificationWorker>().setInputData(
+                    workDataOf(
+                        NotificationWorker.NOTIFICATION_TITLE_KEY to "",
+                        NotificationWorker.NOTIFICATION_CONTENT_KEY to ""
                     )
-                    .build()
+                ).build()
+            // todo
             // 1) set constraints  or .setInitialDelay(10, TimeUnit.MINUTES)
             // 2) set information about todoItem to Worker
             WorkManager.getInstance(requireContext()).enqueue(notificationWorkRequest)
+//            binding.btnSetReminder.text = Date(calendar.timeInMillis)
+//                .formatToReminderString()
         }
     }
 
