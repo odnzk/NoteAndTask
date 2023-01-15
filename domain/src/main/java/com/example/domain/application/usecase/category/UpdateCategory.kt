@@ -5,11 +5,14 @@ import com.example.domain.model.validation.CategoryValidator
 import com.example.domain.repository.CategoryRepository
 import com.example.noteapp.ui.util.exceptions.InvalidCategoryException
 
-class UpdateCategory(private val categoryRepository: CategoryRepository) {
+class UpdateCategory(
+    private val categoryRepository: CategoryRepository,
+    private val categoryValidator: CategoryValidator
+) {
 
     @Throws(InvalidCategoryException::class)
     suspend operator fun invoke(category: Category) {
-        if (CategoryValidator().isValid(category)) {
+        if (categoryValidator.isValid(category)) {
             categoryRepository.update(category)
         }
     }

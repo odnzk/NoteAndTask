@@ -5,11 +5,14 @@ import com.example.domain.model.validation.NoteValidator
 import com.example.domain.repository.NoteRepository
 import com.example.noteapp.ui.util.exceptions.InvalidNoteException
 
-class UpdateNote(private val noteRepository: NoteRepository) {
+class UpdateNote(
+    private val noteRepository: NoteRepository,
+    private val noteValidator: NoteValidator
+) {
 
     @Throws(InvalidNoteException::class)
     suspend operator fun invoke(note: Note) {
-        if (NoteValidator().isValid(note)) {
+        if (noteValidator.isValid(note)) {
             noteRepository.update(note)
         }
     }
