@@ -15,8 +15,8 @@ data class NoteEntity(
     val content: String,
     val date: Date? = null
 ) {
-    fun mapToNote(): Note =
-        Note(id = id, title = title, content = content, categories = emptyList(), date = date)
+//    fun mapToNote(): Note =
+//        Note(id = id, title = title, content = content, categories = emptyList(), date = date)
 
     companion object {
         fun from(note: Note): NoteEntity {

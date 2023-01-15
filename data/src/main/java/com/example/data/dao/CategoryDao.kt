@@ -26,13 +26,4 @@ interface CategoryDao {
     @Query("SELECT * FROM categories")
     fun getAll(): Flow<List<CategoryEntity>>
 
-
-    @Transaction
-    @Query("SELECT * FROM NOTES WHERE id = :noteId")
-    suspend fun getNoteWithCategories(noteId: Long): NoteWithCategoriesTuple
-
-    @Transaction
-    @Query("SELECT * FROM NOTES")
-    suspend fun getAllNotesWithCategories(): NoteWithCategoriesTuple
-
 }

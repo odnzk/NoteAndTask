@@ -11,9 +11,13 @@ class GetAllNotes(private val noteRepository: NoteRepository) {
 
     // todo
     operator fun invoke(
-        searhQuery: String? = "",
+        searchQuery: String = "",
         selectedCategories: List<Category> = emptyList(),
         sortOrder: SortOrder = SortOrder.DEFAULT
     ): Flow<List<Note>> =
-        noteRepository.getAll("", sortOrder, Filter.DEFAULT)
+        noteRepository.getAll(
+            searchQuery = searchQuery,
+            sortOrder = sortOrder,
+            filter = Filter.DEFAULT
+        )
 }
