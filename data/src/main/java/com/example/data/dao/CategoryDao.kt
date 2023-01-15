@@ -2,6 +2,7 @@ package com.example.data.dao
 
 import androidx.room.*
 import com.example.data.entity.CategoryEntity
+import com.example.data.entity.tuples.NoteWithCategoriesTuple
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -26,14 +27,12 @@ interface CategoryDao {
     fun getAll(): Flow<List<CategoryEntity>>
 
 
-    // notes + categories
-//    @Query(
-//        "SELECT * from categories " +
-//                " inner join note_categories_table" +
-//                " where note_categories_table.category_id = categories.id" +
-//                " and note_categories_table.note_id = :noteId"
-//    )
-//    fun getLinkedCategoriesByNoteId(noteId: Long): Flow<List<CategoryEntity>>
+    @Transaction
+    @Query("SELECT * FROM NOTES WHERE id = :noteId")
+    suspend fun getNoteWithCategories(noteId: Long): NoteWithCategoriesTuple
 
+    @Transaction
+    @Query("SELECT * FROM NOTES")
+    suspend fun getAllNotesWithCategories(): NoteWithCategoriesTuple
 
 }
