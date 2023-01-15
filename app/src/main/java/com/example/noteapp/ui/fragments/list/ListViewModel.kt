@@ -68,12 +68,12 @@ class ListViewModel @Inject constructor(
         // todo check hierarchy
         viewModelScope.async {
             _noteItemsListState.value = UiState.Loading()
-            observeSearchAndFiltersStates().collect {
+            observeSearchAndFiltersStates().distinctUntilChanged().collectLatest {
                 _noteItemsListState.value = UiState.Success(it)
             }
         }
         viewModelScope.async {
-            categoryUseCases.getAllCategories().collectLatest {
+            categoryUseCases.getAllCategories().distinctUntilChanged().collectLatest {
                 _categoriesList.value = it
             }
         }

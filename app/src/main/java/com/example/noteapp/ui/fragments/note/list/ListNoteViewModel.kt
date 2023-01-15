@@ -6,10 +6,7 @@ import com.example.domain.application.usecase.note.NoteUseCases
 import com.example.domain.model.Note
 import com.example.noteapp.ui.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,7 +24,7 @@ class ListNoteViewModel @Inject constructor(
 
     private fun loadData() =
         viewModelScope.launch {
-            noteUseCases.getAllNotes().collectLatest {
+            noteUseCases.getAllNotes().distinctUntilChanged().collectLatest {
                 _notes.value = UiState.Success(it)
             }
         }

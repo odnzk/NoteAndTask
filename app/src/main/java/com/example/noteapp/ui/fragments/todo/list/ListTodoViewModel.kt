@@ -8,10 +8,7 @@ import com.example.domain.model.Category
 import com.example.domain.model.Todo
 import com.example.noteapp.ui.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,13 +29,13 @@ class ListTodoViewModel @Inject constructor(
     }
 
     private fun initCategories() = viewModelScope.launch {
-        categoryUseCases.getAllCategories().collectLatest {
+        categoryUseCases.getAllCategories().distinctUntilChanged().collectLatest {
             _categories.value = it
         }
     }
 
     private fun loadData() = viewModelScope.launch {
-        todoUseCases.getAllTodos().collectLatest {
+        todoUseCases.getAllTodos().distinctUntilChanged().collectLatest {
             _todos.value = UiState.Success(it)
         }
     }
