@@ -3,6 +3,9 @@ package com.example.noteapp.di.modules
 import com.example.domain.application.usecase.category.*
 import com.example.domain.application.usecase.note.*
 import com.example.domain.application.usecase.todo.*
+import com.example.domain.model.validation.CategoryValidator
+import com.example.domain.model.validation.NoteValidator
+import com.example.domain.model.validation.TodoValidator
 import com.example.domain.repository.CategoryRepository
 import com.example.domain.repository.NoteRepository
 import com.example.domain.repository.TodoRepository
@@ -18,11 +21,13 @@ class UseCasesModule {
 
     @Provides
     @Singleton
-    fun providesNoteUseCases(noteRepository: NoteRepository): NoteUseCases = NoteUseCases(
-        addNote = AddNote(noteRepository),
+    fun providesNoteUseCases(
+        noteRepository: NoteRepository, noteValidator: NoteValidator
+    ): NoteUseCases = NoteUseCases(
+        addNote = AddNote(noteRepository, noteValidator),
         deleteNote = DeleteNote(noteRepository),
         deleteAllNotes = DeleteAllNotes(noteRepository),
-        updateNote = UpdateNote(noteRepository),
+        updateNote = UpdateNote(noteRepository, noteValidator),
         addNoteCategory = AddNoteCategory(noteRepository),
         removeNoteCategory = RemoveNoteCategory(noteRepository),
         getAllNotes = GetAllNotes(noteRepository),
@@ -31,26 +36,41 @@ class UseCasesModule {
 
     @Provides
     @Singleton
-    fun providesTodoUseCases(todoRepository: TodoRepository): TodoUseCases =
-        TodoUseCases(
-            addTodo = AddTodo(todoRepository),
-            deleteTodo = DeleteTodo(todoRepository),
-            deleteAllTodo = DeleteAllTodos(todoRepository),
-            updateTodo = UpdateTodo(todoRepository),
-            updateIsCompleted = UpdateIsCompleted(todoRepository),
-            addTodoCategory = AddTodoCategory(todoRepository),
-            removeTodoCategory = RemoveTodoCategory(todoRepository),
-            getAllTodos = GetAllTodos(todoRepository),
-            getTodoById = GetTodoById(todoRepository)
-        )
+    fun providesTodoUseCases(
+        todoRepository: TodoRepository, todoValidator: TodoValidator
+    ): TodoUseCases = TodoUseCases(
+        addTodo = AddTodo(todoRepository, todoValidator),
+        deleteTodo = DeleteTodo(todoRepository),
+        deleteAllTodo = DeleteAllTodos(todoRepository),
+        updateTodo = UpdateTodo(todoRepository, todoValidator),
+        updateIsCompleted = UpdateIsCompleted(todoRepository),
+        addTodoCategory = AddTodoCategory(todoRepository),
+        removeTodoCategory = RemoveTodoCategory(todoRepository),
+        getAllTodos = GetAllTodos(todoRepository),
+        getTodoById = GetTodoById(todoRepository)
+    )
 
     @Provides
     @Singleton
-    fun providesCategoryUseCases(categoryRepository: CategoryRepository): CategoryUseCases =
-        CategoryUseCases(
-            addCategory = AddCategory(categoryRepository),
-            deleteCategory = DeleteCategory(categoryRepository),
-            updateCategory = UpdateCategory(categoryRepository),
-            getAllCategories = GetAllCategories(categoryRepository)
-        )
+    fun providesCategoryUseCases(
+        categoryRepository: CategoryRepository, categoryValidator: CategoryValidator
+    ): CategoryUseCases = CategoryUseCases(
+        addCategory = AddCategory(categoryRepository, categoryValidator),
+        deleteCategory = DeleteCategory(categoryRepository),
+        updateCategory = UpdateCategory(categoryRepository, categoryValidator),
+        getAllCategories = GetAllCategories(categoryRepository)
+    )
+
+
+    @Provides
+    @Singleton
+    fun providesNoteValidator() = NoteValidator()
+
+    @Provides
+    @Singleton
+    fun providesTodoValidator() = TodoValidator()
+
+    @Provides
+    @Singleton
+    fun providesCategoryValidator() = CategoryValidator()
 }
