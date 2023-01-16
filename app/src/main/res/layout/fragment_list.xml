@@ -7,6 +7,27 @@
     android:background="@color/main_blue"
     android:padding="@dimen/fragment_default_margin_horizontal">
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="tv_list_title, btn_clear_all" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/sv_find_by_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/rectangle_black_border"
+        app:iconifiedByDefault="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrier"
+        app:queryBackground="@android:color/transparent"
+        app:queryHint="@string/search_hint" />
+
     <TextView
         android:id="@+id/tv_list_title"
         style="@style/Headline"
@@ -41,7 +62,7 @@
         app:constraint_referenced_ids="chip_add_category"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_list_title" />
+        app:layout_constraintTop_toBottomOf="@id/sv_find_by_title" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
