@@ -25,11 +25,11 @@ class CategoryRepositoryImpl(private val dao: CategoryDao) : CategoryRepository 
     }
 
     override suspend fun getById(id: Long): Category? {
-        return dao.getById(id)?.mapToCategory()
+        return dao.getById(id)?.toCategory()
     }
 
     override fun getAll(): Flow<List<Category>> {
         return dao.getAll()
-            .map { list -> list.map { categoryEntity -> categoryEntity.mapToCategory() } }
+            .map { list -> list.map { categoryEntity -> categoryEntity.toCategory() } }
     }
 }

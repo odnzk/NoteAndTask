@@ -2,7 +2,6 @@ package com.example.data.dao
 
 import androidx.room.*
 import com.example.data.entity.CategoryEntity
-import com.example.data.entity.tuples.NoteWithCategoriesTuple
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,13 +13,13 @@ interface CategoryDao {
     @Delete
     suspend fun delete(category: CategoryEntity)
 
-    @Query("DELETE FROM categories WHERE id = :id")
+    @Query("DELETE FROM categories WHERE category_id = :id")
     suspend fun deleteById(id: Long?)
 
     @Update
     suspend fun update(category: CategoryEntity)
 
-    @Query("SELECT * FROM categories WHERE id = :id")
+    @Query("SELECT * FROM categories WHERE category_id = :id")
     suspend fun getById(id: Long): CategoryEntity?
 
     @Query("SELECT * FROM categories")

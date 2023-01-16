@@ -14,7 +14,7 @@ interface NoteDao {
     fun getAll(): Flow<List<NoteWithCategoriesTuple>>
 
     @Transaction
-    @Query("SELECT * FROM NOTES WHERE id = :noteId")
+    @Query("SELECT * FROM NOTES WHERE note_id = :noteId")
     suspend fun getById(noteId: Long): NoteWithCategoriesTuple?
 
     @Query("SELECT * FROM notes WHERE title LIKE '%' || :noteTitle || '%'")

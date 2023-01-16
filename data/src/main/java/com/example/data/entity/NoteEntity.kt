@@ -1,5 +1,6 @@
 package com.example.data.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.domain.model.Note
@@ -10,13 +11,12 @@ import java.util.*
 )
 data class NoteEntity(
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "note_id")
     val id: Long = 0,
     val title: String,
     val content: String,
     val date: Date? = null
 ) {
-//    fun mapToNote(): Note =
-//        Note(id = id, title = title, content = content, categories = emptyList(), date = date)
 
     companion object {
         fun from(note: Note): NoteEntity {
