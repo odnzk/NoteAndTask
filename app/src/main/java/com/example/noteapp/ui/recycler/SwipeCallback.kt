@@ -12,20 +12,18 @@ class SwipeCallback(
     ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
     override fun onMove(
         recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder,
-        target: RecyclerView.ViewHolder
+        viewHolder: ViewHolder,
+        target: ViewHolder
     ): Boolean {
         return true
     }
 
-    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+    override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
         viewHolder
             .adapterPosition
             .takeIf { position -> position != RecyclerView.NO_POSITION }
             ?.let { position ->
                 adapter.currentList[position]?.let { onSwipeItem(it) }
-//                todo remove all getItemId val itemId: Long = adapter.getItemId(position)
-//                onSwipe(itemId)
             }
     }
 }

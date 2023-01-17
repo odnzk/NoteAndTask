@@ -33,7 +33,6 @@ class ListViewModel @Inject constructor(
         MutableStateFlow(UiState.Loading())
     val listState = _listState.asStateFlow()
 
-    // todo
     private var lastDeletedItem: NoteItem? = null
 
     init {
@@ -42,7 +41,8 @@ class ListViewModel @Inject constructor(
 
     private fun loadData() =
         viewModelScope.launch {
-            // subscribe to noteItems
+            _listState.value = UiState.Loading()
+
             unitedUseCases
                 .getBothTodosAndNotes()
                 .distinctUntilChanged()

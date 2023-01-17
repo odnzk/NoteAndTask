@@ -8,10 +8,6 @@ class TodoAdapter : ListAdapter<Todo, TodoViewHolder>(TodoCallback()) {
     var onTodoClick: ((Long) -> Unit)? = null
     var onCheckboxClick: ((Long, Boolean) -> Unit)? = null
 
-    override fun getItemId(position: Int): Long {
-        return getItem(position).id
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder =
         TodoViewHolder.create(parent, onTodoClick, onCheckboxClick)
 
