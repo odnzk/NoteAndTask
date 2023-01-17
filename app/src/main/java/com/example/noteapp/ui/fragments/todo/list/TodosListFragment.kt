@@ -54,7 +54,6 @@ class TodosListFragment : Fragment() {
 
     private fun initRecyclerView() =
         binding.recyclerViewNotes.run {
-            initStandardVerticalRecyclerView()
             val itemTouchHelper =
                 ItemTouchHelper(SwipeCallback(todosAdapter) { removedItem ->
                     viewModel.onEvent(ListTodoEvent.DeleteItem(removedItem as Todo))
@@ -62,7 +61,7 @@ class TodosListFragment : Fragment() {
                     val listener = OnClickListener { viewModel.onEvent(ListTodoEvent.RestoreItem) }
                     showSnackbar(R.string.success_delete, listener)
                 })
-            itemTouchHelper.attachToRecyclerView(this)
+            initStandardVerticalRecyclerView(itemTouchHelper)
             adapter = todosAdapter
         }
 
