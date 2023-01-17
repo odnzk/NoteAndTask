@@ -14,7 +14,7 @@ data class CategoryEntity(
     val color: Int
 ) {
     fun toCategory(): Category =
-        Category(title, color)
+        Category(id, title, color)
 
     companion object{
         fun from(category: Category): CategoryEntity {

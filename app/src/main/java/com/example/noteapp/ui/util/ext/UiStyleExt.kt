@@ -48,11 +48,11 @@ fun Category.toChipCategory(context: Context, onCategoryChipClick: (() -> Unit)?
 fun List<Category>.categoriesToFlowCategories(
     constraintLayout: ConstraintLayout,
     flow: Flow,
-    onCategoryChipClick: (() -> Unit)? = null
+    onCategoryChipClick: ((Long) -> Unit)? = null
 ) {
     forEach { category ->
         val categoryChip = category.toChipCategory(constraintLayout.context) {
-            onCategoryChipClick?.invoke()
+            onCategoryChipClick?.invoke(category.id)
         }
         constraintLayout.addView(categoryChip)
         flow.addView(categoryChip)

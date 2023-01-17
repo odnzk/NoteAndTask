@@ -1,17 +1,21 @@
 package com.example.noteapp.ui.fragments.list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.both.UnitedUseCases
 import com.example.domain.application.usecase.category.CategoryUseCases
 import com.example.domain.application.usecase.note.NoteUseCases
 import com.example.domain.application.usecase.todo.TodoUseCases
-import com.example.domain.model.*
+import com.example.domain.model.Note
+import com.example.domain.model.NoteItem
+import com.example.domain.model.Todo
 import com.example.noteapp.ui.util.PreferenceStorage
 import com.example.noteapp.ui.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,16 +29,9 @@ class ListViewModel @Inject constructor(
 ) :
     ViewModel() {
 
-    private val searchQuery = MutableStateFlow("")
-    private val filter = MutableStateFlow(Filter.BOTH)
-
-    // todo (unite to one state?)
-    private var _categoriesList: MutableStateFlow<List<Category>> = MutableStateFlow(emptyList())
-    val categoryList = _categoriesList.asStateFlow()
-
-    private var _noteItemsListState: MutableStateFlow<UiState<List<NoteItem>>> =
+    private var _listState: MutableStateFlow<UiState<ListFragmentState>> =
         MutableStateFlow(UiState.Loading())
-    val noteItemsListState = _noteItemsListState.asStateFlow()
+    val listState = _listState.asStateFlow()
 
     private var lastDeletedItem: NoteItem? = null
 
@@ -42,33 +39,35 @@ class ListViewModel @Inject constructor(
         loadData()
     }
 
-    fun loadData() =
+    private fun loadData() =
         viewModelScope.launch {
-            // subscribe to notes and tasks list
-            launch {
-//                unitedUseCases
-//                    .getBothTodosAndNotes(searchQuery.value, filter.value)
-//                    .distinctUntilChanged()
-//                    .collectLatest {
-//                        Log.d("hello", "updating list")
-//                        _noteItemsListState.value = UiState.Success(it)
-//                    }
-            }
-            combine(searchQuery, unitedUseCases.getBothTodosAndNotes(searchQuery.value, filter.value)){searchQuery, notesAndTasks->
-            }.collectLatest {
-                Log.d("hello", "collecting...")
-            }
-//            searchQuery.collectLatest {
-//                _noteItemsListState.value = UiState.Loading()
-//
-//            }
+            // subscribe to noteItems
+            unitedUseCases
+                .getBothTodosAndNotes()
+                .distinctUntilChanged()
+                .collectLatest { noteItems ->
+                    // if state = Success -> update existing state
+                    listState.value.data?.let {
+                        _listState.value = UiState.Success(it.copy(noteItems = noteItems))
+                    } ?: run {
+                        // if state != Success -> create new state
+                        _listState.value = UiState.Success(ListFragmentState(noteItems = noteItems))
+                    }
+                }
 
             // subscribe to categories
             categoryUseCases
                 .getAllCategories()
                 .distinctUntilChanged()
-                .collectLatest {
-                    _categoriesList.value = it
+                .collectLatest { categories ->
+                    // if state = Success -> update existing state
+                    listState.value.data?.let {
+                        _listState.value = UiState.Success(it.copy(categories = categories))
+                    } ?: run {
+                        // if state != Success -> create new state
+                        _listState.value =
+                            UiState.Success(ListFragmentState(categories = categories))
+                    }
                 }
         }
 
@@ -90,15 +89,18 @@ class ListViewModel @Inject constructor(
                         }
                     }
                 }
-                is ListFragmentEvent.UpdateFilter -> filter.value = event.filter
+                is ListFragmentEvent.UpdateFilter -> listState.value.data?.let {
+                    _listState.value = UiState.Success(it.copy(filter = event.filter))
+                }
                 is ListFragmentEvent.ClearAll -> unitedUseCases.deleteAll()
                 is ListFragmentEvent.UpdateTodoCompletedStatus -> {
                     todoUseCases.updateIsCompleted(event.todoId, event.isCompleted)
                 }
-                is ListFragmentEvent.UpdateSearchQuery -> {
-                    searchQuery.value = event.query
-                    Log.d("hello", "changed in view model to ${searchQuery.value}")
+                is ListFragmentEvent.UpdateSearchQuery -> listState.value.data?.let {
+                    _listState.value = UiState.Success(it.copy(searchQuery = event.query))
                 }
+                ListFragmentEvent.ReloadData -> TODO()
+                is ListFragmentEvent.UpdateSelectedCategoryId -> TODO()
             }
         }
     }
