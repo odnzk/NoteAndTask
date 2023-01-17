@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 class SwipeCallback(
     private val adapter: ListAdapter<out Any, out ViewHolder>,
-    private inline val onSwipe: (Long) -> Unit
+    private inline val onSwipeItem: (Any?) -> Unit
 ) :
     ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
     override fun onMove(
@@ -23,8 +23,9 @@ class SwipeCallback(
             .adapterPosition
             .takeIf { position -> position != RecyclerView.NO_POSITION }
             ?.let { position ->
-                val itemId: Long = adapter.getItemId(position)
-                onSwipe(itemId)
+                adapter.currentList[position]?.let { onSwipeItem(it) }
+//                todo remove all getItemId val itemId: Long = adapter.getItemId(position)
+//                onSwipe(itemId)
             }
     }
 }

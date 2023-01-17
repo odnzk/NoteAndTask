@@ -15,6 +15,8 @@
     <string name="success_delete">Successfully deleted</string>
     <string name="success_save">Successfully saved</string>
 
+    <string name="action_undo">Undo</string>
+
     <string name="hint_note_title">Enter note title</string>
     <string name="hint_note_content">Enter note content</string>
 

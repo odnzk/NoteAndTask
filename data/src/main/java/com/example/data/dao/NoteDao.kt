@@ -24,8 +24,8 @@ interface NoteDao {
     @Insert(onConflict = REPLACE)
     suspend fun insert(note: NoteEntity): Long
 
-    @Delete
-    suspend fun delete(note: NoteEntity)
+    @Query("DELETE FROM notes WHERE note_id = :noteId")
+    suspend fun delete(noteId: Long)
 
     @Update(onConflict = REPLACE)
     suspend fun update(note: NoteEntity)

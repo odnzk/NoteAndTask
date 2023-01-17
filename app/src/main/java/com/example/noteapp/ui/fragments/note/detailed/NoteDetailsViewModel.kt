@@ -56,7 +56,7 @@ class NoteDetailsViewModel @Inject constructor(
             }
             is NoteDetailedEvent.DeleteNote -> {
                 // if UiState.Loading or UiState.Error do nothing
-                note.value.data?.let { noteUseCases.deleteNote(it) }
+                note.value.data?.let { noteUseCases.deleteNote(it.id) }
             }
             NoteDetailedEvent.TryLoadingNoteAgain -> loadData()
         }
