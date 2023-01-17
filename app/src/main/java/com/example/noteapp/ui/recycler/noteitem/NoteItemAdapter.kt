@@ -15,6 +15,7 @@ class NoteItemAdapter : ListAdapter<NoteItem, RecyclerView.ViewHolder>(NoteItemD
     var onTodoClick: ((Long) -> Unit)? = null // (todoId: Long) -> Unit
     var onTodoCheckboxClick: ((Long, Boolean) -> Unit)? = null // (todoId: Long) -> Unit
 
+
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is Note -> R.layout.item_note

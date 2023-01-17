@@ -48,6 +48,7 @@ class ListTodoViewModel @Inject constructor(
                 event.todoId, event.isCompleted
             )
             is ListTodoEvent.AddItem -> todoUseCases.addTodo(event.todo)
+            is ListTodoEvent.DeleteItem -> todoUseCases.deleteTodo(event.id)
         }
     }
 

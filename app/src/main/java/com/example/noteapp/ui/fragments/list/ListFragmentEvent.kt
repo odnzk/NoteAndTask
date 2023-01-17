@@ -1,6 +1,5 @@
 package com.example.noteapp.ui.fragments.list
 
-import com.example.domain.model.Category
 import com.example.domain.model.Filter
 import com.example.domain.model.NoteItem
 

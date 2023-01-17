@@ -1,7 +1,10 @@
 package com.example.data.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.Query
+import androidx.room.Update
 import com.example.data.entity.TodoEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -10,8 +13,8 @@ interface TodoDao {
     @Insert(onConflict = REPLACE)
     suspend fun add(todo: TodoEntity): Long
 
-    @Delete
-    suspend fun delete(todo: TodoEntity)
+    @Query("DELETE FROM todos WHERE id = :todoId")
+    suspend fun delete(todoId: Long)
 
     @Update
     suspend fun update(todo: TodoEntity)

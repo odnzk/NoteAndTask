@@ -77,7 +77,7 @@ class ListViewModel @Inject constructor(
                 is ListFragmentEvent.DeleteItem -> {
                     when (val noteItem = event.noteItem) {
                         is Note -> noteUseCases.deleteNote(noteItem)
-                        is Todo -> todoUseCases.deleteTodo(noteItem)
+                        is Todo -> todoUseCases.deleteTodo(noteItem.id)
                     }
                     lastDeletedItem = event.noteItem
                 }
