@@ -10,7 +10,6 @@ class NoteAdapter : ListAdapter<Note, NoteViewHolder>(NoteCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         NoteViewHolder.create(parent, onNoteClick)
 
-
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) =
         holder.bind(getItem(position))
 }

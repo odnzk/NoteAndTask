@@ -7,7 +7,7 @@ interface TodoRepository {
 
     suspend fun add(todo: Todo): Long
 
-    suspend fun delete(todo: Todo)
+    suspend fun delete(id: Long)
 
     suspend fun update(todo: Todo)
 

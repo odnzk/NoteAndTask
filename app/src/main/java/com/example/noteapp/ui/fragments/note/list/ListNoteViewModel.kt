@@ -6,7 +6,10 @@ import com.example.domain.application.usecase.note.NoteUseCases
 import com.example.domain.model.Note
 import com.example.noteapp.ui.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,7 +19,10 @@ class ListNoteViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var _notes: MutableStateFlow<UiState<List<Note>>> = MutableStateFlow(UiState.Loading())
-    val notes: StateFlow<UiState<List<Note>>> = _notes.asStateFlow()
+    val notes = _notes.asStateFlow()
+
+    private var recentlyRemoved: Note? = null
+
 
     init {
         loadData()
@@ -35,6 +41,13 @@ class ListNoteViewModel @Inject constructor(
             when (event) {
                 is ListNoteEvent.ClearAll -> noteUseCases.deleteAllNotes()
                 is ListNoteEvent.TryAgain -> loadData()
+                is ListNoteEvent.DeleteItem -> {
+                    noteUseCases.deleteNote(event.note.id)
+                    recentlyRemoved = event.note
+                }
+                ListNoteEvent.RestoreItem -> recentlyRemoved?.let {
+                    noteUseCases.addNote(it)
+                }
             }
         }
 

@@ -8,7 +8,10 @@ import com.example.domain.model.Category
 import com.example.domain.model.Todo
 import com.example.noteapp.ui.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,8 +21,11 @@ class ListTodoViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var _todos: MutableStateFlow<UiState<List<Todo>>> = MutableStateFlow(UiState.Loading())
-    val todos: StateFlow<UiState<List<Todo>>> = _todos
+    val todos = _todos.asStateFlow()
 
+    private var recentlyRemoved: Todo? = null
+
+    // for AddTodoBottomSheetDialog
     private var _categories: MutableStateFlow<List<Category>> = MutableStateFlow(emptyList())
     val categories = _categories.asStateFlow()
 
@@ -48,6 +54,11 @@ class ListTodoViewModel @Inject constructor(
                 event.todoId, event.isCompleted
             )
             is ListTodoEvent.AddItem -> todoUseCases.addTodo(event.todo)
+            is ListTodoEvent.DeleteItem -> {
+                recentlyRemoved = event.todo
+                todoUseCases.deleteTodo(event.todo.id)
+            }
+            ListTodoEvent.RestoreItem -> recentlyRemoved?.let { todoUseCases.addTodo(it) }
         }
     }
 

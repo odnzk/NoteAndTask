@@ -1,6 +1,5 @@
 package com.example.noteapp.ui.fragments.list
 
-import com.example.domain.model.Category
 import com.example.domain.model.Filter
 import com.example.domain.model.NoteItem
 
@@ -9,8 +8,8 @@ sealed interface ListFragmentEvent {
         ListFragmentEvent
 
     data class DeleteItem(val noteItem: NoteItem) : ListFragmentEvent
-
     object RestoreItem : ListFragmentEvent
+
     object ClearAll : ListFragmentEvent
     object ReloadData : ListFragmentEvent
 

@@ -8,13 +8,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.domain.model.Note
+import com.example.domain.model.NoteItem
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentNotesListBinding
 import com.example.noteapp.databinding.StateLoadingBinding
+import com.example.noteapp.ui.fragments.list.ListFragmentEvent
+import com.example.noteapp.ui.recycler.SwipeCallback
 import com.example.noteapp.ui.recycler.note.NoteAdapter
 import com.example.noteapp.ui.util.errorOccurred
 import com.example.noteapp.ui.util.ext.initStandardVerticalRecyclerView
+import com.example.noteapp.ui.util.ext.showSnackbar
 import com.example.noteapp.ui.util.handleState
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
@@ -48,7 +53,15 @@ class NotesListFragment : Fragment() {
 
     private fun initRecyclerView() =
         binding.recyclerViewNotes.run {
-            initStandardVerticalRecyclerView()
+            val itemTouchHelper =
+                ItemTouchHelper(SwipeCallback(notesAdapter) { removedItem ->
+                    viewModel.onEvent(ListNoteEvent.DeleteItem(removedItem as Note))
+                    // undo listener
+                    val listener =
+                        View.OnClickListener { viewModel.onEvent(ListNoteEvent.RestoreItem) }
+                    showSnackbar(R.string.success_delete, listener)
+                })
+            initStandardVerticalRecyclerView(itemTouchHelper)
             adapter = notesAdapter
         }
 

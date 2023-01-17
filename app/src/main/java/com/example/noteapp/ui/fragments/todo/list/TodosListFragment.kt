@@ -3,18 +3,22 @@ package com.example.noteapp.ui.fragments.todo.list
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.domain.model.Todo
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentTodosListBinding
 import com.example.noteapp.databinding.StateLoadingBinding
+import com.example.noteapp.ui.recycler.SwipeCallback
 import com.example.noteapp.ui.recycler.todo.TodoAdapter
 import com.example.noteapp.ui.util.errorOccurred
 import com.example.noteapp.ui.util.ext.initStandardVerticalRecyclerView
+import com.example.noteapp.ui.util.ext.showSnackbar
 import com.example.noteapp.ui.util.handleState
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
@@ -50,7 +54,14 @@ class TodosListFragment : Fragment() {
 
     private fun initRecyclerView() =
         binding.recyclerViewNotes.run {
-            initStandardVerticalRecyclerView()
+            val itemTouchHelper =
+                ItemTouchHelper(SwipeCallback(todosAdapter) { removedItem ->
+                    viewModel.onEvent(ListTodoEvent.DeleteItem(removedItem as Todo))
+                    // undo listener
+                    val listener = OnClickListener { viewModel.onEvent(ListTodoEvent.RestoreItem) }
+                    showSnackbar(R.string.success_delete, listener)
+                })
+            initStandardVerticalRecyclerView(itemTouchHelper)
             adapter = todosAdapter
         }
 

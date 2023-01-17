@@ -47,7 +47,7 @@ class TodoDetailsViewModel @Inject constructor(
             is TodoDetailedEvent.DeleteTodo -> {
                 // if UiState.Loading or UiState.Error do nothing
                 todo.value.data?.let {
-                    todoUseCases.deleteTodo(it)
+                    todoUseCases.deleteTodo(it.id)
                 }
             }
             is TodoDetailedEvent.TryLoadingTodoAgain -> loadData()

@@ -9,6 +9,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.Category
@@ -20,9 +21,10 @@ import java.util.*
 
 //private const val CATEGORY_NOT_SELECTED_COLOR_ALPHA = 30
 
-fun RecyclerView.initStandardVerticalRecyclerView() {
+fun RecyclerView.initStandardVerticalRecyclerView(itemTouchHelper: ItemTouchHelper? = null) {
     this.apply {
         layoutManager = LinearLayoutManager(context)
+        itemTouchHelper?.attachToRecyclerView(this)
         addItemDecoration(
             DividerItemDecoration(
                 this.context,

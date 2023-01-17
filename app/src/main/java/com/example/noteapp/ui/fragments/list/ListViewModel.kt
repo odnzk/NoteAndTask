@@ -33,7 +33,7 @@ class ListViewModel @Inject constructor(
         MutableStateFlow(UiState.Loading())
     val listState = _listState.asStateFlow()
 
-    private var lastDeletedItem: NoteItem? = null
+    private var recentlyRemoved: NoteItem? = null
 
     init {
         loadData()
@@ -41,7 +41,8 @@ class ListViewModel @Inject constructor(
 
     private fun loadData() =
         viewModelScope.launch {
-            // subscribe to noteItems
+            _listState.value = UiState.Loading()
+
             unitedUseCases
                 .getBothTodosAndNotes()
                 .distinctUntilChanged()
@@ -76,13 +77,13 @@ class ListViewModel @Inject constructor(
             when (event) {
                 is ListFragmentEvent.DeleteItem -> {
                     when (val noteItem = event.noteItem) {
-                        is Note -> noteUseCases.deleteNote(noteItem)
-                        is Todo -> todoUseCases.deleteTodo(noteItem)
+                        is Note -> noteUseCases.deleteNote(noteItem.id)
+                        is Todo -> todoUseCases.deleteTodo(noteItem.id)
                     }
-                    lastDeletedItem = event.noteItem
+                    recentlyRemoved = event.noteItem
                 }
                 is ListFragmentEvent.RestoreItem -> {
-                    lastDeletedItem?.let { noteItem ->
+                    recentlyRemoved?.let { noteItem ->
                         when (noteItem) {
                             is Note -> noteUseCases.addNote(noteItem)
                             is Todo -> todoUseCases.addTodo(noteItem)

@@ -12,8 +12,8 @@ class TodoRepositoryImpl(private val dao: TodoDao) : TodoRepository {
         return dao.add(TodoEntity.from(todo))
     }
 
-    override suspend fun delete(todo: Todo) {
-        dao.delete(TodoEntity.from(todo))
+    override suspend fun delete(id: Long) {
+        dao.delete(id)
     }
 
     override suspend fun update(todo: Todo) {
