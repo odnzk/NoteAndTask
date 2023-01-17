@@ -1,8 +1,7 @@
 package com.example.noteapp.ui.fragments.list
 
-import com.example.domain.model.NoteItem
 import com.example.domain.model.Filter
-import com.example.domain.model.SortOrder
+import com.example.domain.model.NoteItem
 
 sealed interface ListFragmentEvent {
     data class UpdateTodoCompletedStatus(val todoId: Long, val isCompleted: Boolean) :
@@ -12,8 +11,9 @@ sealed interface ListFragmentEvent {
     object RestoreItem : ListFragmentEvent
     object ClearAll : ListFragmentEvent
 
-    data class UpdateSortOrder(val sortOrder: SortOrder) : ListFragmentEvent
+    // todo
     data class UpdateFilter(val filter: Filter) : ListFragmentEvent
+    data class UpdateSearchQuery(val query: String) : ListFragmentEvent
 }
 
 

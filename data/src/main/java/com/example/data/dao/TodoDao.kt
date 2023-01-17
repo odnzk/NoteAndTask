@@ -28,6 +28,9 @@ interface TodoDao {
     @Query("SELECT * FROM todos")
     fun getAll(): Flow<List<TodoEntity>>
 
+    @Query("SELECT * FROM todos WHERE title LIKE '%' || :title || '%'")
+    fun getByTitle(title: String): Flow<List<TodoEntity>>
+
     @Query("delete from todo_categories_table where todo_id = :todoId AND category_id =:categoryId")
     suspend fun removeTodoCategory(todoId: Long, categoryId: Long)
 

@@ -1,5 +1,8 @@
 package com.example.noteapp.di.modules
 
+import com.example.domain.application.usecase.both.DeleteAll
+import com.example.domain.application.usecase.both.GetBothTodosAndNotes
+import com.example.domain.application.usecase.both.UnitedUseCases
 import com.example.domain.application.usecase.category.*
 import com.example.domain.application.usecase.note.*
 import com.example.domain.application.usecase.todo.*
@@ -60,6 +63,14 @@ class UseCasesModule {
         updateCategory = UpdateCategory(categoryRepository, categoryValidator),
         getAllCategories = GetAllCategories(categoryRepository)
     )
+
+    @Provides
+    @Singleton
+    fun providesUnitedUseCases(noteRepository: NoteRepository, todoRepository: TodoRepository) =
+        UnitedUseCases(
+            deleteAll = DeleteAll(noteRepository = noteRepository, todoRepository = todoRepository),
+            getBothTodosAndNotes = GetBothTodosAndNotes(noteRepository, todoRepository)
+        )
 
 
     @Provides

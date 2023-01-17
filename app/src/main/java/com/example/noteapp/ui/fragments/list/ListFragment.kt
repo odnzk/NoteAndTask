@@ -1,9 +1,11 @@
 package com.example.noteapp.ui.fragments.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -40,6 +42,18 @@ class ListFragment : Fragment() {
         initRecyclerView()
 
         with(binding) {
+            svFindByTitle.setOnQueryTextListener(object : OnQueryTextListener {
+                override fun onQueryTextSubmit(p0: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(p0: String?): Boolean {
+                    p0?.let {
+                        viewModel.onEvent(ListFragmentEvent.UpdateSearchQuery(it))
+                    }
+                    return false
+                }
+            })
             btnClearAll.setOnClickListener {
                 viewModel.onEvent(ListFragmentEvent.ClearAll)
             }

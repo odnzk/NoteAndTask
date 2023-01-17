@@ -2,9 +2,7 @@ package com.example.data.repository
 
 import com.example.data.dao.NoteDao
 import com.example.data.entity.NoteEntity
-import com.example.domain.model.Filter
 import com.example.domain.model.Note
-import com.example.domain.model.SortOrder
 import com.example.domain.repository.NoteRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -25,18 +23,14 @@ class NoteRepositoryImpl(
 
     override suspend fun getById(id: Long): Note? = dao.getById(id)?.toNote()
 
-    override fun getByTitle(title: String): Flow<List<Note>> =
-        dao.getByTitle(title).map { list -> list.map { it.toNote() } }
-
     override suspend fun deleteAll() {
         dao.deleteAll()
     }
 
-    override fun getAll(
-        searchQuery: String,
-        sortOrder: SortOrder,
-        filter: Filter
-    ): Flow<List<Note>> = dao.getAll().map { list -> list.map { it.toNote() } }
+    override fun getAll(): Flow<List<Note>> = dao.getAll().map { list -> list.map { it.toNote() } }
+
+    override fun getByTitle(title: String): Flow<List<Note>> =
+        dao.getByTitle(title).map { list -> list.map { it.toNote() } }
 
     override suspend fun addCategory(noteId: Long, categoryId: Long) {
         dao.insertNoteCategory(noteId, categoryId)

@@ -20,9 +20,12 @@ class TodoRepositoryImpl(private val dao: TodoDao) : TodoRepository {
         dao.update(TodoEntity.from(todo))
     }
 
-    override fun getAll(): Flow<List<Todo>> {
-        return dao.getAll().map { list -> list.map { todoEntity -> todoEntity.toTodo() } }
-    }
+    override fun getAll(): Flow<List<Todo>> =
+        dao.getAll().map { list -> list.map { todoEntity -> todoEntity.toTodo() } }
+
+
+    override fun getByTitle(title: String): Flow<List<Todo>> =
+        dao.getByTitle(title).map { list -> list.map { todoEntity -> todoEntity.toTodo() } }
 
     override suspend fun getById(id: Long): Todo? {
         return dao.getById(id)?.toTodo()

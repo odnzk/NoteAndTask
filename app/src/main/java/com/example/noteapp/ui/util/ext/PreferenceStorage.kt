@@ -25,7 +25,7 @@ class PreferenceStorage @Inject constructor(@ApplicationContext private val appl
             val sortOrder =
                 SortOrder.valueOf(preferences[PreferenceKeys.SORT_ORDER] ?: SortOrder.DEFAULT.name)
             val filter =
-                Filter.valueOf(preferences[PreferenceKeys.FILTER] ?: Filter.DEFAULT.name)
+                Filter.valueOf(preferences[PreferenceKeys.FILTER] ?: Filter.BOTH.name)
             FilterInfo(sortOrder, filter)
         }
 

@@ -1,8 +1,6 @@
 package com.example.domain.repository
 
-import com.example.domain.model.Filter
 import com.example.domain.model.Note
-import com.example.domain.model.SortOrder
 import kotlinx.coroutines.flow.Flow
 
 
@@ -17,9 +15,9 @@ interface NoteRepository {
 
     suspend fun getById(id: Long): Note?
 
-    fun getByTitle(title: String): Flow<List<Note>>
+    fun getAll(): Flow<List<Note>>
 
-    fun getAll(searchQuery: String, sortOrder: SortOrder, filter: Filter): Flow<List<Note>>
+    fun getByTitle(title: String): Flow<List<Note>>
 
     suspend fun addCategory(noteId: Long, categoryId: Long)
 
