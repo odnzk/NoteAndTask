@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_blue"
-    android:padding="@dimen/fragment_default_margin_horizontal">
+    android:paddingHorizontal="@dimen/fragment_default_margin_horizontal"
+    android:paddingTop="@dimen/fragment_default_margin_horizontal">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/sv_find_by_title"

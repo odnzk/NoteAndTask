@@ -7,6 +7,8 @@ import com.example.data.dao.CategoryDao
 import com.example.data.dao.NoteDao
 import com.example.data.dao.TodoDao
 import com.example.data.entity.*
+import com.example.data.entity.jtable.NoteCategoryTable
+import com.example.data.entity.jtable.TodoCategoryTable
 import com.example.data.util.RoomTypeConverter
 
 @Database(

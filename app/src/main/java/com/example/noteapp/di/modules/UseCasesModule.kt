@@ -20,7 +20,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class UseCasesModule {
+object UseCasesModule {
 
     @Provides
     @Singleton

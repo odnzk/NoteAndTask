@@ -2,10 +2,14 @@ package com.example.noteapp.di.modules
 
 import android.app.Application
 import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.example.data.AppDatabase
 import com.example.data.dao.CategoryDao
 import com.example.data.dao.NoteDao
 import com.example.data.dao.TodoDao
+import com.example.data.mapper.CategoryMapper
+import com.example.data.mapper.NoteMapper
+import com.example.data.mapper.TodoMapper
 import com.example.data.repository.CategoryRepositoryImpl
 import com.example.data.repository.NoteRepositoryImpl
 import com.example.data.repository.TodoRepositoryImpl
@@ -32,27 +36,28 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun providesNotesDao(database: AppDatabase) = database.noteDao()
+    fun providesNotesDao(database: AppDatabase): NoteDao = database.noteDao()
 
     @Singleton
     @Provides
-    fun providesTodoDao(database: AppDatabase) = database.todoDao()
+    fun providesTodoDao(database: AppDatabase): TodoDao = database.todoDao()
 
     @Singleton
     @Provides
-    fun providesCategoryDao(database: AppDatabase) = database.categoryDao()
+    fun providesCategoryDao(database: AppDatabase): CategoryDao = database.categoryDao()
 
     @Provides
     @Singleton
-    fun providesNoteRepository(noteDao: NoteDao): NoteRepository = NoteRepositoryImpl(noteDao)
+    fun providesNoteRepository(noteDao: NoteDao, noteMapper: NoteMapper): NoteRepository = NoteRepositoryImpl(noteDao, noteMapper)
 
     @Provides
     @Singleton
-    fun providesTodoRepository(todoDao: TodoDao): TodoRepository = TodoRepositoryImpl(todoDao)
+    fun providesTodoRepository(todoDao: TodoDao, todoMapper: TodoMapper): TodoRepository = TodoRepositoryImpl(todoDao, todoMapper)
 
     @Provides
     @Singleton
-    fun providesCategoryRepository(categoryDao: CategoryDao): CategoryRepository =
-        CategoryRepositoryImpl(categoryDao)
+    fun providesCategoryRepository(categoryDao: CategoryDao, categoryMapper: CategoryMapper): CategoryRepository =
+        CategoryRepositoryImpl(categoryDao, categoryMapper)
+
 
 }

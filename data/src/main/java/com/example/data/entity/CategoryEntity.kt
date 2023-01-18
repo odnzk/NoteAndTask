@@ -13,16 +13,5 @@ data class CategoryEntity(
     val title: String,
     val color: Int
 ) {
-    fun toCategory(): Category =
-        Category(id, title, color)
-
-    companion object{
-        fun from(category: Category): CategoryEntity {
-            return CategoryEntity(
-                title = category.title,
-                color = category.color
-            )
-        }
-    }
 }
 
