@@ -5,9 +5,9 @@ import com.example.domain.model.Filter
 import com.example.domain.model.NoteItem
 
 data class ListFragmentState(
-    val searchQuery: String = "",
-    val filter: Filter = Filter.BOTH,
-    val selectedCategory: Category? = null,
+//    val searchQuery: String = "", // no loading/error state
+//    val filter: Filter = Filter.BOTH, // no loading/error state
+//    val selectedCategory: Category? = null, // no loading/error state
     val noteItems: List<NoteItem> = emptyList(),
     val categories: List<Category> = emptyList()
 )
