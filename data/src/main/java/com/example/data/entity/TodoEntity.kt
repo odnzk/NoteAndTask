@@ -15,24 +15,4 @@ data class TodoEntity(
     @ColumnInfo(name = "category_id") val categoryId: Int?,
     @ColumnInfo(name = "deadline_date") val deadlineDate: Date?
 ) {
-
-    fun toTodo(): Todo = Todo(
-        id = id,
-        title = title,
-        isCompleted = isCompleted,
-        categories = emptyList(),
-        deadlineDate = deadlineDate,
-    )
-
-    companion object {
-        fun from(todo: Todo): TodoEntity {
-            return TodoEntity(
-                id = todo.id,
-                title = todo.title,
-                isCompleted = todo.isCompleted,
-                categoryId = null,
-                deadlineDate = todo.deadlineDate
-            )
-        }
-    }
 }

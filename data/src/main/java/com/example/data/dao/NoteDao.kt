@@ -3,7 +3,7 @@ package com.example.data.dao
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
 import com.example.data.entity.NoteEntity
-import com.example.data.entity.tuples.NoteWithCategoriesTuple
+import com.example.data.tuples.NoteWithCategoriesTuple
 import kotlinx.coroutines.flow.Flow
 
 @Dao

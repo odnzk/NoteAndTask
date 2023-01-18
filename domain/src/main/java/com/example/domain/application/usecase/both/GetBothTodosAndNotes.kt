@@ -1,5 +1,6 @@
 package com.example.domain.application.usecase.both
 
+import com.example.domain.model.Category
 import com.example.domain.model.Filter
 import com.example.domain.model.NoteItem
 import com.example.domain.repository.NoteRepository
@@ -15,7 +16,8 @@ class GetBothTodosAndNotes
 
     operator fun invoke(
         searchQuery: String = "",
-        filter: Filter = Filter.BOTH
+        filter: Filter = Filter.BOTH,
+        selectedCategory: Category? = null
     ): Flow<List<NoteItem>> {
         val notes = noteRepository.getByTitle(searchQuery)
         val tasks = todoRepository.getByTitle(searchQuery)

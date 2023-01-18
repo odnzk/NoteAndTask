@@ -17,16 +17,5 @@ data class NoteEntity(
     val content: String,
     val date: Date? = null
 ) {
-
-    companion object {
-        fun from(note: Note): NoteEntity {
-            return NoteEntity(
-                id = note.id,
-                title = note.title,
-                content = note.content,
-                date = note.date
-            )
-        }
-    }
 }
 
