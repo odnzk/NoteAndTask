@@ -2,14 +2,10 @@ package com.example.noteapp.di.modules
 
 import android.app.Application
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.example.data.AppDatabase
 import com.example.data.dao.CategoryDao
 import com.example.data.dao.NoteDao
 import com.example.data.dao.TodoDao
-import com.example.data.mapper.CategoryMapper
-import com.example.data.mapper.NoteMapper
-import com.example.data.mapper.TodoMapper
 import com.example.data.repository.CategoryRepositoryImpl
 import com.example.data.repository.NoteRepositoryImpl
 import com.example.data.repository.TodoRepositoryImpl
@@ -48,16 +44,16 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun providesNoteRepository(noteDao: NoteDao, noteMapper: NoteMapper): NoteRepository = NoteRepositoryImpl(noteDao, noteMapper)
+    fun providesNoteRepository(noteDao: NoteDao): NoteRepository = NoteRepositoryImpl(noteDao)
 
     @Provides
     @Singleton
-    fun providesTodoRepository(todoDao: TodoDao, todoMapper: TodoMapper): TodoRepository = TodoRepositoryImpl(todoDao, todoMapper)
+    fun providesTodoRepository(todoDao: TodoDao): TodoRepository = TodoRepositoryImpl(todoDao)
 
     @Provides
     @Singleton
-    fun providesCategoryRepository(categoryDao: CategoryDao, categoryMapper: CategoryMapper): CategoryRepository =
-        CategoryRepositoryImpl(categoryDao, categoryMapper)
+    fun providesCategoryRepository(categoryDao: CategoryDao): CategoryRepository =
+        CategoryRepositoryImpl(categoryDao)
 
 
 }
