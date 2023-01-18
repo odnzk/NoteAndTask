@@ -14,7 +14,6 @@ import com.example.domain.model.NoteItem
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentListBinding
 import com.example.noteapp.databinding.StateLoadingBinding
-import com.example.noteapp.ui.fragments.todo.list.ListTodoEvent
 import com.example.noteapp.ui.recycler.SwipeCallback
 import com.example.noteapp.ui.recycler.noteitem.NoteItemAdapter
 import com.example.noteapp.ui.util.errorOccurred

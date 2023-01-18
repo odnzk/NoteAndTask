@@ -104,7 +104,7 @@
         <item name="flow_horizontalBias">0</item>
         <item name="flow_wrapMode">chain</item>
         <item name="flow_horizontalGap">4dp</item>
-        <item name="flow_verticalGap">4dp</item>
+        <item name="flow_verticalGap">2dp</item>
         <item name="flow_horizontalStyle">packed</item>
     </style>
 

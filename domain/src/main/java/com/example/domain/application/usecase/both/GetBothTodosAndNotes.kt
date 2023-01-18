@@ -16,9 +16,6 @@ class GetBothTodosAndNotes
 
     operator fun invoke(
         filterInfo: FiltersInfo
-//        searchQuery: String = "",
-//        filter: Filter = Filter.BOTH,
-//        selectedCategory: Category? = null
     ): Flow<List<NoteItem>> {
         val notes = noteRepository.getByTitle(filterInfo.searchQuery)
         val tasks = todoRepository.getByTitle(filterInfo.searchQuery)

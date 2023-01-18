@@ -48,18 +48,6 @@ class ListViewModel @Inject constructor(
             _listState.value = UiState.Loading()
 
             updateNoteItemList(filterInfo.value)
-//            unitedUseCases
-//                .getBothTodosAndNotes()
-//                .distinctUntilChanged()
-//                .collectLatest { noteItems ->
-//                    // if state = Success -> update existing state
-//                    listState.value.data?.let {
-//                        _listState.value = UiState.Success(it.copy(noteItems = noteItems))
-//                    } ?: run {
-//                        // if state != Success -> create new state
-//                        _listState.value = UiState.Success(ListFragmentState(noteItems = noteItems))
-//                    }
-//                }
 
             // subscribe to categories
             categoryUseCases
