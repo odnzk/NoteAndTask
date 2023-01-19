@@ -20,7 +20,7 @@ fun Spinner.init(
 }
 
 fun Spinner.init(
-    array: Array<String>,
+    array: Array<String>
 ) {
     ArrayAdapter(
         context,
@@ -30,6 +30,7 @@ fun Spinner.init(
         adapter = it
     }
 }
+
 
 
 

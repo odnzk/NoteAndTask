@@ -5,6 +5,7 @@ data class FiltersInfo(
     val searchQuery: String = "", // no loading/error state
     val filter: Filter = Filter.BOTH, // no loading/error state
     val selectedCategory: Category? = null // no loading/error state
-) {
-}
-enum class Filter { TODO_ONLY, NOTES_ONLY, BOTH }
+)
+
+enum class Filter(val key: String) { TODO_ONLY("only tasks"), NOTES_ONLY("only notes"), BOTH("all") }
+

@@ -1,6 +1,5 @@
 package com.example.noteapp.ui.fragments.list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.both.UnitedUseCases
@@ -111,7 +110,6 @@ class ListViewModel @Inject constructor(
         jobObservingNoteItemList = viewModelScope.launch {
             unitedUseCases.getBothTodosAndNotes(filterInfo).distinctUntilChanged()
                 .collectLatest { noteItems ->
-                    Log.d("hello", "searchQuery: ${filterInfo.searchQuery}")
                     _listState.value.data?.let {
                         _listState.value = UiState.Success(it.copy(noteItems = noteItems))
                     } ?: run {

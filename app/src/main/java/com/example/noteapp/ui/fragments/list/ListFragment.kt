@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.example.domain.model.Filter
 import com.example.domain.model.NoteItem
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentListBinding
@@ -18,7 +21,6 @@ import com.example.noteapp.ui.recycler.SwipeCallback
 import com.example.noteapp.ui.recycler.noteitem.NoteItemAdapter
 import com.example.noteapp.ui.util.errorOccurred
 import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
-import com.example.noteapp.ui.util.ext.init
 import com.example.noteapp.ui.util.ext.initStandardVerticalRecyclerView
 import com.example.noteapp.ui.util.ext.showSnackbar
 import com.example.noteapp.ui.util.handleState
@@ -50,6 +52,26 @@ class ListFragment : Fragment() {
 
     private fun initAll() {
         with(binding) {
+            spinnerFilter.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapter: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    (adapter?.getItemAtPosition(position) as? String).also { selectedString ->
+                        selectedString?.let {
+                            Filter.values().iterator().forEach { filter ->
+                                if (selectedString.lowercase() == filter.key) {
+                                    viewModel.onEvent(ListFragmentEvent.UpdateFilter(filter))
+                                }
+                            }
+                        }
+                    }
+                }
+
+                override fun onNothingSelected(adapter: AdapterView<*>?) = Unit
+            }
 
             svFindByTitle.setOnQueryTextListener(object : OnQueryTextListener {
                 override fun onQueryTextSubmit(p0: String?): Boolean {
