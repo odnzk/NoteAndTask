@@ -22,4 +22,6 @@ interface NoteRepository {
     suspend fun addCategory(noteId: Long, categoryId: Long)
 
     suspend fun removeCategory(noteId: Long, categoryId: Long)
+
+    fun getByCategoryId(categoryId: Long, noteTitle: String): Flow<List<Note>>
 }

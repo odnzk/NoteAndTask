@@ -14,12 +14,17 @@ class GetBothTodosAndNotes
     private val todoRepository: TodoRepository
 ) {
 
+    // todo optimize
     operator fun invoke(
         filterInfo: FiltersInfo
     ): Flow<List<NoteItem>> {
         // selected category
-        val notes = noteRepository.getByTitle(filterInfo.searchQuery)
+        var notes = noteRepository.getByTitle(filterInfo.searchQuery)
         val tasks = todoRepository.getByTitle(filterInfo.searchQuery)
+        filterInfo.selectedCategory?.let {
+            notes = noteRepository.getByCategoryId(noteTitle = filterInfo.searchQuery, categoryId = it.id)
+//            tasks = todoRepository.getByTitle(filterInfo.searchQuery)
+        }
         return when (filterInfo.filter) {
             // combine because we are waiting for both notes and task
             Filter.BOTH -> notes.combine(tasks, ::mergeIntoOneList)
