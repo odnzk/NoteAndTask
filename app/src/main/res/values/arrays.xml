@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="filter_title">
+        <item>All</item>
+        <item>Only tasks</item>
+        <item>Only notes</item>
+    </string-array>
+</resources>

@@ -18,6 +18,7 @@ import com.example.noteapp.ui.recycler.SwipeCallback
 import com.example.noteapp.ui.recycler.noteitem.NoteItemAdapter
 import com.example.noteapp.ui.util.errorOccurred
 import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
+import com.example.noteapp.ui.util.ext.init
 import com.example.noteapp.ui.util.ext.initStandardVerticalRecyclerView
 import com.example.noteapp.ui.util.ext.showSnackbar
 import com.example.noteapp.ui.util.handleState
@@ -43,8 +44,13 @@ class ListFragment : Fragment() {
 
         observeState()
         initRecyclerView()
+        initAll()
 
+    }
+
+    private fun initAll() {
         with(binding) {
+
             svFindByTitle.setOnQueryTextListener(object : OnQueryTextListener {
                 override fun onQueryTextSubmit(p0: String?): Boolean {
                     return false

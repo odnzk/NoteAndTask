@@ -118,8 +118,5 @@
         <item name="buttonTint">@color/black</item>
     </style>
 
-    <style name="SpinnerStyle">
-        <item name="android:background">@drawable/ic_round_sort_24</item>
-    </style>
 
 </resources>
