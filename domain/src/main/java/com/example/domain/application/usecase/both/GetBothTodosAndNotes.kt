@@ -21,8 +21,8 @@ class GetBothTodosAndNotes
         // selected category
         var notes = noteRepository.getByTitle(filterInfo.searchQuery)
         val tasks = todoRepository.getByTitle(filterInfo.searchQuery)
-        filterInfo.selectedCategory?.let {
-            notes = noteRepository.getByCategoryId(noteTitle = filterInfo.searchQuery, categoryId = it.id)
+        filterInfo.selectedCategoryId?.let {
+            notes = noteRepository.getByCategoryId(noteTitle = filterInfo.searchQuery, categoryId = it)
 //            tasks = todoRepository.getByTitle(filterInfo.searchQuery)
         }
         return when (filterInfo.filter) {

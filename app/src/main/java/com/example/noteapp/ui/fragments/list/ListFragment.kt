@@ -69,7 +69,6 @@ class ListFragment : Fragment() {
                         }
                     }
                 }
-
                 override fun onNothingSelected(adapter: AdapterView<*>?) = Unit
             }
 

@@ -96,9 +96,9 @@ class ListViewModel @Inject constructor(
                     filterInfo.value = filterInfo.value.copy(searchQuery = event.query)
                     updateNoteItemList(filterInfo.value)
                 }
-                ListFragmentEvent.ReloadData -> TODO()
+                ListFragmentEvent.ReloadData -> updateNoteItemList(filterInfo.value)
                 is ListFragmentEvent.UpdateSelectedCategoryId -> {
-                    TODO()
+                    filterInfo.value = filterInfo.value.copy(selectedCategoryId = event.id)
                     updateNoteItemList(filterInfo.value)
                 }
             }
