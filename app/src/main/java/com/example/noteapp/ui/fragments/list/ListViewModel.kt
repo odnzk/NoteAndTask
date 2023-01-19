@@ -1,5 +1,6 @@
 package com.example.noteapp.ui.fragments.list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.both.UnitedUseCases
@@ -83,16 +84,24 @@ class ListViewModel @Inject constructor(
                         }
                     }
                 }
-                is ListFragmentEvent.UpdateFilter -> filterInfo.value =
-                    filterInfo.value.copy(filter = event.filter)
+                is ListFragmentEvent.UpdateFilter -> {
+                    // both, only notes, only todos
+                    filterInfo.value = filterInfo.value.copy(filter = event.filter)
+                    updateNoteItemList(filterInfo.value)
+                }
                 is ListFragmentEvent.ClearAll -> unitedUseCases.deleteAll()
                 is ListFragmentEvent.UpdateTodoCompletedStatus -> {
                     todoUseCases.updateIsCompleted(event.todoId, event.isCompleted)
                 }
-                is ListFragmentEvent.UpdateSearchQuery -> filterInfo.value =
-                    filterInfo.value.copy(searchQuery = event.query)
+                is ListFragmentEvent.UpdateSearchQuery -> {
+                    filterInfo.value = filterInfo.value.copy(searchQuery = event.query)
+                    updateNoteItemList(filterInfo.value)
+                }
                 ListFragmentEvent.ReloadData -> TODO()
-                is ListFragmentEvent.UpdateSelectedCategoryId -> TODO()
+                is ListFragmentEvent.UpdateSelectedCategoryId -> {
+                    TODO()
+                    updateNoteItemList(filterInfo.value)
+                }
             }
         }
     }
@@ -102,6 +111,7 @@ class ListViewModel @Inject constructor(
         jobObservingNoteItemList = viewModelScope.launch {
             unitedUseCases.getBothTodosAndNotes(filterInfo).distinctUntilChanged()
                 .collectLatest { noteItems ->
+                    Log.d("hello", "searchQuery: ${filterInfo.searchQuery}")
                     _listState.value.data?.let {
                         _listState.value = UiState.Success(it.copy(noteItems = noteItems))
                     } ?: run {
