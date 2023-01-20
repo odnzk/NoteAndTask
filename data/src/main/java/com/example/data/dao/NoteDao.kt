@@ -10,12 +10,21 @@ import kotlinx.coroutines.flow.Flow
 interface NoteDao {
 
     @Transaction
-    @Query("SELECT * FROM NOTES")
+    @Query("SELECT * FROM notes")
     fun getAll(): Flow<List<NoteWithCategoriesTuple>>
 
     @Transaction
-    @Query("SELECT * FROM NOTES WHERE note_id = :noteId")
+    @Query("SELECT * FROM notes WHERE note_id = :noteId")
     suspend fun getById(noteId: Long): NoteWithCategoriesTuple?
+
+    // todo add by title
+    @Transaction
+    @Query(
+        "SELECT * FROM note_categories_table" +
+                " JOIN notes ON notes.note_id = note_categories_table.note_id" +
+                " AND category_id =:categoryId AND notes.title LIKE '%' || :noteTitle || '%'"
+    )
+    fun getByCategoryId(categoryId: Long, noteTitle: String): Flow<List<NoteWithCategoriesTuple>>
 
     @Query("SELECT * FROM notes WHERE title LIKE '%' || :noteTitle || '%'")
     fun getByTitle(noteTitle: String): Flow<List<NoteWithCategoriesTuple>>

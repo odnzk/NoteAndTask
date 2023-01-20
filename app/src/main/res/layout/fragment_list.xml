@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="tv_list_title, btn_clear_all" />
+        app:constraint_referenced_ids="tv_list_title, btn_clear_all, spinner_filter" />
 
     <TextView
         android:id="@+id/tv_list_title"
@@ -37,33 +37,52 @@
         android:layout_marginHorizontal="@dimen/rv_item_padding"
         android:layout_marginTop="16dp"
         android:text="@string/tasks_notes"
-        app:layout_constraintEnd_toStartOf="@id/btn_clear_all"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sv_find_by_title" />
+
+    <Spinner
+        android:id="@+id/spinner_filter"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_height="wrap_content"
+        android:entries="@array/filter_title"
+        android:gravity="end"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintEnd_toStartOf="@id/btn_clear_all"
+        app:layout_constraintStart_toStartOf="@id/tv_list_title"
+        app:layout_constraintTop_toBottomOf="@id/tv_list_title" />
 
     <ImageButton
         android:id="@+id/btn_clear_all"
         style="@style/ButtonClearAll"
         android:contentDescription="@string/clear_all"
-        app:layout_constraintBottom_toBottomOf="@id/tv_list_title"
+        app:layout_constraintBottom_toBottomOf="@id/spinner_filter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_list_title"
-        app:layout_constraintTop_toTopOf="@id/tv_list_title" />
+        app:layout_constraintTop_toTopOf="@id/spinner_filter" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chip_add_category"
-        style="@style/ChipCategoryStyle.AddCategory" />
-
-    <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/flow_categories"
-        style="@style/CategoryFlow"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipgroup_categories"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:constraint_referenced_ids="chip_add_category"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/barrier" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrier"
+        android:layout_marginTop="4dp"
+        android:layout_height="wrap_content">
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_add_category"
+            style="@style/ChipCategoryStyle.AddCategory" />
+    </com.google.android.material.chip.ChipGroup>
+<!--    <androidx.constraintlayout.helper.widget.Flow-->
+<!--        android:id="@+id/flow_categories"-->
+<!--        style="@style/CategoryFlow"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        app:constraint_referenced_ids="chip_add_category"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/barrier" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -73,7 +92,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/flow_categories"
+        app:layout_constraintTop_toBottomOf="@id/chipgroup_categories"
         tools:listitem="@layout/item_todo" />
 
     <include layout="@layout/state_loading" />

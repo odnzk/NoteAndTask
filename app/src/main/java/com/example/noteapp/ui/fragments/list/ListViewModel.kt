@@ -6,13 +6,18 @@ import com.example.domain.application.usecase.both.UnitedUseCases
 import com.example.domain.application.usecase.category.CategoryUseCases
 import com.example.domain.application.usecase.note.NoteUseCases
 import com.example.domain.application.usecase.todo.TodoUseCases
+import com.example.domain.model.FiltersInfo
 import com.example.domain.model.Note
 import com.example.domain.model.NoteItem
 import com.example.domain.model.Todo
 import com.example.noteapp.ui.util.PreferenceStorage
 import com.example.noteapp.ui.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,7 +35,9 @@ class ListViewModel @Inject constructor(
         MutableStateFlow(UiState.Loading())
     val listState = _listState.asStateFlow()
 
+    private var filterInfo: MutableStateFlow<FiltersInfo> = MutableStateFlow(FiltersInfo())
     private var recentlyRemoved: NoteItem? = null
+    private var jobObservingNoteItemList: Job? = null
 
     init {
         loadData()
@@ -40,18 +47,7 @@ class ListViewModel @Inject constructor(
         viewModelScope.launch {
             _listState.value = UiState.Loading()
 
-            unitedUseCases
-                .getBothTodosAndNotes()
-                .distinctUntilChanged()
-                .collectLatest { noteItems ->
-                    // if state = Success -> update existing state
-                    listState.value.data?.let {
-                        _listState.value = UiState.Success(it.copy(noteItems = noteItems))
-                    } ?: run {
-                        // if state != Success -> create new state
-                        _listState.value = UiState.Success(ListFragmentState(noteItems = noteItems))
-                    }
-                }
+            updateNoteItemList(filterInfo.value)
 
             // subscribe to categories
             categoryUseCases
@@ -87,19 +83,39 @@ class ListViewModel @Inject constructor(
                         }
                     }
                 }
-                is ListFragmentEvent.UpdateFilter -> listState.value.data?.let {
-                    _listState.value = UiState.Success(it.copy(filter = event.filter))
+                is ListFragmentEvent.UpdateFilter -> {
+                    // both, only notes, only todos
+                    filterInfo.value = filterInfo.value.copy(filter = event.filter)
+                    updateNoteItemList(filterInfo.value)
                 }
                 is ListFragmentEvent.ClearAll -> unitedUseCases.deleteAll()
                 is ListFragmentEvent.UpdateTodoCompletedStatus -> {
                     todoUseCases.updateIsCompleted(event.todoId, event.isCompleted)
                 }
-                is ListFragmentEvent.UpdateSearchQuery -> listState.value.data?.let {
-                    _listState.value = UiState.Success(it.copy(searchQuery = event.query))
+                is ListFragmentEvent.UpdateSearchQuery -> {
+                    filterInfo.value = filterInfo.value.copy(searchQuery = event.query)
+                    updateNoteItemList(filterInfo.value)
                 }
-                ListFragmentEvent.ReloadData -> TODO()
-                is ListFragmentEvent.UpdateSelectedCategoryId -> TODO()
+                ListFragmentEvent.ReloadData -> updateNoteItemList(filterInfo.value)
+                is ListFragmentEvent.UpdateSelectedCategoryId -> {
+                    filterInfo.value = filterInfo.value.copy(selectedCategoryId = event.id)
+                    updateNoteItemList(filterInfo.value)
+                }
             }
+        }
+    }
+
+    private fun updateNoteItemList(filterInfo: FiltersInfo) = run {
+        jobObservingNoteItemList?.cancel()
+        jobObservingNoteItemList = viewModelScope.launch {
+            unitedUseCases.getBothTodosAndNotes(filterInfo).distinctUntilChanged()
+                .collectLatest { noteItems ->
+                    _listState.value.data?.let {
+                        _listState.value = UiState.Success(it.copy(noteItems = noteItems))
+                    } ?: run {
+                        _listState.value = UiState.Success(ListFragmentState(noteItems = noteItems))
+                    }
+                }
         }
     }
 

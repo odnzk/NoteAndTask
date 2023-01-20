@@ -4,26 +4,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.example.domain.model.Filter
 import com.example.domain.model.NoteItem
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentListBinding
 import com.example.noteapp.databinding.StateLoadingBinding
-import com.example.noteapp.ui.fragments.todo.list.ListTodoEvent
 import com.example.noteapp.ui.recycler.SwipeCallback
 import com.example.noteapp.ui.recycler.noteitem.NoteItemAdapter
 import com.example.noteapp.ui.util.errorOccurred
 import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
+import com.example.noteapp.ui.util.ext.initCategoriesChipGroup
 import com.example.noteapp.ui.util.ext.initStandardVerticalRecyclerView
 import com.example.noteapp.ui.util.ext.showSnackbar
 import com.example.noteapp.ui.util.handleState
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
+import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -44,8 +49,32 @@ class ListFragment : Fragment() {
 
         observeState()
         initRecyclerView()
+        initAll()
 
+    }
+
+    private fun initAll() {
         with(binding) {
+            spinnerFilter.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapter: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    (adapter?.getItemAtPosition(position) as? String).also { selectedString ->
+                        selectedString?.let {
+                            Filter.values().iterator().forEach { filter ->
+                                if (selectedString.lowercase() == filter.key) {
+                                    viewModel.onEvent(ListFragmentEvent.UpdateFilter(filter))
+                                }
+                            }
+                        }
+                    }
+                }
+                override fun onNothingSelected(adapter: AdapterView<*>?) = Unit
+            }
+
             svFindByTitle.setOnQueryTextListener(object : OnQueryTextListener {
                 override fun onQueryTextSubmit(p0: String?): Boolean {
                     return false
@@ -117,8 +146,8 @@ class ListFragment : Fragment() {
         stateLoadingBinding.loadingFinished()
         listAdapter.submitList(data.noteItems)
         with(binding) {
-            data.categories.categoriesToFlowCategories(root, flowCategories) { id ->
-                viewModel.onEvent(ListFragmentEvent.UpdateSelectedCategoryId(id))
+            data.categories.initCategoriesChipGroup(chipgroupCategories){ categoryId ->
+                viewModel.onEvent(ListFragmentEvent.UpdateSelectedCategoryId(categoryId))
             }
         }
     }

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +19,7 @@ import com.example.noteapp.notifications.NotificationWorker
 import com.example.noteapp.ui.fragments.todo.list.ListTodoEvent
 import com.example.noteapp.ui.fragments.todo.list.ListTodoViewModel
 import com.example.noteapp.ui.util.ext.formatToTodoDate
+import com.example.noteapp.ui.util.ext.init
 import com.example.noteapp.ui.util.ext.showDatePicker
 import com.example.noteapp.ui.util.ext.showDateTimePicker
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -70,13 +70,18 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
             lifecycleScope.launchWhenResumed {
                 viewModel.categories.collectLatest {
                     val categoriesTitleArray = it.map { category -> category.title }.toTypedArray()
-                    val adapter: ArrayAdapter<String> = ArrayAdapter(
-                        requireContext(),
+                    spinnerCategories.init(
+                        categoriesTitleArray,
                         R.layout.item_spinner_row,
-                        R.id.tv_item_spinner,
-                        categoriesTitleArray
+                        R.id.tv_item_spinner
                     )
-                    spinnerCategories.adapter = adapter
+//                    val adapter: ArrayAdapter<String> = ArrayAdapter(
+//                        requireContext(),
+//                        R.layout.item_spinner_row,
+//                        R.id.tv_item_spinner,
+//                        categoriesTitleArray
+//                    )
+//                    spinnerCategories.adapter = adapter
                 }
             }
         }
