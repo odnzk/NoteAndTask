@@ -21,13 +21,13 @@ data class Todo(
     override val id: Long,
     var title: String,
     val isCompleted: Boolean = false,
-    val categories: List<Category>,
+    val category: Category?,
     var deadlineDate: Date? = null,
     val notificationCalendar: Calendar? = null, // todo
     val periodDuration: Duration? = null // todo
 ) : NoteItem(id) {
     companion object {
-        fun defaultInstance() = Todo(0, "", false, emptyList(), null)
+        fun defaultInstance() = Todo(0, "", false, null, null)
     }
 }
 

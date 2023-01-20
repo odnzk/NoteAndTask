@@ -42,11 +42,11 @@ class TodoRepositoryImpl(
         dao.updateIsCompletedById(id, isCompleted)
     }
 
-    override suspend fun addCategory(todoId: Long, categoryId: Long) {
-        dao.insertTodoCategory(todoId, categoryId)
+    override suspend fun updateCategory(todoId: Long, categoryId: Long) {
+        dao.updateTodoCategory(todoId, categoryId)
     }
 
-    override suspend fun removeCategory(todoId: Long, categoryId: Long) {
-        dao.removeTodoCategory(todoId, categoryId)
+    override suspend fun removeCategory(todoId: Long) {
+        dao.removeTodoCategory(todoId)
     }
 }

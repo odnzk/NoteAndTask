@@ -28,7 +28,7 @@ class TodoViewHolder(
                 ivDeadlineDateIcon.isVisible = deadlineDate != null
                 cbCompleted.isChecked = isCompleted
 
-                categories.categoriesToFlowCategories(constraintLayout, flowCategories)
+//                categories.categoriesToFlowCategories(constraintLayout, flowCategories)
             }
             cbCompleted.setOnClickListener {
                 onCheckboxClick?.invoke(todo.id, !todo.isCompleted)

@@ -56,10 +56,7 @@ class ChooseCategoryViewModel @Inject constructor(
                         noteUseCases.removeNoteCategory(it, event.categoryId)
                     }
                     CategoryOwnerType.TODO_TYPE -> noteItemId?.let {
-                        todoUseCases.removeTodoCategory(
-                            it,
-                            event.categoryId
-                        )
+                        todoUseCases.removeTodoCategory(it)
                     }
                 }
             }

@@ -21,7 +21,7 @@ interface TodoRepository {
 
     suspend fun updateCompletedStatus(id: Long, isCompleted: Boolean)
 
-    suspend fun addCategory(todoId: Long, categoryId: Long)
+    suspend fun updateCategory(todoId: Long, categoryId: Long)
 
-    suspend fun removeCategory(todoId: Long, categoryId: Long)
+    suspend fun removeCategory(todoId: Long)
 }

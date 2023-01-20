@@ -60,14 +60,15 @@ class TodoDetailedFragment : Fragment() {
                 deadlineDate?.let {
                     btnChangeDeadlineDate.text = it.formatToTodoDate()
                 }
-                categories.categoriesToFlowCategories(constraintLayout, flowCategories) {
-                    val action = TodoDetailedFragmentDirections
-                        .actionTodoDetailFragmentToChooseCategoryDialog(
-                            type = CategoryOwnerType.TODO_TYPE,
-                            todoId = todo.id
-                        )
-                    findNavController().navigate(action)
-                }
+
+//                categories.categoriesToFlowCategories(constraintLayout, flowCategories) {
+//                    val action = TodoDetailedFragmentDirections
+//                        .actionTodoDetailFragmentToChooseCategoryDialog(
+//                            type = CategoryOwnerType.TODO_TYPE,
+//                            todoId = todo.id
+//                        )
+//                    findNavController().navigate(action)
+//                }
                 notificationCalendar?.let {
                     btnChangeReminderTime.text = it.formatToReminderString()
                 }
