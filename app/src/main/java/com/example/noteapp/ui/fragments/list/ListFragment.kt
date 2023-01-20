@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -21,11 +22,13 @@ import com.example.noteapp.ui.recycler.SwipeCallback
 import com.example.noteapp.ui.recycler.noteitem.NoteItemAdapter
 import com.example.noteapp.ui.util.errorOccurred
 import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
+import com.example.noteapp.ui.util.ext.initCategoriesChipGroup
 import com.example.noteapp.ui.util.ext.initStandardVerticalRecyclerView
 import com.example.noteapp.ui.util.ext.showSnackbar
 import com.example.noteapp.ui.util.handleState
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
+import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -143,8 +146,8 @@ class ListFragment : Fragment() {
         stateLoadingBinding.loadingFinished()
         listAdapter.submitList(data.noteItems)
         with(binding) {
-            data.categories.categoriesToFlowCategories(root, flowCategories) { id ->
-                viewModel.onEvent(ListFragmentEvent.UpdateSelectedCategoryId(id))
+            data.categories.initCategoriesChipGroup(chipgroupCategories){ categoryId ->
+                viewModel.onEvent(ListFragmentEvent.UpdateSelectedCategoryId(categoryId))
             }
         }
     }

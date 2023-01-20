@@ -61,20 +61,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/spinner_filter" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chip_add_category"
-        style="@style/ChipCategoryStyle.AddCategory" />
-
-    <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/flow_categories"
-        style="@style/CategoryFlow"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipgroup_categories"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:constraint_referenced_ids="chip_add_category"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/barrier" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrier"
+        android:layout_marginTop="4dp"
+        android:layout_height="wrap_content">
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_add_category"
+            style="@style/ChipCategoryStyle.AddCategory" />
+    </com.google.android.material.chip.ChipGroup>
+<!--    <androidx.constraintlayout.helper.widget.Flow-->
+<!--        android:id="@+id/flow_categories"-->
+<!--        style="@style/CategoryFlow"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        app:constraint_referenced_ids="chip_add_category"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/barrier" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -84,7 +92,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/flow_categories"
+        app:layout_constraintTop_toBottomOf="@id/chipgroup_categories"
         tools:listitem="@layout/item_todo" />
 
     <include layout="@layout/state_loading" />
