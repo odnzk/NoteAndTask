@@ -28,8 +28,8 @@ class ChooseCategoryViewModel @Inject constructor(
     private val type: CategoryOwnerType by lazy {
         state.get<CategoryOwnerType>("type") ?: throw InvalidNavArgumentsException()
     }
-    private val noteItemId: Long? by lazy {
-        type.let { state.get<Long>(it.key) }
+    private val noteItemId: Long by lazy {
+        type.let { state.get<Long>(it.key) ?: throw InvalidNavArgumentsException() }
     }
 
     private var _uiCategoryList: MutableStateFlow<UiState<List<UiCategory>>> =

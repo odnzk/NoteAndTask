@@ -65,7 +65,7 @@ class ListViewModel @Inject constructor(
                 }
         }
 
-    fun onEvent(event: ListFragmentEvent) {
+    fun onEvent(event: ListFragmentEvent) =
         viewModelScope.launch {
             when (event) {
                 is ListFragmentEvent.DeleteItem -> {
@@ -103,7 +103,7 @@ class ListViewModel @Inject constructor(
                 }
             }
         }
-    }
+
 
     private fun updateNoteItemList(filterInfo: FiltersInfo) = run {
         jobObservingNoteItemList?.cancel()

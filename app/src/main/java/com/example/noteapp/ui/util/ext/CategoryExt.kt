@@ -77,4 +77,16 @@ fun Chip.setBtnAddCategoryStyle(onAction: () -> Unit): Chip =
         setOnClickListener { onAction() }
     }
 
+fun List<Category>.insertToChipGroup(
+    chipGroup: ChipGroup,
+    onCategoryChipClick: ((Long) -> Unit)? = null
+) {
+    forEach { category ->
+        val categoryChip = category.toChipCategory(chipGroup.context) {
+            onCategoryChipClick?.invoke(category.id)
+        }
+        chipGroup.addView(categoryChip)
+    }
+}
+
 
