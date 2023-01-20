@@ -90,14 +90,6 @@
         <item name="closeIconTint">@color/white</item>
     </style>
 
-    <style name="ChipCategoryStyle.AddCategory">
-        <item name="chipBackgroundColor">@color/black</item>
-        <item name="android:checkable">false</item>
-        <item name="android:text">@string/add</item>
-        <item name="chipIcon">@drawable/ic_baseline_add_24</item>
-        <item name="chipIconSize">24dp</item>
-    </style>
-
     <style name="CategoryFlow" parent="">
         <item name="android:orientation">horizontal</item>
         <item name="flow_horizontalAlign">start</item>

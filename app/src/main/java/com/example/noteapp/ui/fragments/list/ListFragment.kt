@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
-import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -21,14 +20,14 @@ import com.example.noteapp.databinding.StateLoadingBinding
 import com.example.noteapp.ui.recycler.SwipeCallback
 import com.example.noteapp.ui.recycler.noteitem.NoteItemAdapter
 import com.example.noteapp.ui.util.errorOccurred
-import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
 import com.example.noteapp.ui.util.ext.initCategoriesChipGroup
 import com.example.noteapp.ui.util.ext.initStandardVerticalRecyclerView
+import com.example.noteapp.ui.util.ext.setBtnAddCategoryStyle
 import com.example.noteapp.ui.util.ext.showSnackbar
 import com.example.noteapp.ui.util.handleState
 import com.example.noteapp.ui.util.loadingFinished
 import com.example.noteapp.ui.util.loadingStarted
-import com.google.android.material.chip.ChipGroup
+import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -90,10 +89,6 @@ class ListFragment : Fragment() {
             btnClearAll.setOnClickListener {
                 viewModel.onEvent(ListFragmentEvent.ClearAll)
             }
-            chipAddCategory.setOnClickListener {
-                val action = ListFragmentDirections.actionListFragmentToAddCategoryDialog()
-                findNavController().navigate(action)
-            }
         }
     }
 
@@ -146,8 +141,13 @@ class ListFragment : Fragment() {
         stateLoadingBinding.loadingFinished()
         listAdapter.submitList(data.noteItems)
         with(binding) {
-            data.categories.initCategoriesChipGroup(chipgroupCategories){ categoryId ->
+            data.categories.initCategoriesChipGroup(chipgroupCategories) { categoryId ->
                 viewModel.onEvent(ListFragmentEvent.UpdateSelectedCategoryId(categoryId))
+            }
+            Chip(context).setBtnAddCategoryStyle {
+                findNavController().navigate(ListFragmentDirections.actionListFragmentToAddCategoryDialog())
+            }.also {
+                chipgroupCategories.addView(it)
             }
         }
     }

@@ -2,6 +2,8 @@ package com.example.noteapp.ui.util.ext
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Color
+import android.util.TypedValue
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.ViewGroup
@@ -52,3 +54,27 @@ fun List<Category>.initCategoriesChipGroup(
         chipGroup.addView(categoryChip)
     }
 }
+
+fun Chip.setBtnAddCategoryStyle(onAction: () -> Unit): Chip =
+    Chip(ContextThemeWrapper(context, R.style.ChipCategoryStyle), null, 0).apply {
+        layoutParams = ConstraintLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        setTextColor(Color.parseColor("#FFFFFF"))
+        setChipBackgroundColorResource(R.color.black)
+
+        isCheckable = false
+        setChipIconResource(R.drawable.ic_baseline_add_24)
+        chipIconTint = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
+        chipIconSize = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            20f,
+            context.resources.displayMetrics
+        )
+        isChipIconVisible = true
+        text = context.getText(R.string.add_category)
+        setOnClickListener { onAction() }
+    }
+
+
