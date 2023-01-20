@@ -9,18 +9,14 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.domain.model.Todo
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentDetailedTodoBinding
 import com.example.noteapp.databinding.StateLoadingBinding
-import com.example.noteapp.ui.util.errorOccurred
-import com.example.noteapp.ui.util.ext.formatToReminderString
-import com.example.noteapp.ui.util.ext.formatToTodoDate
-import com.example.noteapp.ui.util.ext.showDatePicker
-import com.example.noteapp.ui.util.ext.showSnackbar
-import com.example.noteapp.ui.util.handleState
-import com.example.noteapp.ui.util.loadingFinished
-import com.example.noteapp.ui.util.loadingStarted
+import com.example.noteapp.ui.util.*
+import com.example.noteapp.ui.util.ext.*
+import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import java.util.*
@@ -65,16 +61,21 @@ class TodoDetailedFragment : Fragment() {
                 deadlineDate?.let {
                     btnChangeDeadlineDate.text = it.formatToTodoDate()
                 }
-                // 1) if category exist -> show
-                // 2) else show btnAddCategory
-//                categories.categoriesToFlowCategories(constraintLayout, flowCategories) {
-//                    val action = TodoDetailedFragmentDirections
-//                        .actionTodoDetailFragmentToChooseCategoryDialog(
-//                            type = CategoryOwnerType.TODO_TYPE,
-//                            todoId = todo.id
-//                        )
-//                    findNavController().navigate(action)
-//                }
+                category?.let {
+                    chipgroupCategory.addView(it.toChipCategory(requireContext()) {
+                        // todo handle on category click
+                    })
+                } ?: run {
+                    chipgroupCategory.addView(Chip(context).setBtnAddCategoryStyle {
+                        findNavController().navigate(
+                            TodoDetailedFragmentDirections
+                                .actionTodoDetailFragmentToChooseCategoryDialog(
+                                    type = CategoryOwnerType.TODO_TYPE,
+                                    todoId = viewModel.todoId
+                                )
+                        )
+                    })
+                }
                 notificationCalendar?.let {
                     btnChangeReminderTime.text = it.formatToReminderString()
                 }
