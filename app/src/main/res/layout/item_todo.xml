@@ -13,6 +13,18 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/rv_item_padding">
 
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_category"
+            style="@style/ChipCategoryStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="programming"
+            tools:visibility="visible"/>
+
         <CheckBox
             android:id="@+id/cb_completed"
             style="@style/TodoCheckbox"
@@ -29,11 +41,13 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="3"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintEnd_toStartOf="@id/chip_category"
             app:layout_constraintBottom_toBottomOf="@id/cb_completed"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_goneMarginEnd="0dp"
             app:layout_constraintStart_toEndOf="@id/cb_completed"
             app:layout_constraintTop_toTopOf="@id/cb_completed"
-            tools:text="Some very very long long text very very long long text very very long long textvery very long long text" />
+            tools:text="Some very very long long text very very long long text very very long long textvery very long long textcmeldkfojnweoigfjneifgjioehjgiwoehfoiejhdfociwehjdichwjeidh" />
 
         <TextView
             android:id="@+id/tv_deadline_date"
@@ -48,22 +62,10 @@
             app:layout_constraintTop_toTopOf="@id/iv_deadline_date_icon"
             tools:text="Tomorrow" />
 
-        <androidx.constraintlayout.helper.widget.Flow
-            android:id="@+id/flow_categories"
-            style="@style/CategoryFlow"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            app:constraint_referenced_ids=""
-            app:layout_constraintEnd_toStartOf="@id/iv_deadline_date_icon"
-            app:layout_constraintStart_toStartOf="@id/tv_title"
-            app:layout_constraintTop_toTopOf="@id/tv_deadline_date" />
-
         <ImageView
             android:id="@+id/iv_deadline_date_icon"
-            android:layout_width="20dp"
+            android:layout_width="0dp"
             android:layout_height="16dp"
-            android:layout_marginStart="10dp"
             android:adjustViewBounds="true"
             android:src="@drawable/ic_schedule"
             app:layout_constraintBottom_toBottomOf="parent"
