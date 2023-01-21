@@ -2,7 +2,6 @@ package com.example.noteapp.ui.recycler.todo
 
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -29,11 +28,7 @@ class TodoViewHolder(
                 cbCompleted.isChecked = isCompleted
 
                 category?.let { category ->
-                    chipCategory.run {
-                        text = category.title
-                        chipBackgroundColor = ColorStateList.valueOf(category.color)
-                        visibility = View.VISIBLE
-                    }
+                    cbCompleted.buttonTintList = ColorStateList.valueOf(category.color)
                 }
             }
             cbCompleted.setOnClickListener {

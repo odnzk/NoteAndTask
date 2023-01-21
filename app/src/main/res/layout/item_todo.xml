@@ -13,18 +13,6 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/rv_item_padding">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_category"
-            style="@style/ChipCategoryStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="programming"
-            tools:visibility="visible"/>
-
         <CheckBox
             android:id="@+id/cb_completed"
             style="@style/TodoCheckbox"
@@ -41,8 +29,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="3"
-            android:layout_marginEnd="4dp"
-            app:layout_constraintEnd_toStartOf="@id/chip_category"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/cb_completed"
             app:layout_goneMarginEnd="0dp"
             app:layout_constraintStart_toEndOf="@id/cb_completed"
