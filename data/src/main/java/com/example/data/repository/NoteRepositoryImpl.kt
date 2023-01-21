@@ -12,14 +12,14 @@ class NoteRepositoryImpl(
     private val dao: NoteDao
 ) : NoteRepository {
 
-    override suspend fun add(note: Note): Long = dao.insert(note.toEntity())
+    override suspend fun add(elem: Note): Long = dao.insert(elem.toEntity())
 
     override suspend fun delete(id: Long) {
         dao.delete(id)
     }
 
-    override suspend fun update(note: Note) {
-        dao.update(note.toEntity())
+    override suspend fun update(elem: Note) {
+        dao.update(elem.toEntity())
     }
 
     override suspend fun getById(id: Long): Note? =
@@ -44,7 +44,6 @@ class NoteRepositoryImpl(
         dao.removeNoteCategory(noteId, categoryId)
     }
 
-    // todo
     override fun getByCategoryId(categoryId: Long, noteTitle: String): Flow<List<Note>> {
         return dao.getByCategoryId(categoryId, noteTitle).map { list -> list.map { it.toNote() } }
     }

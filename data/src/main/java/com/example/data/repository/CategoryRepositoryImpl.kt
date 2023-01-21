@@ -11,20 +11,17 @@ import kotlinx.coroutines.flow.map
 class CategoryRepositoryImpl(
     private val dao: CategoryDao
 ) : CategoryRepository {
-    override suspend fun add(category: Category): Long {
-        return dao.insert(category.toEntity())
+
+    override suspend fun add(elem: Category): Long {
+        return dao.insert(elem.toEntity())
     }
 
-    override suspend fun delete(category: Category) {
-        dao.delete(category.toEntity())
-    }
-
-    override suspend fun deleteById(id: Long?) {
+    override suspend fun delete(id: Long) {
         dao.deleteById(id)
     }
 
-    override suspend fun update(category: Category) {
-        dao.update(category.toEntity())
+    override suspend fun update(elem: Category) {
+        dao.update(elem.toEntity())
     }
 
     override suspend fun getById(id: Long): Category? {

@@ -11,16 +11,16 @@ import kotlinx.coroutines.flow.map
 class TodoRepositoryImpl(
     private val dao: TodoDao
 ) : TodoRepository {
-    override suspend fun add(todo: Todo): Long {
-        return dao.add(todo.toEntity())
+    override suspend fun add(elem: Todo): Long {
+        return dao.add(elem.toEntity())
     }
 
     override suspend fun delete(id: Long) {
         dao.delete(id)
     }
 
-    override suspend fun update(todo: Todo) {
-        dao.update(todo.toEntity())
+    override suspend fun update(elem: Todo) {
+        dao.update(elem.toEntity())
     }
 
     override fun getAll(): Flow<List<Todo>> =

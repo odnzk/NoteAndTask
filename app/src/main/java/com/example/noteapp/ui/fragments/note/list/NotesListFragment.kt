@@ -15,12 +15,8 @@ import com.example.noteapp.databinding.FragmentNotesListBinding
 import com.example.noteapp.databinding.StateLoadingBinding
 import com.example.noteapp.ui.recycler.SwipeCallback
 import com.example.noteapp.ui.recycler.note.NoteAdapter
-import com.example.noteapp.ui.util.errorOccurred
-import com.example.noteapp.ui.util.ext.initStandardVerticalRecyclerView
-import com.example.noteapp.ui.util.ext.showSnackbar
+import com.example.noteapp.ui.util.ext.*
 import com.example.noteapp.ui.util.handleState
-import com.example.noteapp.ui.util.loadingFinished
-import com.example.noteapp.ui.util.loadingStarted
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 

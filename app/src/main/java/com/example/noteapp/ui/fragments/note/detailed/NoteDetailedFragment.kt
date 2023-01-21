@@ -12,11 +12,9 @@ import com.example.domain.model.Note
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentDetailedNoteBinding
 import com.example.noteapp.databinding.StateLoadingBinding
-import com.example.noteapp.ui.util.*
-import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
-import com.example.noteapp.ui.util.ext.formatToNoteDate
-import com.example.noteapp.ui.util.ext.setBtnAddCategoryStyle
-import com.example.noteapp.ui.util.ext.showSnackbar
+import com.example.noteapp.ui.util.CategoryOwnerType
+import com.example.noteapp.ui.util.ext.*
+import com.example.noteapp.ui.util.handleState
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest

@@ -10,8 +10,8 @@ import com.example.domain.model.FiltersInfo
 import com.example.domain.model.Note
 import com.example.domain.model.NoteItem
 import com.example.domain.model.Todo
-import com.example.noteapp.ui.util.PreferenceStorage
 import com.example.noteapp.ui.util.UiState
+import com.example.noteapp.ui.util.ext.PreferenceStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

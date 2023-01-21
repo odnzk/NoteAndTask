@@ -4,18 +4,9 @@ import com.example.domain.model.Note
 import kotlinx.coroutines.flow.Flow
 
 
-interface NoteRepository {
-    suspend fun add(note: Note): Long
-
-    suspend fun delete(id: Long)
-
-    suspend fun update(note: Note)
+interface NoteRepository : BasicRepository<Note> {
 
     suspend fun deleteAll()
-
-    suspend fun getById(id: Long): Note?
-
-    fun getAll(): Flow<List<Note>>
 
     fun getByTitle(title: String): Flow<List<Note>>
 

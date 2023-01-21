@@ -41,10 +41,10 @@ interface NoteDao {
     @Query("DELETE FROM notes")
     suspend fun deleteAll()
 
-    @Query("delete from note_categories_table where note_id = :noteId AND category_id =:categoryId")
+    @Query("DELETE FROM note_categories_table WHERE note_id = :noteId AND category_id =:categoryId")
     suspend fun removeNoteCategory(noteId: Long, categoryId: Long)
 
-    @Query("insert into note_categories_table values (:noteId, :categoryId)")
+    @Query("INSERT INTO note_categories_table VALUES (:noteId, :categoryId)")
     suspend fun insertNoteCategory(noteId: Long, categoryId: Long)
 
 }
