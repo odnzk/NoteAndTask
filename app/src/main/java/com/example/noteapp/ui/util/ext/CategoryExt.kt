@@ -11,10 +11,11 @@ import androidx.constraintlayout.helper.widget.Flow
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.domain.model.Category
 import com.example.noteapp.R
+import com.example.noteapp.model.UiCategory
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
-
+private const val WHITE_COLOR = "#FFFFFF"
 // todo @ColorInt annotation everywhere
 fun Category.toChipCategory(context: Context, onCategoryChipClick: (() -> Unit)? = null): Chip =
     Chip(ContextThemeWrapper(context, R.style.ChipCategoryStyle), null, 0).apply {
@@ -61,12 +62,12 @@ fun Chip.setBtnAddCategoryStyle(onAction: () -> Unit): Chip =
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        setTextColor(Color.parseColor("#FFFFFF"))
+        setTextColor(Color.parseColor(WHITE_COLOR))
         setChipBackgroundColorResource(R.color.black)
 
         isCheckable = false
         setChipIconResource(R.drawable.ic_baseline_add_24)
-        chipIconTint = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
+        chipIconTint = ColorStateList.valueOf(Color.parseColor(WHITE_COLOR))
         chipIconSize = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             20f,
@@ -89,4 +90,14 @@ fun List<Category>.insertToChipGroup(
     }
 }
 
+
+fun List<UiCategory>.toChipGroup(chipGroup: ChipGroup, onCategoryClick: ((Long) -> Unit)? = null) {
+    forEach { uiCategory ->
+        val chipCategory = uiCategory.category.toChipCategory(chipGroup.context) {
+            onCategoryClick?.invoke(uiCategory.category.id)
+        }
+        chipCategory.isChecked = uiCategory.isSelected
+        chipGroup.addView(chipCategory)
+    }
+}
 
