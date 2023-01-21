@@ -8,12 +8,10 @@
     android:background="@color/main_blue"
     android:padding="@dimen/fragment_default_margin_horizontal">
 
-    <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/flow_categories"
-        style="@style/CategoryFlow"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipgroup_category"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        app:constraint_referenced_ids="category"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tv_date"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,7 +33,7 @@
         android:layout_marginTop="@dimen/fragment_default_margin_top"
         app:layout_constraintEnd_toStartOf="@id/btn_delete"
         app:layout_constraintStart_toEndOf="@id/cb_is_completed"
-        app:layout_constraintTop_toBottomOf="@id/flow_categories">
+        app:layout_constraintTop_toBottomOf="@id/chipgroup_category">
 
         <EditText
             android:id="@+id/et_title"
@@ -44,6 +42,7 @@
             android:layout_height="match_parent"
             android:maxLines="4"
             android:text="@string/unknown_todo"
+            android:inputType="none"
             tools:text="@tools:sample/lorem/random" />
     </com.google.android.material.textfield.TextInputLayout>
 

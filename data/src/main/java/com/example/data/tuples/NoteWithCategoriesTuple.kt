@@ -14,5 +14,5 @@ data class NoteWithCategoriesTuple(
         entityColumn = "category_id",
         associateBy = Junction(NoteCategoryTable::class))
     val categories: List<CategoryEntity>
-) {
-}
+)
+// one note - many categories

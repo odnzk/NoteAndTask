@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/dialog_margin"
@@ -17,47 +16,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/category"
-        style="@style/ChipCategoryStyle"
-        android:text="Android"
-        app:chipBackgroundColor="@color/category_red" />
-
-    <com.google.android.material.chip.Chip
-        android:id="@+id/category_2"
-        style="@style/ChipCategoryStyle"
-        android:text="University"
-        app:chipBackgroundColor="@color/category_blue"
-        tools:ignore="MissingConstraints" />
-
-    <com.google.android.material.chip.Chip
-        android:id="@+id/category_3"
-        style="@style/ChipCategoryStyle"
-        android:text="Programming languages"
-        app:chipBackgroundColor="@color/category_purple"
-        tools:ignore="MissingConstraints" />
-
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chip_add_category"
-        style="@style/ChipCategoryStyle.AddCategory"
-        tools:ignore="MissingConstraints" />
-
-    <com.google.android.material.chip.Chip
-        android:id="@+id/category_4"
-        style="@style/ChipCategoryStyle"
-        android:text="Health"
-        app:chipBackgroundColor="@color/category_green"
-        tools:ignore="MissingConstraints" />
-
-    <androidx.constraintlayout.helper.widget.Flow
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipgroup_categories"
         android:layout_marginTop="12dp"
-        android:id="@+id/flow_categories"
-        style="@style/CategoryFlow"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="category, category_2, category_3, category_4, chip_add_category"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_change_category_title" />
+
+    <TextView
+        android:id="@+id/tv_empty_categories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/state_categories_is_empty"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chipgroup_categories" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

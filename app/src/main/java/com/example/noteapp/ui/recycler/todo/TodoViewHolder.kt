@@ -1,13 +1,13 @@
 package com.example.noteapp.ui.recycler.todo
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.Todo
 import com.example.noteapp.databinding.ItemTodoBinding
-import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
-import com.example.noteapp.ui.util.ext.formatToTodoDate
 import com.example.noteapp.ui.util.ext.setTodoDateStyle
 import com.example.noteapp.ui.util.ext.setTodoIsCompletedStyle
 
@@ -28,7 +28,13 @@ class TodoViewHolder(
                 ivDeadlineDateIcon.isVisible = deadlineDate != null
                 cbCompleted.isChecked = isCompleted
 
-                categories.categoriesToFlowCategories(constraintLayout, flowCategories)
+                category?.let { category ->
+                    chipCategory.run {
+                        text = category.title
+                        chipBackgroundColor = ColorStateList.valueOf(category.color)
+                        visibility = View.VISIBLE
+                    }
+                }
             }
             cbCompleted.setOnClickListener {
                 onCheckboxClick?.invoke(todo.id, !todo.isCompleted)

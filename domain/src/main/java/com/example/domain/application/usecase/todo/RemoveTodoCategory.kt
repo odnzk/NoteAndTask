@@ -4,7 +4,7 @@ import com.example.domain.repository.TodoRepository
 
 class RemoveTodoCategory(private val todoRepository: TodoRepository) {
 
-    suspend operator fun invoke(todoId: Long, categoryId: Long) {
-        todoRepository.removeCategory(todoId, categoryId)
+    suspend operator fun invoke(todoId: Long) {
+        todoRepository.removeCategory(todoId)
     }
 }

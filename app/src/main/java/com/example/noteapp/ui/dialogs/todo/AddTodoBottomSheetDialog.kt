@@ -8,20 +8,12 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.WorkRequest
-import androidx.work.workDataOf
 import com.example.domain.model.Todo
 import com.example.noteapp.R
 import com.example.noteapp.databinding.BottomSheetAddTodoBinding
-import com.example.noteapp.notifications.NotificationWorker
 import com.example.noteapp.ui.fragments.todo.list.ListTodoEvent
 import com.example.noteapp.ui.fragments.todo.list.ListTodoViewModel
-import com.example.noteapp.ui.util.ext.formatToTodoDate
-import com.example.noteapp.ui.util.ext.init
-import com.example.noteapp.ui.util.ext.showDatePicker
-import com.example.noteapp.ui.util.ext.showDateTimePicker
+import com.example.noteapp.ui.util.ext.*
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -107,20 +99,8 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
 
     private fun createReminderNotification() {
         context?.showDateTimePicker { calendar ->
-            // todo check todoItem validity
-            val notificationWorkRequest: WorkRequest =
-                OneTimeWorkRequestBuilder<NotificationWorker>().setInputData(
-                    workDataOf(
-                        NotificationWorker.NOTIFICATION_TITLE_KEY to "",
-                        NotificationWorker.NOTIFICATION_CONTENT_KEY to ""
-                    )
-                ).build()
-            // todo
-            // 1) set constraints  or .setInitialDelay(10, TimeUnit.MINUTES)
-            // 2) set information about todoItem to Worker
-            WorkManager.getInstance(requireContext()).enqueue(notificationWorkRequest)
-//            binding.btnSetReminder.text = Date(calendar.timeInMillis)
-//                .formatToReminderString()
+            // todo set worker
+            binding.btnSetReminder.text = calendar.formatToReminderString()
         }
     }
 

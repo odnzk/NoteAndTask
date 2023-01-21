@@ -16,6 +16,7 @@ import com.example.noteapp.databinding.FragmentDetailedTodoBinding
 import com.example.noteapp.databinding.StateLoadingBinding
 import com.example.noteapp.ui.util.*
 import com.example.noteapp.ui.util.ext.*
+import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import java.util.*
@@ -60,13 +61,20 @@ class TodoDetailedFragment : Fragment() {
                 deadlineDate?.let {
                     btnChangeDeadlineDate.text = it.formatToTodoDate()
                 }
-                categories.categoriesToFlowCategories(constraintLayout, flowCategories) {
-                    val action = TodoDetailedFragmentDirections
-                        .actionTodoDetailFragmentToChooseCategoryDialog(
-                            type = CategoryOwnerType.TODO_TYPE,
-                            todoId = todo.id
+                category?.let {
+                    chipgroupCategory.addView(it.toChipCategory(requireContext()) {
+                        // todo handle on category click
+                    })
+                } ?: run {
+                    chipgroupCategory.addView(Chip(context).setBtnAddCategoryStyle {
+                        findNavController().navigate(
+                            TodoDetailedFragmentDirections
+                                .actionTodoDetailFragmentToChooseCategoryDialog(
+                                    type = CategoryOwnerType.TODO_TYPE,
+                                    todoId = viewModel.todoId
+                                )
                         )
-                    findNavController().navigate(action)
+                    })
                 }
                 notificationCalendar?.let {
                     btnChangeReminderTime.text = it.formatToReminderString()

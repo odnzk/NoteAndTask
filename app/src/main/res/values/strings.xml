@@ -43,6 +43,7 @@
     <string name="sort_tasks">Sort tasks</string>
     <string name="clear_all_tasks">Clear all tasks</string>
     <string name="add_task">Add task</string>
+    <string name="state_categories_is_empty">You have not created categories</string>
 
     <string name="tasks">Tasks</string>
     <string name="clear_all">Clear both tasks and notes</string>
@@ -54,12 +55,12 @@
     <string name="notification_channel_reminders_description">All notifications which are related to tasks</string>
     <string name="notification_channel_reminders_id">1213298</string>
 
+
     <string name="deadline_today">Today</string>
     <string name="date_picker_dialog_tab1_title_date">Date</string>
     <string name="date_picker_dialog_tab1_title_time">Time</string>
     <string name="hint_task_title">Task title</string>
     <string name="spinner_item">spinner item</string>
-
 
     <string name="search_hint">Find by title</string>
 </resources>

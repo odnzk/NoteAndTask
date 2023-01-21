@@ -12,19 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/category"
-            style="@style/ChipCategoryStyle"
-            android:text="Android"
-            app:chipBackgroundColor="@color/category_red" />
-
         <androidx.constraintlayout.helper.widget.Flow
             android:id="@+id/flow_categories"
             style="@style/CategoryFlow"
             android:layout_width="0dp"
             android:layout_marginEnd="4dp"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="category"
+            app:constraint_referenced_ids=""
             app:layout_constraintEnd_toStartOf="@id/tv_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -35,7 +29,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="end"
-            app:layout_constraintBottom_toBottomOf="@id/flow_categories"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="11.11.2022" />
@@ -43,6 +36,7 @@
         <EditText
             android:id="@+id/et_title"
             style="@style/Headline"
+            android:maxLines="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/rv_item_padding"

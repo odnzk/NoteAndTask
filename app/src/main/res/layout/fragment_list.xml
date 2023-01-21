@@ -69,20 +69,7 @@
         app:layout_constraintTop_toBottomOf="@id/barrier"
         android:layout_marginTop="4dp"
         android:layout_height="wrap_content">
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_add_category"
-            style="@style/ChipCategoryStyle.AddCategory" />
     </com.google.android.material.chip.ChipGroup>
-<!--    <androidx.constraintlayout.helper.widget.Flow-->
-<!--        android:id="@+id/flow_categories"-->
-<!--        style="@style/CategoryFlow"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        app:constraint_referenced_ids="chip_add_category"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/barrier" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

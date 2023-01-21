@@ -20,7 +20,10 @@ class TodoDetailsViewModel @Inject constructor(
     private val state: SavedStateHandle
 ) : ViewModel() {
 
-    private val todoId: Long? by lazy { state.get<Long>("todoId") }
+    // todo todoId and Todo both public?
+    val todoId: Long by lazy {
+        state.get<Long>("todoId") ?: throw InvalidNavArgumentsException()
+    }
     private var _todo: MutableStateFlow<UiState<Todo>> = MutableStateFlow(UiState.Loading())
     val todo: StateFlow<UiState<Todo>> = _todo.asStateFlow()
 
@@ -31,11 +34,8 @@ class TodoDetailsViewModel @Inject constructor(
     private fun loadData() {
         _todo.value = UiState.Loading()
         viewModelScope.launch {
-            todoId?.let {
-                // todo handle exception in getTodoById(it)
-                val repoTodo = todoUseCases.getTodoById(it)
-                _todo.value = UiState.Success(repoTodo)
-            } ?: run { _todo.value = UiState.Error(InvalidNavArgumentsException()) }
+            val repoTodo = todoUseCases.getTodoById(todoId)
+            _todo.value = UiState.Success(repoTodo)
         }
     }
 

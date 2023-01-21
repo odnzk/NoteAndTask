@@ -15,7 +15,9 @@ import com.example.noteapp.databinding.StateLoadingBinding
 import com.example.noteapp.ui.util.*
 import com.example.noteapp.ui.util.ext.categoriesToFlowCategories
 import com.example.noteapp.ui.util.ext.formatToNoteDate
+import com.example.noteapp.ui.util.ext.setBtnAddCategoryStyle
 import com.example.noteapp.ui.util.ext.showSnackbar
+import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -90,6 +92,18 @@ class NoteDetailedFragment : Fragment() {
                             type = CategoryOwnerType.NOTE_TYPE, noteId = note.id
                         )
                     findNavController().navigate(action)
+                }
+
+                Chip(context).setBtnAddCategoryStyle {
+                    findNavController().navigate(
+                        NoteDetailedFragmentDirections.actionNoteDetailFragmentToChooseCategoryDialog(
+                            type = CategoryOwnerType.NOTE_TYPE, noteId = note.id
+                        )
+                    )
+                }.also{ chip ->
+                    chip.id = View.generateViewId()
+                    constraintLayout.addView(chip)
+                    flowCategories.addView(chip)
                 }
             }
         }
