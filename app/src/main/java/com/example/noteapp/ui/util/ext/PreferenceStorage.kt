@@ -1,5 +1,4 @@
-package com.example.noteapp.ui.util
-
+package com.example.noteapp.ui.util.ext
 
 import android.content.Context
 import androidx.datastore.core.DataStore

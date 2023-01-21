@@ -31,6 +31,7 @@
             android:hint="@string/hint_task_title"
             android:maxLines="1"
             android:textSize="11sp"
+            android:importantForAutofill="no"
             tools:text="Do homework" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -42,6 +43,7 @@
         android:src="@drawable/ic_paper_airplane"
         app:layout_constraintBottom_toBottomOf="@id/til_title"
         app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/add_task"
         app:layout_constraintTop_toTopOf="@id/til_title" />
 
     <!--    todo fix nested hierarchy-->

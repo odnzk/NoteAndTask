@@ -1,10 +1,10 @@
-package com.example.noteapp.ui.util
+package com.example.noteapp.ui.util.ext
 
 import androidx.core.view.isVisible
 import com.example.noteapp.R
 import com.example.noteapp.databinding.StateLoadingBinding
-import com.example.noteapp.ui.util.exceptions.LoadingFromDatabaseFailedException
 import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
+import com.example.noteapp.ui.util.exceptions.LoadingFromDatabaseFailedException
 import com.example.noteapp.ui.util.exceptions.NotFoundException
 
 fun StateLoadingBinding.loadingFinished() {

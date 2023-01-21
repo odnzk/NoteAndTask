@@ -14,7 +14,6 @@ class AddCategoryDialogViewModel @Inject constructor(
     private val categoryUseCases: CategoryUseCases
 ) : ViewModel() {
 
-    // todo check
     private var _categories = emptyList<Category>()
     val categories: List<Category> = _categories
 

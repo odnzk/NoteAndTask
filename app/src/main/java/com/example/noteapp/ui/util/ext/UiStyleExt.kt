@@ -27,7 +27,7 @@ fun Date.formatToTodoDate(pattern: String? = "EE, dd.MM"): String =
 
 // todo move to strings.xml
 fun Calendar.formatToReminderString(): String =
-    SimpleDateFormat("Reminder dd.MM.yy at HH:mm").format(this)
+    SimpleDateFormat("dd.MM.yy HH:mm").format(this)
 
 fun Date.formatToNoteDate(pattern: String? = "dd.MM.yy"): String =
     SimpleDateFormat(pattern).format(this)

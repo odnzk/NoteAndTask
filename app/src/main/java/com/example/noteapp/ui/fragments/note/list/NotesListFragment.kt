@@ -10,11 +10,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.domain.model.Note
-import com.example.domain.model.NoteItem
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentNotesListBinding
 import com.example.noteapp.databinding.StateLoadingBinding
-import com.example.noteapp.ui.fragments.list.ListFragmentEvent
 import com.example.noteapp.ui.recycler.SwipeCallback
 import com.example.noteapp.ui.recycler.note.NoteAdapter
 import com.example.noteapp.ui.util.errorOccurred

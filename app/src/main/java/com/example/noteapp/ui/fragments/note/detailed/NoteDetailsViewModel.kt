@@ -21,7 +21,7 @@ class NoteDetailsViewModel @Inject constructor(
 
     private val noteId: Long? by lazy { state.get<Long>("noteId") }
     private var _note: MutableStateFlow<UiState<Note>> = MutableStateFlow(UiState.Loading())
-    val note: StateFlow<UiState<Note>> = _note.asStateFlow()
+    val note = _note.asStateFlow()
 
     private var isNewNote: Boolean = false
 

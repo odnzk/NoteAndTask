@@ -63,7 +63,11 @@ class TodoDetailedFragment : Fragment() {
                 }
                 category?.let {
                     chipgroupCategory.addView(it.toChipCategory(requireContext()) {
-                        // todo handle on category click
+                        findNavController().navigate(
+                            TodoDetailedFragmentDirections.actionTodoDetailFragmentToChooseCategoryDialog(
+                                    type = CategoryOwnerType.TODO_TYPE, todoId = viewModel.todoId
+                                )
+                        )
                     })
                 } ?: run {
                     chipgroupCategory.addView(Chip(context).setBtnAddCategoryStyle {

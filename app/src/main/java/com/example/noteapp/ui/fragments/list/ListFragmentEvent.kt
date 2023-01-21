@@ -8,14 +8,14 @@ sealed interface ListFragmentEvent {
         ListFragmentEvent
 
     data class DeleteItem(val noteItem: NoteItem) : ListFragmentEvent
-    object RestoreItem : ListFragmentEvent
-
-    object ClearAll : ListFragmentEvent
-    object ReloadData : ListFragmentEvent
-
     data class UpdateFilter(val filter: Filter) : ListFragmentEvent
     data class UpdateSearchQuery(val query: String) : ListFragmentEvent
     data class UpdateSelectedCategoryId(val id: Long) : ListFragmentEvent
+
+    object RestoreItem : ListFragmentEvent
+    object ClearAll : ListFragmentEvent
+    object ReloadData : ListFragmentEvent
+
 }
 
 

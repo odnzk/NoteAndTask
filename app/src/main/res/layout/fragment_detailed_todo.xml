@@ -38,11 +38,13 @@
         <EditText
             android:id="@+id/et_title"
             style="@style/Headline"
+            android:hint="@string/hint_task_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:maxLines="4"
             android:text="@string/unknown_todo"
             android:inputType="none"
+            android:importantForAutofill="no"
             tools:text="@tools:sample/lorem/random" />
     </com.google.android.material.textfield.TextInputLayout>
 

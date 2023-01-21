@@ -67,13 +67,6 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
                         R.layout.item_spinner_row,
                         R.id.tv_item_spinner
                     )
-//                    val adapter: ArrayAdapter<String> = ArrayAdapter(
-//                        requireContext(),
-//                        R.layout.item_spinner_row,
-//                        R.id.tv_item_spinner,
-//                        categoriesTitleArray
-//                    )
-//                    spinnerCategories.adapter = adapter
                 }
             }
         }

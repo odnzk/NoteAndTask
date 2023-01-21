@@ -16,6 +16,8 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
 private const val WHITE_COLOR = "#FFFFFF"
+private const val CATEGORY_FONT_SIZE = 20f
+
 // todo @ColorInt annotation everywhere
 fun Category.toChipCategory(context: Context, onCategoryChipClick: (() -> Unit)? = null): Chip =
     Chip(ContextThemeWrapper(context, R.style.ChipCategoryStyle), null, 0).apply {
@@ -70,26 +72,13 @@ fun Chip.setBtnAddCategoryStyle(onAction: () -> Unit): Chip =
         chipIconTint = ColorStateList.valueOf(Color.parseColor(WHITE_COLOR))
         chipIconSize = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
-            20f,
+            CATEGORY_FONT_SIZE,
             context.resources.displayMetrics
         )
         isChipIconVisible = true
         text = context.getText(R.string.add_category)
         setOnClickListener { onAction() }
     }
-
-fun List<Category>.insertToChipGroup(
-    chipGroup: ChipGroup,
-    onCategoryChipClick: ((Long) -> Unit)? = null
-) {
-    forEach { category ->
-        val categoryChip = category.toChipCategory(chipGroup.context) {
-            onCategoryChipClick?.invoke(category.id)
-        }
-        chipGroup.addView(categoryChip)
-    }
-}
-
 
 fun List<UiCategory>.toChipGroup(chipGroup: ChipGroup, onCategoryClick: ((Long) -> Unit)? = null) {
     forEach { uiCategory ->

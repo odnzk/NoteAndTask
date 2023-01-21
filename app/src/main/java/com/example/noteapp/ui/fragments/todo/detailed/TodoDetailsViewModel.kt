@@ -9,7 +9,6 @@ import com.example.noteapp.ui.util.UiState
 import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,7 +24,7 @@ class TodoDetailsViewModel @Inject constructor(
         state.get<Long>("todoId") ?: throw InvalidNavArgumentsException()
     }
     private var _todo: MutableStateFlow<UiState<Todo>> = MutableStateFlow(UiState.Loading())
-    val todo: StateFlow<UiState<Todo>> = _todo.asStateFlow()
+    val todo = _todo.asStateFlow()
 
     init {
         loadData()

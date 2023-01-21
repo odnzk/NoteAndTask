@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import com.example.domain.model.Category
 import com.example.noteapp.R
 import com.example.noteapp.databinding.DialogAddCategoryBinding
-import com.example.noteapp.ui.util.ext.insertToChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

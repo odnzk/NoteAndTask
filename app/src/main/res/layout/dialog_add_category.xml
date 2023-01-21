@@ -87,6 +87,7 @@
             android:inputType="text"
             android:maxLines="1"
             android:maxLength="25"
+            android:importantForAutofill="no"
             android:textSize="11sp" />
     </com.google.android.material.textfield.TextInputLayout>
 

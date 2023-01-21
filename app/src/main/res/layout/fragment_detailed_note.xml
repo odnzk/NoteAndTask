@@ -34,9 +34,11 @@
             tools:text="11.11.2022" />
 
         <EditText
+            android:hint="@string/hint_note_title"
             android:id="@+id/et_title"
             style="@style/Headline"
             android:maxLines="1"
+            android:importantForAutofill="no"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/rv_item_padding"
@@ -44,6 +46,7 @@
             app:layout_constraintEnd_toStartOf="@id/btn_delete"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/flow_categories"
+            android:inputType="none"
             tools:text="Android notes" />
 
         <ImageButton
@@ -76,9 +79,11 @@
             <EditText
                 android:id="@+id/et_content"
                 style="@style/ContentText"
+                android:importantForAutofill="no"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="start"
+                android:inputType="none"
                 tools:text="@tools:sample/lorem/random" />
         </com.google.android.material.textfield.TextInputLayout>
 
