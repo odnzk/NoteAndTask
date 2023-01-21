@@ -17,7 +17,6 @@ interface NoteDao {
     @Query("SELECT * FROM notes WHERE note_id = :noteId")
     suspend fun getById(noteId: Long): NoteWithCategoriesTuple?
 
-    // todo add by title
     @Transaction
     @Query(
         "SELECT * FROM note_categories_table" +
@@ -26,9 +25,9 @@ interface NoteDao {
     )
     fun getByCategoryId(categoryId: Long, noteTitle: String): Flow<List<NoteWithCategoriesTuple>>
 
+    @Transaction
     @Query("SELECT * FROM notes WHERE title LIKE '%' || :noteTitle || '%'")
     fun getByTitle(noteTitle: String): Flow<List<NoteWithCategoriesTuple>>
-
 
     @Insert(onConflict = REPLACE)
     suspend fun insert(note: NoteEntity): Long
