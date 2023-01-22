@@ -1,7 +1,7 @@
 package com.example.domain.application.usecase.todo
 
 import com.example.domain.model.Todo
-import com.example.domain.model.validation.TodoValidator
+import com.example.domain.validation.TodoValidator
 import com.example.domain.repository.TodoRepository
 import com.example.noteapp.ui.util.exceptions.InvalidTodoException
 

@@ -1,4 +1,4 @@
-package com.example.domain.model.validation
+package com.example.domain.validation
 
 import com.example.domain.model.Category
 import com.example.domain.util.exceptions.Field

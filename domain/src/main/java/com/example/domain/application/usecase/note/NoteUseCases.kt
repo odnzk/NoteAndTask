@@ -9,5 +9,4 @@ data class NoteUseCases(
     val updateNote: UpdateNote,
     val getAllNotes: GetAllNotes,
     val getNoteById: GetNoteById
-) {
-}
+)

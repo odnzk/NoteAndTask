@@ -33,21 +33,25 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="11.11.2022" />
 
-        <EditText
-            android:hint="@string/hint_note_title"
-            android:id="@+id/et_title"
-            style="@style/Headline"
-            android:maxLines="1"
-            android:importantForAutofill="no"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/rv_item_padding"
             android:layout_marginTop="@dimen/fragment_default_margin_top"
             app:layout_constraintEnd_toStartOf="@id/btn_delete"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/flow_categories"
-            android:inputType="none"
-            tools:text="Android notes" />
+            app:layout_constraintTop_toBottomOf="@id/flow_categories">
+
+            <EditText
+                android:id="@+id/et_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_note_title"
+                android:importantForAutofill="no"
+                android:inputType="none"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ImageButton
             android:id="@+id/btn_delete"
@@ -55,8 +59,8 @@
             android:contentDescription="@string/delete_note"
             app:layout_constraintBottom_toBottomOf="@id/et_title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/et_title"
-            app:layout_constraintTop_toTopOf="@id/et_title" />
+            app:layout_constraintStart_toEndOf="@id/til_title"
+            app:layout_constraintTop_toTopOf="@id/til_title" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier"
@@ -64,15 +68,16 @@
             android:layout_height="0dp"
             android:orientation="horizontal"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="btn_delete, et_title" />
+            app:constraint_referenced_ids="btn_delete, til_title" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/fragment_default_margin_top"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias=".0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/barrier">
 

@@ -9,7 +9,6 @@ import com.example.noteapp.ui.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,9 +32,14 @@ class NoteDetailsViewModel @Inject constructor(
         _note.value = UiState.Loading()
         viewModelScope.launch {
             noteId?.let {
-                // todo catch exception in getNoteById()
-                val repoNote = noteUseCases.getNoteById(it)
-                _note.value = UiState.Success(repoNote)
+                noteUseCases.getNoteById(it).fold(
+                    onSuccess = { note ->
+                        _note.value = UiState.Success(note)
+                    },
+                    onFailure = { error ->
+                        _note.value = UiState.Error(error)
+                    }
+                )
             } ?: run {
                 isNewNote = true
                 _note.value = UiState.Success(Note.defaultInstance())
@@ -43,15 +47,18 @@ class NoteDetailsViewModel @Inject constructor(
         }
     }
 
-    // todo ?? Dispatchers.Default
     fun onEvent(event: NoteDetailedEvent) = viewModelScope.launch(Dispatchers.Default) {
         when (event) {
             is NoteDetailedEvent.UpdateNote -> {
                 if (isNewNote) {
-                    noteUseCases.addNote(event.note)
+                    noteUseCases.addNote(event.note).also { result ->
+                        result.exceptionOrNull()?.let { _note.value = UiState.Error(it) }
+                    }
                     isNewNote = false
                 } else {
-                    noteUseCases.updateNote(event.note)
+                    noteUseCases.updateNote(event.note).also { result ->
+                        result.exceptionOrNull()?.let { _note.value = UiState.Error(it) }
+                    }
                 }
             }
             is NoteDetailedEvent.DeleteNote -> {

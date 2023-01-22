@@ -9,10 +9,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.domain.model.Note
+import com.example.domain.util.exceptions.Field
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentDetailedNoteBinding
 import com.example.noteapp.databinding.StateLoadingBinding
 import com.example.noteapp.ui.util.CategoryOwnerType
+import com.example.noteapp.ui.util.exceptions.InvalidNoteException
 import com.example.noteapp.ui.util.ext.*
 import com.example.noteapp.ui.util.handleState
 import com.google.android.material.chip.Chip
@@ -52,7 +54,6 @@ class NoteDetailedFragment : Fragment() {
                         )
                     )
                 }
-                root.showSnackbar(getString(R.string.success_save))
             }
         }
     }
@@ -68,9 +69,18 @@ class NoteDetailedFragment : Fragment() {
             }
         }
 
-    private fun onErrorAction(error: Throwable) =
-        stateLoadingBinding.errorOccurred(error) {
-            viewModel.onEvent(NoteDetailedEvent.TryLoadingNoteAgain)
+    private fun onErrorAction(error: Throwable) = when (error) {
+        is InvalidNoteException -> {
+            when (error.field) {
+                Field.TITLE -> binding.etTitle.error = getString(R.string.error_invalid_note_tile)
+                else -> binding.etContent.error = getString(R.string.error_invalid_note_content)
+            }
+        }
+        else -> {
+            stateLoadingBinding.errorOccurred(error) {
+                viewModel.onEvent(NoteDetailedEvent.TryLoadingNoteAgain)
+            }
+        }
     }
 
     private fun showNote(note: Note) {

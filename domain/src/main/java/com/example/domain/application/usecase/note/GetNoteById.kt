@@ -6,7 +6,10 @@ import com.example.noteapp.ui.util.exceptions.NotFoundException
 
 class GetNoteById(private val noteRepository: NoteRepository) {
 
-    @Throws(NotFoundException::class)
-    suspend operator fun invoke(noteId: Long): Note =
-        noteRepository.getById(noteId) ?: throw NotFoundException()
+    suspend operator fun invoke(noteId: Long): Result<Note> {
+        return noteRepository.getById(noteId)?.let { Result.success(it) } ?: Result.failure(
+            NotFoundException()
+        )
+    }
+
 }

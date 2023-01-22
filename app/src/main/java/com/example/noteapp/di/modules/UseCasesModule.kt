@@ -6,9 +6,9 @@ import com.example.domain.application.usecase.both.UnitedUseCases
 import com.example.domain.application.usecase.category.*
 import com.example.domain.application.usecase.note.*
 import com.example.domain.application.usecase.todo.*
-import com.example.domain.model.validation.CategoryValidator
-import com.example.domain.model.validation.NoteValidator
-import com.example.domain.model.validation.TodoValidator
+import com.example.domain.validation.CategoryValidator
+import com.example.domain.validation.NoteValidator
+import com.example.domain.validation.TodoValidator
 import com.example.domain.repository.CategoryRepository
 import com.example.domain.repository.NoteRepository
 import com.example.domain.repository.TodoRepository
