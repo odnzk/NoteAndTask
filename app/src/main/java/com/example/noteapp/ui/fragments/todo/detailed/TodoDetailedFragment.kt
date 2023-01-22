@@ -15,6 +15,7 @@ import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentDetailedTodoBinding
 import com.example.noteapp.databinding.StateLoadingBinding
 import com.example.noteapp.ui.util.CategoryOwnerType
+import com.example.noteapp.ui.util.exceptions.InvalidNoteException
 import com.example.noteapp.ui.util.ext.*
 import com.example.noteapp.ui.util.handleState
 import com.google.android.material.chip.Chip
@@ -50,7 +51,12 @@ class TodoDetailedFragment : Fragment() {
     }
 
     private fun errorOccurred(error: Throwable) {
-        stateLoadingBinding.errorOccurred(error) { viewModel.onEvent(TodoDetailedEvent.TryLoadingTodoAgain) }
+        if (error is InvalidNoteException) {
+            binding.etTitle.error = getString(R.string.error_invalid_todo_tile)
+        } else {
+            stateLoadingBinding.errorOccurred(error)
+            { viewModel.onEvent(TodoDetailedEvent.TryLoadingTodoAgain) }
+        }
     }
 
     private fun showTodo(todo: Todo) {

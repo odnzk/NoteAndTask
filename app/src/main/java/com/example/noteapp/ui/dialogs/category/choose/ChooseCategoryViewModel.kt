@@ -8,6 +8,7 @@ import com.example.domain.application.usecase.note.NoteUseCases
 import com.example.domain.application.usecase.todo.TodoUseCases
 import com.example.domain.model.Category
 import com.example.domain.model.Note
+import com.example.domain.model.NoteItem
 import com.example.domain.model.Todo
 import com.example.noteapp.model.UiCategory
 import com.example.noteapp.ui.util.CategoryOwnerType
@@ -40,12 +41,19 @@ class ChooseCategoryViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val noteItem = when (type) {
+            val noteItemResult: Result<NoteItem> = when (type) {
                 CategoryOwnerType.NOTE_TYPE -> noteUseCases.getNoteById(noteItemId)
                 CategoryOwnerType.TODO_TYPE -> todoUseCases.getTodoById(noteItemId)
             }
+            noteItemResult.fold(onSuccess = { observeCategories(it) }, onFailure = {
+                // todo somehow show validation exception
+            })
+        }
+    }
 
-            categoryUseCases.getAllCategories().distinctUntilChanged().collectLatest { categories ->
+    private suspend fun observeCategories(noteItem: NoteItem) {
+        categoryUseCases.getAllCategories().distinctUntilChanged()
+            .collectLatest { categories ->
                 when (noteItem) {
                     is Note -> {
                         val selectedCategories: List<Category> = noteItem.categories
@@ -66,7 +74,6 @@ class ChooseCategoryViewModel @Inject constructor(
                     }
                 }
             }
-        }
     }
 
     fun onEvent(event: ChooseCategoryEvent) = viewModelScope.launch {

@@ -53,7 +53,6 @@ class ListTodoViewModel @Inject constructor(
             is ListTodoEvent.UpdateTodoCompletedStatus -> todoUseCases.updateIsCompleted(
                 event.todoId, event.isCompleted
             )
-            is ListTodoEvent.AddItem -> todoUseCases.addTodo(event.todo)
             is ListTodoEvent.DeleteItem -> {
                 recentlyRemoved = event.todo
                 todoUseCases.deleteTodo(event.todo.id)

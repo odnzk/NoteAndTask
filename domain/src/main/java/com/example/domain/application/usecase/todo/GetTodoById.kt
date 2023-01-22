@@ -6,8 +6,8 @@ import com.example.noteapp.ui.util.exceptions.NotFoundException
 
 class GetTodoById(private val todoRepository: TodoRepository) {
 
-    // todo
-    @Throws(NotFoundException::class)
-    suspend operator fun invoke(todoId: Long): Todo =
-        todoRepository.getById(todoId) ?: throw NotFoundException()
+    suspend operator fun invoke(todoId: Long): Result<Todo> =
+        todoRepository.getById(todoId)?.let { Result.success(it) } ?: Result.failure(
+            NotFoundException()
+        )
 }

@@ -69,19 +69,15 @@ class NoteDetailedFragment : Fragment() {
             }
         }
 
-    private fun onErrorAction(error: Throwable) = when (error) {
-        is InvalidNoteException -> {
+    private fun onErrorAction(error: Throwable) =
+        if (error is InvalidNoteException) {
             when (error.field) {
                 Field.TITLE -> binding.etTitle.error = getString(R.string.error_invalid_note_tile)
                 else -> binding.etContent.error = getString(R.string.error_invalid_note_content)
             }
+        } else stateLoadingBinding.errorOccurred(error) {
+            viewModel.onEvent(NoteDetailedEvent.TryLoadingNoteAgain)
         }
-        else -> {
-            stateLoadingBinding.errorOccurred(error) {
-                viewModel.onEvent(NoteDetailedEvent.TryLoadingNoteAgain)
-            }
-        }
-    }
 
     private fun showNote(note: Note) {
         stateLoadingBinding.loadingFinished()

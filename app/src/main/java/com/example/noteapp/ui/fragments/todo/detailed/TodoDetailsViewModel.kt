@@ -41,11 +41,13 @@ class TodoDetailsViewModel @Inject constructor(
     fun onEvent(event: TodoDetailedEvent) = viewModelScope.launch {
         when (event) {
             is TodoDetailedEvent.UpdateTodo -> {
-                todoUseCases.updateTodo(event.todo)
+                todoUseCases.updateTodo(event.todo).onFailure {
+                    _todo.value = UiState.Error(it)
+                }
             }
             is TodoDetailedEvent.DeleteTodo -> {
                 // if UiState.Loading or UiState.Error do nothing
-                todo.value.data?.let {
+                _todo.value.data?.let {
                     todoUseCases.deleteTodo(it.id)
                 }
             }

@@ -6,11 +6,9 @@ import com.example.noteapp.ui.util.exceptions.InvalidTodoException
 
 class TodoValidator {
 
-    @Throws(InvalidTodoException::class)
-    fun isValid(todo: Todo): Boolean {
+    fun isValid(todo: Todo): Result<Boolean> =
         if (todo.title.isBlank()) {
-            throw InvalidTodoException(Field.TITLE)
-        }
-        return true
-    }
+            Result.failure(InvalidTodoException(Field.TITLE))
+        } else Result.success(true)
+
 }
