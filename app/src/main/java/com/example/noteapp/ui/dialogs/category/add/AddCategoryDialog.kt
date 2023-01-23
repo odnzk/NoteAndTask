@@ -12,7 +12,10 @@ import androidx.lifecycle.lifecycleScope
 import com.example.domain.model.Category
 import com.example.noteapp.R
 import com.example.noteapp.databinding.DialogAddCategoryBinding
+import com.example.noteapp.ui.dialogs.CompletableState
+import com.example.noteapp.ui.util.exceptions.InvalidCategoryException
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -25,6 +28,19 @@ class AddCategoryDialog : DialogFragment(R.layout.dialog_add_category) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+        observeState()
+    }
+
+    private fun observeState() = lifecycleScope.launchWhenResumed {
+        viewModel.category.collectLatest { state ->
+            when (state) {
+                is CompletableState.Completed -> dismiss()
+                is CompletableState.Error -> if (state.error is InvalidCategoryException) {
+                    binding.etCategoryTitle.error = getString(R.string.error_invalid_category_title)
+                }
+                is CompletableState.InProgress -> {}
+            }
+        }
     }
 
     private fun init() {
@@ -43,7 +59,6 @@ class AddCategoryDialog : DialogFragment(R.layout.dialog_add_category) {
                                     )
                                 )
                             }
-                            dismiss()
                         }
                     }
             }
@@ -56,7 +71,6 @@ class AddCategoryDialog : DialogFragment(R.layout.dialog_add_category) {
         _binding = DialogAddCategoryBinding.inflate(inflater, container, false)
         return binding.root
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
