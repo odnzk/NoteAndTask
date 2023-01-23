@@ -14,18 +14,32 @@ class GetAllTodos(private val todoRepository: TodoRepository) {
         when (todoSort) {
             TodoSortOrder.DEFAULT -> todoRepository.getAll()
             TodoSortOrder.BY_DEADLINE -> todoRepository.getAll()
-                .map { it.sortedBy { todo -> todo.deadlineDate } }
+                .map {
+                    it.sortedWith { todo1, todo2 ->
+                        // without deadline will be latest
+                        todo1.deadlineDate?.let { date1 ->
+                            todo2.deadlineDate?.let { date2 ->
+                                return@sortedWith (date1.time - date2.time).toInt()
+                            }
+                            return@sortedWith -1
+                        }
+                        todo2.deadlineDate?.let {
+                            return@sortedWith 1
+                        }
+                        return@sortedWith 0
+                    }
+                }
             TodoSortOrder.TODAY -> {
                 val calendar = Calendar.getInstance()
                 todoRepository.getAll()
                     .map {
                         it.filter { todo ->
-                            todo.deadlineDate.let {
+                            todo.deadlineDate?.let {
                                 val todoCalendar = Calendar.getInstance().apply {
                                     time = it
                                 }
                                 todoCalendar.isSameDay(calendar)
-                            }
+                            } == true
                         }
                     }
             }
