@@ -12,7 +12,7 @@
     <string name="error_failed_loading_from_database">Loading data from database was failed</string>
     <string name="error_empty_or_blanc_category_title">Cannot be empty or blanc</string>
     <string name="error_invalid_note_tile">Note title cannot be blank</string>
-    <string name="error_invalid_todo_tile">Task title cannot be blank</string>
+    <string name="error_invalid_todo_title">Task title cannot be blank</string>
     <string name="error_invalid_note_content">Note content cannot be blank</string>
 
     <string name="success_delete">Successfully deleted</string>

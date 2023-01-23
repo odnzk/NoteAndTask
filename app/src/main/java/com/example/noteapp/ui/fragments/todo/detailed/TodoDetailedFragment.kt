@@ -52,7 +52,7 @@ class TodoDetailedFragment : Fragment() {
 
     private fun errorOccurred(error: Throwable) {
         if (error is InvalidNoteException) {
-            binding.etTitle.error = getString(R.string.error_invalid_todo_tile)
+            binding.etTitle.error = getString(R.string.error_invalid_todo_title)
         } else {
             stateLoadingBinding.errorOccurred(error)
             { viewModel.onEvent(TodoDetailedEvent.TryLoadingTodoAgain) }
