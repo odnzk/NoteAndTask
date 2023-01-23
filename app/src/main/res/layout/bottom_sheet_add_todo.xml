@@ -54,30 +54,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_title">
-        <FrameLayout
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+
+            <Spinner
+                android:id="@+id/spinner_categories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical" />
+
+            <Spinner
+                android:id="@+id/spinner_deadline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:entries="@array/todo_deadline_spinner_variants" />
 
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_set_categories"
-                    style="@style/MaterialButtonWithIcon.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/btn_set_category"
-                    app:icon="@drawable/ic_categories" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_set_deadline"
-                    style="@style/MaterialButtonWithIcon.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/btn_set_deadline"
-                    app:icon="@drawable/ic_schedule" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_set_reminder"
@@ -95,15 +94,8 @@
                     android:text="@string/btn_set_period"
                     app:icon="@drawable/ic_baseline_repeat_24" />
             </com.google.android.material.button.MaterialButtonToggleGroup>
-        </FrameLayout>
+        </LinearLayout>
     </HorizontalScrollView>
-
-    <Spinner
-        android:id="@+id/spinner_categories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/horizontal_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

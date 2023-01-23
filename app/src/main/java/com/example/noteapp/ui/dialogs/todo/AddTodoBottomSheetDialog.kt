@@ -8,13 +8,17 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.DatePicker
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.noteapp.R
 import com.example.noteapp.databinding.BottomSheetAddTodoBinding
 import com.example.noteapp.ui.dialogs.CompletableState
 import com.example.noteapp.ui.util.exceptions.InvalidTodoException
-import com.example.noteapp.ui.util.ext.*
+import com.example.noteapp.ui.util.ext.formatToReminderString
+import com.example.noteapp.ui.util.ext.init
+import com.example.noteapp.ui.util.ext.showDatePicker
+import com.example.noteapp.ui.util.ext.showDateTimePicker
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -33,27 +37,49 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initCategoriesSpinner()
+        initDeadlineSpinner()
         observeState()
         init()
+    }
+
+    private fun initDeadlineSpinner() {
+        binding.spinnerDeadline.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?, p1: View?, pos: Int, id: Long
+            ) {
+                when (pos) {
+                    1 -> {
+                        // today
+                        viewModel.onEvent(AddTodoDialogEvent.UpdateDeadlineDate(Date()))
+                    }
+                    2 -> {
+                        // tomorrow
+                        Calendar.getInstance().also {
+                            it.add(Calendar.DAY_OF_MONTH, 1)
+                            viewModel.onEvent(AddTodoDialogEvent.UpdateDeadlineDate(Date(it.timeInMillis)))
+                        }
+                    }
+                    3 -> {
+                        context?.showDatePicker { datePicker: DatePicker, year: Int, month: Int, day: Int ->
+                            val date = Calendar.getInstance().apply {
+                                set(Calendar.YEAR, year)
+                                set(Calendar.MONTH, month)
+                                set(Calendar.DAY_OF_MONTH, day)
+                            }
+                            viewModel.onEvent(AddTodoDialogEvent.UpdateDeadlineDate(Date(date.timeInMillis)))
+                        }
+                    }
+                }
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) = Unit
+        }
     }
 
     private fun init() {
         with(binding) {
             btnAdd.setOnClickListener {
                 viewModel.onEvent(AddTodoDialogEvent.AddTodo)
-            }
-//            btnSetCategories.setOnClickListener {
-//                // todo show spinner with existing categories
-//            }
-            btnSetDeadline.setOnClickListener {
-                context?.showDatePicker { datePicker: DatePicker, year: Int, month: Int, day: Int ->
-                    val date = Calendar.getInstance().apply {
-                        set(Calendar.YEAR, year)
-                        set(Calendar.MONTH, month)
-                        set(Calendar.DAY_OF_MONTH, day)
-                    }
-                    viewModel.onEvent(AddTodoDialogEvent.UpdateDeadlineDate(Date(date.timeInMillis)))
-                }
             }
             btnSetReminder.setOnClickListener {
                 context?.showDateTimePicker { calendar ->
@@ -62,6 +88,9 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
             }
             btnSetRepeating.setOnClickListener {
                 // todo show spinner
+            }
+            tilTitle.editText?.doOnTextChanged { text, start, before, count ->
+                viewModel.onEvent(AddTodoDialogEvent.UpdateTitle(text.toString()))
             }
         }
     }
@@ -82,10 +111,10 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
                     is CompletableState.InProgress -> {
                         with(binding) {
                             val todo = state.data
-                            todo.deadlineDate?.let { btnSetDeadline.text = it.formatToTodoDate() }
                             todo.notificationCalendar?.let {
                                 binding.btnSetReminder.text = it.formatToReminderString()
                             }
+                            // todo set period
                         }
                     }
                 }
@@ -102,7 +131,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
                         add(0, getString(R.string.spinner_no_category))
                     }.toTypedArray()
             binding.spinnerCategories.init(
-                categoriesTitleArray, R.layout.item_spinner_row, R.id.tv_item_spinner
+                categoriesTitleArray
             )
             binding.spinnerCategories.onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(

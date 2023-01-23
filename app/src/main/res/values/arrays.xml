@@ -5,4 +5,11 @@
         <item>Only tasks</item>
         <item>Only notes</item>
     </string-array>
+
+    <string-array name="todo_deadline_spinner_variants">
+        <item>No deadline date</item>
+        <item>Today</item>
+        <item>Tomorrow</item>
+        <item>Custom</item>
+    </string-array>
 </resources>
