@@ -24,13 +24,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
+        <Spinner
             android:id="@+id/btn_sort_notes"
-            style="@style/ButtonSort"
-            android:contentDescription="@string/sort_notes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/note_filters_spinner_variants"
             app:layout_constraintBottom_toBottomOf="@id/tv_list_title"
             app:layout_constraintStart_toEndOf="@id/tv_list_title"
             app:layout_constraintTop_toTopOf="@id/tv_list_title" />
+
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/btn_sort_notes"-->
+        <!--            style="@style/ButtonSort"-->
+        <!--            android:contentDescription="@string/sort_notes"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@id/tv_list_title"-->
+        <!--            app:layout_constraintStart_toEndOf="@id/tv_list_title"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/tv_list_title" />-->
 
         <ImageButton
             android:id="@+id/btn_clear_all"

@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.note.NoteUseCases
 import com.example.domain.model.Note
+import com.example.domain.model.NoteSort
 import com.example.noteapp.ui.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -22,18 +24,21 @@ class ListNoteViewModel @Inject constructor(
     val notes = _notes.asStateFlow()
 
     private var recentlyRemoved: Note? = null
-
+    private var noteSort: NoteSort = NoteSort.DEFAULT
+    private var jobObservingNoteList: Job? = null
 
     init {
         loadData()
     }
 
-    private fun loadData() =
-        viewModelScope.launch {
-            noteUseCases.getAllNotes().distinctUntilChanged().collectLatest {
+    private fun loadData(noteSort: NoteSort = NoteSort.DEFAULT) {
+        jobObservingNoteList?.cancel()
+        jobObservingNoteList = viewModelScope.launch {
+            noteUseCases.getAllNotes(noteSort).distinctUntilChanged().collectLatest {
                 _notes.value = UiState.Success(it)
             }
         }
+    }
 
 
     fun onEvent(event: ListNoteEvent) =
@@ -48,7 +53,12 @@ class ListNoteViewModel @Inject constructor(
                 ListNoteEvent.RestoreItem -> recentlyRemoved?.let {
                     noteUseCases.addNote(it)
                 }
+                is ListNoteEvent.UpdateSortOrder -> {
+                    if (noteSort != event.noteSort) {
+                        noteSort = event.noteSort
+                        loadData(noteSort)
+                    }
+                }
             }
         }
-
 }
