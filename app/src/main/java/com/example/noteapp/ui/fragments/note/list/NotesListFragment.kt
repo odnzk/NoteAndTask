@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.domain.model.Note
+import com.example.domain.model.NoteSort
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentNotesListBinding
 import com.example.noteapp.databinding.StateLoadingBinding
@@ -35,12 +38,33 @@ class NotesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         observeNotes()
         initRecyclerView()
+        init()
+    }
+
+    private fun init() {
         with(binding) {
             btnAdd.setOnClickListener {
                 findNavController().navigate(R.id.action_notesListFragment_to_noteDetailFragment)
             }
             btnClearAll.setOnClickListener {
                 viewModel.onEvent(ListNoteEvent.ClearAll)
+            }
+            btnSortNotes.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapter: AdapterView<*>?,
+                    p1: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val order: NoteSort = when (position) {
+                        1 -> NoteSort.BY_DATE
+                        2 -> NoteSort.BY_ALPHABET
+                        else -> NoteSort.DEFAULT
+                    }
+                    viewModel.onEvent(ListNoteEvent.UpdateSortOrder(order))
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) = Unit
             }
         }
     }
