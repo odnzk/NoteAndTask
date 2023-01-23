@@ -24,6 +24,7 @@ import com.example.noteapp.ui.util.handleState
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.single
 
 
 @AndroidEntryPoint

@@ -68,7 +68,7 @@
                     style="@style/MaterialButtonWithIcon.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/btn_set_categories"
+                    android:text="@string/btn_set_category"
                     app:icon="@drawable/ic_categories" />
 
                 <com.google.android.material.button.MaterialButton

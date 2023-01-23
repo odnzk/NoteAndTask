@@ -2,6 +2,7 @@ package com.example.noteapp.ui.util.ext
 
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.SpinnerAdapter
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 

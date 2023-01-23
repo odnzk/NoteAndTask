@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tv_item_spinner"
-    style="@style/ContentText_small"
+    android:drawablePadding="4dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:ellipsize="marquee"
@@ -13,5 +13,5 @@
     android:textColor="@color/dark_grey"
     app:drawableStartCompat="@drawable/ic_categories"
     app:drawableTint="@color/dark_grey"
-    tools:text="Heath" />
+    tools:text="@string/spinner_no_category" />
 

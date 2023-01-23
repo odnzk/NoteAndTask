@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.DatePicker
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +18,7 @@ import com.example.noteapp.ui.util.ext.*
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.single
 import java.util.*
 
 
@@ -29,7 +32,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        observeCategories()
+        initCategoriesSpinner()
         observeState()
         init()
     }
@@ -39,14 +42,23 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
             btnAdd.setOnClickListener {
                 viewModel.onEvent(AddTodoDialogEvent.AddTodo)
             }
-            btnSetCategories.setOnClickListener {
-                // todo show spinner with existing categories
-            }
+//            btnSetCategories.setOnClickListener {
+//                // todo show spinner with existing categories
+//            }
             btnSetDeadline.setOnClickListener {
-                context?.showDatePicker(::setDeadlineDate)
+                context?.showDatePicker { datePicker: DatePicker, year: Int, month: Int, day: Int ->
+                    val date = Calendar.getInstance().apply {
+                        set(Calendar.YEAR, year)
+                        set(Calendar.MONTH, month)
+                        set(Calendar.DAY_OF_MONTH, day)
+                    }
+                    viewModel.onEvent(AddTodoDialogEvent.UpdateDeadlineDate(Date(date.timeInMillis)))
+                }
             }
             btnSetReminder.setOnClickListener {
-                createReminderNotification()
+                context?.showDateTimePicker { calendar ->
+                    viewModel.onEvent(AddTodoDialogEvent.UpdateReminderInfo(calendar))
+                }
             }
             btnSetRepeating.setOnClickListener {
                 // todo show spinner
@@ -81,13 +93,37 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private fun observeCategories() {
-        with(binding) {
+    private fun initCategoriesSpinner() {
+        lifecycleScope.launchWhenResumed {
+            val categories = viewModel.categories.single()
             val categoriesTitleArray =
-                viewModel.categories.map { category -> category.title }.toTypedArray()
-            spinnerCategories.init(
+                categories.map { category -> category.title }.toMutableList()
+                    .apply {
+                        add(0, getString(R.string.spinner_no_category))
+                    }.toTypedArray()
+            binding.spinnerCategories.init(
                 categoriesTitleArray, R.layout.item_spinner_row, R.id.tv_item_spinner
             )
+            binding.spinnerCategories.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    p1: View?,
+                    pos: Int,
+                    id: Long
+                ) {
+                    (parent?.getItemAtPosition(pos) as? String)?.let { categoryTitle ->
+                        if (categoryTitle == getString(R.string.spinner_no_category)) return
+                        categories.forEach { category ->
+                            if (category.title == categoryTitle) {
+                                viewModel.onEvent(AddTodoDialogEvent.UpdateCategory(category))
+                            }
+                        }
+                    }
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) = Unit
+            }
+
         }
     }
 
@@ -96,21 +132,6 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
     ): View {
         _binding = BottomSheetAddTodoBinding.inflate(inflater, container, false)
         return binding.root
-    }
-
-    private fun setDeadlineDate(datePicker: DatePicker, year: Int, month: Int, day: Int) {
-        val date = Calendar.getInstance().apply {
-            set(Calendar.YEAR, year)
-            set(Calendar.MONTH, month)
-            set(Calendar.DAY_OF_MONTH, day)
-        }
-        viewModel.onEvent(AddTodoDialogEvent.UpdateDeadlineDate(Date(date.timeInMillis)))
-    }
-
-    private fun createReminderNotification() {
-        context?.showDateTimePicker { calendar ->
-            viewModel.onEvent(AddTodoDialogEvent.UpdateReminderInfo(calendar))
-        }
     }
 
     override fun onDestroyView() {

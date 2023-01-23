@@ -2,39 +2,34 @@ package com.example.noteapp.ui.dialogs.todo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.application.usecase.category.GetAllCategories
-import com.example.domain.application.usecase.todo.AddTodo
+import com.example.domain.application.usecase.category.CategoryUseCases
+import com.example.domain.application.usecase.todo.TodoUseCases
 import com.example.domain.model.Category
 import com.example.domain.model.Todo
 import com.example.noteapp.ui.dialogs.CompletableState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class AddTodoViewModel @Inject constructor(
-    private val getCategoriesUseCase: GetAllCategories, private val addTodo: AddTodo
+    private val categoryUseCases: CategoryUseCases,
+    private val todoUseCases: TodoUseCases
 ) : ViewModel() {
 
     private var _currentTodo: MutableStateFlow<CompletableState<Todo>> =
         MutableStateFlow(CompletableState.InProgress(Todo.defaultInstance()))
     val currentTodo = _currentTodo.asStateFlow()
 
-    private var _categories = emptyList<Category>()
-    val categories = _categories
-
-
-    init {
-        viewModelScope.launch {
-            _categories = getCategoriesUseCase().first()
-        }
+    val categories: Flow<List<Category>> = flow {
+        emit(categoryUseCases.getAllCategories().first())
     }
 
     fun onEvent(event: AddTodoDialogEvent) = viewModelScope.launch {
         when (event) {
             AddTodoDialogEvent.AddTodo -> {
-                addTodo(currentTodo.value.data).fold(onSuccess = {
+                todoUseCases.addTodo(currentTodo.value.data).fold(onSuccess = {
                     // todo add notification worker is it needs
                     _currentTodo.value = CompletableState.Completed(data = currentTodo.value.data)
                 }, onFailure = { error ->

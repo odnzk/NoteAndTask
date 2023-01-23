@@ -25,7 +25,8 @@
 
     <string name="schedule_icon">Schedule icon</string>
 
-    <string name="btn_set_categories">Add categories</string>
+    <string name="btn_set_category">Add category</string>
+    <string name="spinner_no_category">No category</string>
     <string name="btn_set_deadline">Add deadline</string>
     <string name="btn_set_reminder">Add reminder</string>
     <string name="btn_set_period">Add period</string>
