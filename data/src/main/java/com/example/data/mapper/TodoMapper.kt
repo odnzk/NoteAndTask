@@ -4,7 +4,7 @@ import com.example.data.entity.TodoEntity
 import com.example.data.tuples.TodoWithCategoryTuple
 import com.example.domain.model.Todo
 
-fun Todo.toEntity() = TodoEntity(
+internal fun Todo.toEntity() = TodoEntity(
     id = id,
     title = title,
     isCompleted = isCompleted,
@@ -12,7 +12,7 @@ fun Todo.toEntity() = TodoEntity(
     deadlineDate = deadlineDate
 )
 
-fun TodoWithCategoryTuple.toTodo() = Todo(
+internal fun TodoWithCategoryTuple.toTodo() = Todo(
     id = todo.id,
     title = todo.title,
     isCompleted = todo.isCompleted,
