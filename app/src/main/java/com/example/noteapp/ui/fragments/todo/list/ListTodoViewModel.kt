@@ -6,8 +6,10 @@ import com.example.domain.application.usecase.category.CategoryUseCases
 import com.example.domain.application.usecase.todo.TodoUseCases
 import com.example.domain.model.Category
 import com.example.domain.model.Todo
+import com.example.domain.model.TodoSortOrder
 import com.example.noteapp.ui.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -23,11 +25,12 @@ class ListTodoViewModel @Inject constructor(
     private var _todos: MutableStateFlow<UiState<List<Todo>>> = MutableStateFlow(UiState.Loading())
     val todos = _todos.asStateFlow()
 
-    private var recentlyRemoved: Todo? = null
-
-    // for AddTodoBottomSheetDialog
     private var _categories: MutableStateFlow<List<Category>> = MutableStateFlow(emptyList())
     val categories = _categories.asStateFlow()
+
+    private var recentlyRemoved: Todo? = null
+    private var todoSortOrder: TodoSortOrder = TodoSortOrder.DEFAULT
+    private var jobObservingTodoList: Job? = null
 
     init {
         loadData()
@@ -40,9 +43,12 @@ class ListTodoViewModel @Inject constructor(
         }
     }
 
-    private fun loadData() = viewModelScope.launch {
-        todoUseCases.getAllTodos().distinctUntilChanged().collectLatest {
-            _todos.value = UiState.Success(it)
+    private fun loadData(todoSortOrder: TodoSortOrder = TodoSortOrder.DEFAULT) {
+        jobObservingTodoList?.cancel()
+        jobObservingTodoList = viewModelScope.launch {
+            todoUseCases.getAllTodos(todoSortOrder).distinctUntilChanged().collectLatest {
+                _todos.value = UiState.Success(it)
+            }
         }
     }
 
@@ -58,6 +64,13 @@ class ListTodoViewModel @Inject constructor(
                 todoUseCases.deleteTodo(event.todo.id)
             }
             ListTodoEvent.RestoreItem -> recentlyRemoved?.let { todoUseCases.addTodo(it) }
+            is ListTodoEvent.UpdateSortOrder -> {
+                if (todoSortOrder != event.todoSortOrder) {
+                    todoSortOrder = event.todoSortOrder
+                    loadData(todoSortOrder)
+                }
+            }
+
         }
     }
 

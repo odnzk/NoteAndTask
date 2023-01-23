@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.domain.model.Note
-import com.example.domain.model.NoteSort
+import com.example.domain.model.NoteSortOrder
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentNotesListBinding
 import com.example.noteapp.databinding.StateLoadingBinding
@@ -49,17 +49,17 @@ class NotesListFragment : Fragment() {
             btnClearAll.setOnClickListener {
                 viewModel.onEvent(ListNoteEvent.ClearAll)
             }
-            btnSortNotes.onItemSelectedListener = object : OnItemSelectedListener {
+            spinnerSort.onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(
                     adapter: AdapterView<*>?,
                     p1: View?,
                     position: Int,
                     id: Long
                 ) {
-                    val order: NoteSort = when (position) {
-                        1 -> NoteSort.BY_DATE
-                        2 -> NoteSort.BY_ALPHABET
-                        else -> NoteSort.DEFAULT
+                    val order: NoteSortOrder = when (position) {
+                        1 -> NoteSortOrder.BY_DATE
+                        2 -> NoteSortOrder.BY_ALPHABET
+                        else -> NoteSortOrder.DEFAULT
                     }
                     viewModel.onEvent(ListNoteEvent.UpdateSortOrder(order))
                 }

@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.domain.model.Todo
+import com.example.domain.model.TodoSortOrder
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentTodosListBinding
 import com.example.noteapp.databinding.StateLoadingBinding
@@ -37,13 +40,36 @@ class TodosListFragment : Fragment() {
 
         observeTodos()
         initRecyclerView()
+        init()
 
+    }
+
+    private fun init() {
         with(binding) {
             btnAdd.setOnClickListener {
                 findNavController().navigate(R.id.action_todosListFragment_to_addTodoBottomSheetDialog)
             }
             btnClearAll.setOnClickListener {
                 viewModel.onEvent(ListTodoEvent.ClearAll)
+            }
+            spinnerSort.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapter: AdapterView<*>?,
+                    p1: View?,
+                    pos: Int,
+                    id: Long
+                ) {
+                    val sortOrder = when (pos) {
+                        1 -> TodoSortOrder.BY_DEADLINE
+                        2 -> TodoSortOrder.TODAY
+                        3 -> TodoSortOrder.THIS_WEEK
+                        else -> TodoSortOrder.DEFAULT
+                    }
+                    viewModel.onEvent(ListTodoEvent.UpdateSortOrder(sortOrder))
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) = Unit
+
             }
         }
     }

@@ -1,5 +1,5 @@
 package com.example.domain.model
 
-enum class NoteSort {
+enum class NoteSortOrder {
     DEFAULT, BY_ALPHABET, BY_DATE
 }

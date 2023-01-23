@@ -1,3 +1,3 @@
 package com.example.domain.model
 
-enum class SortOrder { DEFAULT }
+enum class SortOrder { DEFAULT } // todo???
