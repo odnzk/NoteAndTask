@@ -17,6 +17,14 @@
         <item>Default</item>
         <item>By date</item>
         <item>By alphabet</item>
-    </string-array>¬
+    </string-array>
+
+    <!--    Default: task without category will be first, By deadline: task with the deadline date will be first -->
+    <string-array name="todo_filters_spinner_variants">
+        <item>Default</item>
+        <item>By deadline</item>
+        <item>Today</item>
+        <item>This week</item>
+    </string-array>
 
 </resources>
