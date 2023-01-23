@@ -12,11 +12,11 @@ class TodoRepositoryImpl(
     private val dao: TodoDao
 ) : TodoRepository {
     override suspend fun add(elem: Todo): Long {
-        return dao.add(elem.toEntity())
+        return dao.insert(elem.toEntity())
     }
 
     override suspend fun delete(id: Long) {
-        dao.delete(id)
+        dao.deleteById(id)
     }
 
     override suspend fun update(elem: Todo) {

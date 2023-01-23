@@ -15,7 +15,7 @@ class NoteRepositoryImpl(
     override suspend fun add(elem: Note): Long = dao.insert(elem.toEntity())
 
     override suspend fun delete(id: Long) {
-        dao.delete(id)
+        dao.deleteById(id)
     }
 
     override suspend fun update(elem: Note) {

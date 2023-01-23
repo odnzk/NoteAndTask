@@ -1,21 +1,23 @@
 package com.example.data.dao
 
-import androidx.room.*
-import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Transaction
+import com.example.data.BaseDao
 import com.example.data.entity.TodoEntity
 import com.example.data.tuples.TodoWithCategoryTuple
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface TodoDao {
-    @Insert(onConflict = REPLACE)
-    suspend fun add(todo: TodoEntity): Long
+interface TodoDao : BaseDao<TodoEntity> {
+//    @Insert(onConflict = REPLACE)
+//    suspend fun add(toodo: TodoEntity): Long
 
     @Query("DELETE FROM todos WHERE id = :todoId")
-    suspend fun delete(todoId: Long)
+    suspend fun deleteById(todoId: Long)
 
-    @Update
-    suspend fun update(todo: TodoEntity)
+//    @Update
+//    suspend fun update(toodo: TodoEntity)
 
     @Query("DELETE FROM todos")
     suspend fun deleteAll()
