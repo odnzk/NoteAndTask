@@ -5,7 +5,7 @@ import com.example.domain.model.NoteSortOrder
 
 sealed interface ListNoteEvent {
     data class DeleteItem(val note: Note) : ListNoteEvent
-    data class UpdateSortOrder(val noteSort: NoteSortOrder) : ListNoteEvent
+    data class UpdateSortOrder(val noteSortOrder: NoteSortOrder) : ListNoteEvent
 
     object ClearAll : ListNoteEvent
     object TryAgain : ListNoteEvent

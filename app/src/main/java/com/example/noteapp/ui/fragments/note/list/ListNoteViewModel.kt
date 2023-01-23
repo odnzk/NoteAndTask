@@ -24,7 +24,7 @@ class ListNoteViewModel @Inject constructor(
     val notes = _notes.asStateFlow()
 
     private var recentlyRemoved: Note? = null
-    private var noteSort: NoteSortOrder = NoteSortOrder.DEFAULT
+    private var noteSortOrder: NoteSortOrder = NoteSortOrder.DEFAULT
     private var jobObservingNoteList: Job? = null
 
     init {
@@ -54,9 +54,9 @@ class ListNoteViewModel @Inject constructor(
                     noteUseCases.addNote(it)
                 }
                 is ListNoteEvent.UpdateSortOrder -> {
-                    if (noteSort != event.noteSort) {
-                        noteSort = event.noteSort
-                        loadData(noteSort)
+                    if (noteSortOrder != event.noteSortOrder) {
+                        noteSortOrder = event.noteSortOrder
+                        loadData(noteSortOrder)
                     }
                 }
             }

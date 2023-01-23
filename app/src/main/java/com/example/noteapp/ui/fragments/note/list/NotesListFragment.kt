@@ -49,7 +49,7 @@ class NotesListFragment : Fragment() {
             btnClearAll.setOnClickListener {
                 viewModel.onEvent(ListNoteEvent.ClearAll)
             }
-            btnSortNotes.onItemSelectedListener = object : OnItemSelectedListener {
+            spinnerSort.onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(
                     adapter: AdapterView<*>?,
                     p1: View?,
