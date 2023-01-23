@@ -14,15 +14,6 @@ class AddCategoryDialogViewModel @Inject constructor(
     private val categoryUseCases: CategoryUseCases
 ) : ViewModel() {
 
-    private var _categories = emptyList<Category>()
-    val categories: List<Category> = _categories
-
-    init {
-        viewModelScope.launch {
-            _categories = categoryUseCases.getAllCategories().first()
-        }
-    }
-
     fun onEvent(event: AddCategoryDialogEvent) = viewModelScope.launch {
         when (event) {
             is AddCategoryDialogEvent.AddCategory -> categoryUseCases.addCategory(event.category)

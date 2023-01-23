@@ -6,12 +6,9 @@ import com.example.noteapp.ui.util.exceptions.InvalidCategoryException
 
 class CategoryValidator {
 
-    @Throws(InvalidCategoryException::class)
-    fun isValid(category: Category): Boolean {
-        if (category.title.isBlank()) {
-            throw InvalidCategoryException(Field.TITLE)
-        }
-        // todo check color validity
-        return true
+    fun isValid(category: Category): Result<Boolean> {
+        return if (category.title.isBlank()) {
+            Result.failure(InvalidCategoryException(Field.TITLE))
+        } else Result.success(true)
     }
 }
