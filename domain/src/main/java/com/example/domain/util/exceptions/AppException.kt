@@ -1,6 +1,6 @@
 package com.example.noteapp.ui.util.exceptions
 
-import com.example.domain.util.exceptions.Field
+import com.example.domain.util.Field
 
 open class AppException : RuntimeException()
 

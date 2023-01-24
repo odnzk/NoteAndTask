@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.domain.model.Note
-import com.example.domain.util.exceptions.Field
+import com.example.domain.util.Field
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentDetailedNoteBinding
 import com.example.noteapp.databinding.StateLoadingBinding
