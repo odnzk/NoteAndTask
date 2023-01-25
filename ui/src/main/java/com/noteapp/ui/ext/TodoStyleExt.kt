@@ -4,7 +4,7 @@ import android.content.res.ColorStateList
 import android.graphics.Paint
 import android.widget.ImageView
 import android.widget.TextView
-import com.noteapp.core.isSameDay
+import com.noteapp.core.ext.isSameDay
 import com.noteapp.ui.R
 import java.util.*
 

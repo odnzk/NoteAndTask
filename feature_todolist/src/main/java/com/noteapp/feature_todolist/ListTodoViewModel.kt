@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.category.CategoryUseCases
 import com.example.domain.application.usecase.todo.TodoUseCases
+import com.noteapp.core.state.UiState
 import com.noteapp.model.Category
 import com.noteapp.model.Todo
 import com.noteapp.model.TodoSortOrder
-import com.noteapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

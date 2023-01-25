@@ -3,9 +3,9 @@ package com.example.feature_notelist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.note.NoteUseCases
+import com.noteapp.core.state.UiState
 import com.noteapp.model.Note
 import com.noteapp.model.NoteSortOrder
-import com.noteapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

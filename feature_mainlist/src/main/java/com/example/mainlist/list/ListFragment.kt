@@ -14,11 +14,11 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.feature_mainlist.databinding.FragmentListBinding
 import com.example.mainlist.noteitem.NoteItemAdapter
 import com.google.android.material.chip.Chip
+import com.noteapp.core.state.handleState
 import com.noteapp.model.Filter
 import com.noteapp.model.NoteItem
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
-import com.noteapp.ui.handleState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 

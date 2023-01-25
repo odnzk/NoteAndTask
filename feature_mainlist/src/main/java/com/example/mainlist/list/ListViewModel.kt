@@ -6,11 +6,11 @@ import com.example.domain.application.usecase.both.UnitedUseCases
 import com.example.domain.application.usecase.category.CategoryUseCases
 import com.example.domain.application.usecase.note.NoteUseCases
 import com.example.domain.application.usecase.todo.TodoUseCases
+import com.noteapp.core.state.UiState
 import com.noteapp.model.FiltersInfo
 import com.noteapp.model.Note
 import com.noteapp.model.NoteItem
 import com.noteapp.model.Todo
-import com.noteapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

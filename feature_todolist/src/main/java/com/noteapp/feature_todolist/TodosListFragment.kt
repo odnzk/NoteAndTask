@@ -11,12 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.noteapp.core.state.handleState
 import com.noteapp.feature_todolist.databinding.FragmentTodosListBinding
 import com.noteapp.model.Todo
 import com.noteapp.model.TodoSortOrder
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
-import com.noteapp.ui.handleState
 import com.noteapp.ui.recycler.todo.TodoAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest

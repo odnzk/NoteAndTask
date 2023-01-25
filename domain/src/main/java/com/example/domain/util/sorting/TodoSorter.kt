@@ -1,9 +1,9 @@
 package com.example.domain.util.sorting
 
-import com.noteapp.core.isFuture
-import com.noteapp.core.isSameDay
-import com.noteapp.core.setStartOfTheDay
-import com.noteapp.core.toCalendar
+import com.noteapp.core.ext.isFuture
+import com.noteapp.core.ext.isSameDay
+import com.noteapp.core.ext.setStartOfTheDay
+import com.noteapp.core.ext.toCalendar
 import com.noteapp.model.Todo
 import java.util.*
 

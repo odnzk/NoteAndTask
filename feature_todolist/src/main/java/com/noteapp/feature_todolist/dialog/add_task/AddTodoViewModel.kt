@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.category.CategoryUseCases
 import com.example.domain.application.usecase.todo.TodoUseCases
-import com.noteapp.core.CompletableState
+import com.noteapp.core.state.CompletableState
 import com.noteapp.model.Category
 import com.noteapp.model.Todo
 import dagger.hilt.android.lifecycle.HiltViewModel

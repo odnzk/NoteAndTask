@@ -15,8 +15,9 @@ import com.example.noteapp.ui.util.exceptions.InvalidTodoException
 import com.example.noteapp.ui.util.ext.showDatePicker
 import com.example.noteapp.ui.util.ext.showDateTimePicker
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.noteapp.core.CompletableState
+import com.noteapp.core.state.CompletableState
 import com.noteapp.feature_todolist.databinding.BottomSheetAddTodoBinding
+import com.noteapp.ui.R
 import com.noteapp.ui.ext.formatToReminderString
 import com.noteapp.ui.ext.init
 import dagger.hilt.android.AndroidEntryPoint
@@ -78,12 +79,12 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
     private fun init() {
         with(binding) {
             btnAdd.setOnClickListener {
-                viewModel.onEvent(com.noteapp.feature_todolist.dialog.add_task.AddTodoDialogEvent.AddTodo)
+                viewModel.onEvent(AddTodoDialogEvent.AddTodo)
             }
             btnSetReminder.setOnClickListener {
                 context?.showDateTimePicker { calendar ->
                     viewModel.onEvent(
-                        com.noteapp.feature_todolist.dialog.add_task.AddTodoDialogEvent.UpdateReminderInfo(
+                        AddTodoDialogEvent.UpdateReminderInfo(
                             calendar
                         )
                     )
@@ -94,7 +95,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
             }
             tilTitle.editText?.doOnTextChanged { text, start, before, count ->
                 viewModel.onEvent(
-                    com.noteapp.feature_todolist.dialog.add_task.AddTodoDialogEvent.UpdateTitle(
+                    AddTodoDialogEvent.UpdateTitle(
                         text.toString()
                     )
                 )
@@ -148,7 +149,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
                     id: Long
                 ) {
                     (parent?.getItemAtPosition(pos) as? String)?.let { categoryTitle ->
-                        if (categoryTitle == getString(com.noteapp.ui.R.string.spinner_no_category)) return
+                        if (categoryTitle == getString(R.string.spinner_no_category)) return
                         categories.forEach { category ->
                             if (category.title == categoryTitle) {
                                 viewModel.onEvent(AddTodoDialogEvent.UpdateCategory(category))
