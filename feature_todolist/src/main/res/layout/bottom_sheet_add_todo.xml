@@ -46,7 +46,6 @@
         android:contentDescription="@string/add_task"
         app:layout_constraintTop_toTopOf="@id/til_title" />
 
-    <!--    todo fix nested hierarchy-->
     <HorizontalScrollView
         android:id="@+id/horizontal_view"
         android:layout_width="0dp"

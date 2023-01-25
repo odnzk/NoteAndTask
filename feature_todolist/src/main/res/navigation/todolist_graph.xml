@@ -6,7 +6,7 @@
     app:startDestination="@id/todosListFragment">
     <fragment
         android:id="@+id/todosListFragment"
-        android:name="com.noteapp.feature_todolist.list.TodosListFragment"
+        android:name="com.noteapp.feature_todolist.api.TodosListFragment"
         android:label="TodosListFragment"
         tools:layout="@layout/fragment_todos_list">
         <action
@@ -16,7 +16,7 @@
 
     <dialog
         android:id="@+id/addTodoBottomSheetDialog"
-        android:name="com.noteapp.feature_todolist.dialog.add_task.AddTodoBottomSheetDialog"
+        android:name="com.noteapp.feature_todolist.internal.AddTodoBottomSheetDialog"
         android:label="AddTodoBottomSheetDialog"
         tools:layout="@layout/bottom_sheet_add_todo" />
 </navigation>

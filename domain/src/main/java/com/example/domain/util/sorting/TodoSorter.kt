@@ -12,7 +12,6 @@ sealed interface TodoSorter {
     // DEFAULT, BY_DEADLINE, TODAY, THIS_WEEK
 
     object ByDeadlineSorter : TodoSorter {
-        // todo
         override fun sort(items: List<Todo>): List<Todo> {
             return items.filter { it.deadlineDate != null }.sortedBy { it.deadlineDate }
         }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.example.mainlist.list.ListFragment"
+        android:name="com.example.mainlist.api.ListFragment"
         android:label="ListFragment"
         tools:layout="@layout/fragment_list">
         <action
@@ -32,7 +32,7 @@
     </fragment>
     <dialog
         android:id="@+id/addCategoryDialog"
-        android:name="com.example.mainlist.dialog.add_category.AddCategoryDialog"
+        android:name="com.example.mainlist.internal.dialog.AddCategoryDialog"
         android:label="AddCategoryDialog"
         tools:layout="@layout/dialog_add_category" />
 
