@@ -1,8 +1,8 @@
 package com.example.domain.application.usecase.todo
 
-import com.example.domain.model.Todo
 import com.example.domain.repository.TodoRepository
 import com.example.domain.validation.TodoValidator
+import com.noteapp.model.Todo
 
 class AddTodo(
     private val todoRepository: TodoRepository,

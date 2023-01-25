@@ -1,10 +1,10 @@
 package com.example.domain.util.sorting
 
-import com.example.domain.model.Todo
-import com.example.domain.util.exceptions.isFuture
-import com.example.domain.util.exceptions.isSameDay
-import com.example.domain.util.exceptions.setStartOfTheDay
-import com.example.domain.util.exceptions.toCalendar
+import com.noteapp.core.isFuture
+import com.noteapp.core.isSameDay
+import com.noteapp.core.setStartOfTheDay
+import com.noteapp.core.toCalendar
+import com.noteapp.model.Todo
 import java.util.*
 
 sealed interface TodoSorter {

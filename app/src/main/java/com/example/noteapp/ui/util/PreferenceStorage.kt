@@ -1,4 +1,4 @@
-package com.example.noteapp.ui.util.ext
+package com.example.noteapp.ui.util
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -6,8 +6,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.example.domain.model.Filter
-import com.example.domain.model.SortOrder
+import com.noteapp.model.Filter
+import com.noteapp.model.SortOrder
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -22,7 +22,10 @@ class PreferenceStorage @Inject constructor(@ApplicationContext private val appl
     private val preferenceFlow = applicationContext.dataStore.data
         .map { preferences ->
             val sortOrder =
-                SortOrder.valueOf(preferences[PreferenceKeys.SORT_ORDER] ?: SortOrder.DEFAULT.name)
+                SortOrder.valueOf(
+                    preferences[PreferenceKeys.SORT_ORDER]
+                        ?: SortOrder.DEFAULT.name
+                )
             val filter =
                 Filter.valueOf(preferences[PreferenceKeys.FILTER] ?: Filter.BOTH.name)
             FilterInfo(sortOrder, filter)

@@ -4,7 +4,7 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
-import com.example.noteapp.R
+import com.noteapp.ui.R
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp

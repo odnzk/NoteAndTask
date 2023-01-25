@@ -1,6 +1,6 @@
 package com.example.domain.repository
 
-import com.example.domain.model.Todo
+import com.noteapp.model.Todo
 import kotlinx.coroutines.flow.Flow
 
 interface TodoRepository : BasicRepository<Todo> {

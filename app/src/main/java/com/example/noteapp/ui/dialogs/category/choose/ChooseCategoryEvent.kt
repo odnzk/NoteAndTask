@@ -1,6 +1,6 @@
 package com.example.noteapp.ui.dialogs.category.choose
 
-import com.example.domain.model.Category
+import com.noteapp.model.Category
 
 sealed interface ChooseCategoryEvent {
     data class UpdateCategory(val category: Category) : ChooseCategoryEvent

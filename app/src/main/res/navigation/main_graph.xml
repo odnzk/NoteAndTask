@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.example.noteapp.ui.fragments.list.ListFragment"
+        android:name="com.example.mainlist.list.ListFragment"
         android:label="ListFragment"
         tools:layout="@layout/fragment_list">
         <action
@@ -63,7 +63,7 @@
         tools:layout="@layout/dialog_change_category">
         <argument
             android:name="type"
-            app:argType="com.example.noteapp.ui.util.CategoryOwnerType"
+            app:argType="com.noteapp.core.CategoryOwnerType"
             app:nullable="false"/>
         <argument
             android:name="noteId"
@@ -78,14 +78,14 @@
     </dialog>
     <dialog
         android:id="@+id/addTodoBottomSheetDialog"
-        android:name="com.example.noteapp.ui.dialogs.todo.AddTodoBottomSheetDialog"
+        android:name="com.noteapp.feature_todolist.dialog.add_task.AddTodoBottomSheetDialog"
         android:label="AddTodoBottomSheetDialog"
         tools:layout="@layout/bottom_sheet_add_todo" >
     </dialog>
     <fragment
         android:id="@+id/notesListFragment"
         tools:layout="@layout/fragment_notes_list"
-        android:name="com.example.noteapp.ui.fragments.note.list.NotesListFragment"
+        android:name="com.example.feature_notelist.NotesListFragment"
         android:label="NotesListFragment">
         <action
             android:id="@+id/action_notesListFragment_to_noteDetailFragment"
@@ -93,7 +93,7 @@
     </fragment>
     <fragment
         android:id="@+id/todosListFragment"
-        android:name="com.example.noteapp.ui.fragments.todo.list.TodosListFragment"
+        android:name="com.noteapp.feature_todolist.TodosListFragment"
         android:label="TodosListFragment"
         tools:layout="@layout/fragment_todos_list">
         <action
@@ -106,6 +106,6 @@
     <dialog
         android:id="@+id/addCategoryDialog"
         tools:layout="@layout/dialog_add_category"
-        android:name="com.example.noteapp.ui.dialogs.category.add.AddCategoryDialog"
+        android:name="com.example.mainlist.dialog.add_category.AddCategoryDialog"
         android:label="AddCategoryDialog" />
 </navigation>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notes">Notes</string>
+    <!--    task style-->
+    <string name="deadline_today">Today</string>
+
+    <!--    error messages-->
+    <string name="error_not_found">Nothing was found for this query</string>
+    <string name="error_navigation_exception">Navigation exception occurred</string>
+    <string name="error_unknown">Unknown error</string>
+    <string name="error_failed_loading_from_database">Loading data from database was failed</string>
+
+    <!--    state messages-->
+    <string name="try_again">Try again</string>
+
+    <string name="add_reminder">Add reminder</string>
+    <string name="repeat">Repeat</string>
+    <string name="delete_todo">Delete todo</string>
+
+    <string name="error_empty_or_blanc_category_title">Cannot be empty or blanc</string>
+    <string name="error_invalid_note_tile">Note title cannot be blank</string>
+    <string name="error_invalid_todo_title">Task title cannot be blank</string>
+    <string name="error_invalid_category_title">Category title cannot be blank</string>
+    <string name="error_invalid_note_content">Note content cannot be blank</string>
+
+    <string name="success_delete">Successfully deleted</string>
+    <string name="success_save">Successfully saved</string>
+
+    <string name="action_undo">Undo</string>
+
+    <string name="hint_note_title">Note title</string>
+    <string name="hint_note_content">Note content</string>
+
+    <string name="schedule_icon">Schedule icon</string>
+
+    <string name="btn_set_category">Add category</string>
+    <string name="spinner_no_category">No category</string>
+    <string name="btn_set_deadline">Add deadline</string>
+    <string name="btn_set_reminder">Add reminder</string>
+    <string name="btn_set_period">Add period</string>
+
+    <string name="unknown_todo">Unknown todo</string>
+    <string name="change_category">Change category</string>
+    <string name="btn_add_new_category">Add</string>
+    <string name="new_category">Category title</string>
+    <string name="home">Home</string>
+
+    <string name="settings">Settings</string>
+    <string name="save_note">Save note</string>
+    <string name="delete_note">Delete note</string>
+
+    <string name="clear_all_notes">Clear all notes</string>
+    <string name="add_note">Add note</string>
+    <string name="sort_tasks">Sort tasks</string>
+    <string name="clear_all_tasks">Clear all tasks</string>
+    <string name="add_task">Add task</string>
+    <string name="state_categories_is_empty">You have not created categories</string>
+
+    <string name="tasks">Tasks</string>
+    <string name="add_category">Add</string>
+    <string name="add">Add</string>
+
+    <!--    notification channel settings-->
+    <string name="notification_channel_reminders_name">Reminder notification</string>
+    <string name="notification_channel_reminders_description">All notifications which are related to tasks</string>
+    <string name="notification_channel_reminders_id">1213298</string>
+
+    <string name="date_picker_dialog_tab1_title_date">Date</string>
+    <string name="date_picker_dialog_tab1_title_time">Time</string>
+    <string name="hint_task_title">Task title</string>
+    <string name="spinner_item">spinner item</string>
+
+    <string name="search_hint">Find by title</string>
+    <string name="tasks_notes"><![CDATA[Tasks&Notes]]></string>
+    <string name="clear_all">Clear both tasks and notes</string>
+
+</resources>

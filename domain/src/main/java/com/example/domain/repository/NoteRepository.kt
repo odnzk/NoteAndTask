@@ -1,6 +1,6 @@
 package com.example.domain.repository
 
-import com.example.domain.model.Note
+import com.noteapp.model.Note
 import kotlinx.coroutines.flow.Flow
 
 

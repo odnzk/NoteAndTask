@@ -10,15 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.domain.model.Todo
-import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentDetailedTodoBinding
-import com.example.noteapp.databinding.StateLoadingBinding
-import com.example.noteapp.ui.util.CategoryOwnerType
 import com.example.noteapp.ui.util.exceptions.InvalidNoteException
-import com.example.noteapp.ui.util.ext.*
-import com.example.noteapp.ui.util.handleState
+import com.example.noteapp.ui.util.ext.showDatePicker
 import com.google.android.material.chip.Chip
+import com.noteapp.model.Todo
+import com.noteapp.ui.R
+import com.noteapp.ui.databinding.StateLoadingBinding
+import com.noteapp.ui.ext.*
+import com.noteapp.ui.handleState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import java.util.*
@@ -72,8 +72,9 @@ class TodoDetailedFragment : Fragment() {
                     chipgroupCategory.addView(it.toChipCategory(requireContext()) {
                         findNavController().navigate(
                             TodoDetailedFragmentDirections.actionTodoDetailFragmentToChooseCategoryDialog(
-                                    type = CategoryOwnerType.TODO_TYPE, todoId = viewModel.todoId
-                                )
+                                type = com.noteapp.core.CategoryOwnerType.TODO_TYPE,
+                                todoId = viewModel.todoId
+                            )
                         )
                     })
                 } ?: run {
@@ -81,7 +82,7 @@ class TodoDetailedFragment : Fragment() {
                         findNavController().navigate(
                             TodoDetailedFragmentDirections
                                 .actionTodoDetailFragmentToChooseCategoryDialog(
-                                    type = CategoryOwnerType.TODO_TYPE,
+                                    type = com.noteapp.core.CategoryOwnerType.TODO_TYPE,
                                     todoId = viewModel.todoId
                                 )
                         )

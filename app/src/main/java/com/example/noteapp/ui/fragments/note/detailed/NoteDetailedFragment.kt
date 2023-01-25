@@ -8,16 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.domain.model.Note
-import com.example.domain.util.Field
-import com.example.noteapp.R
+import com.example.domain.validation.Field
 import com.example.noteapp.databinding.FragmentDetailedNoteBinding
-import com.example.noteapp.databinding.StateLoadingBinding
-import com.example.noteapp.ui.util.CategoryOwnerType
 import com.example.noteapp.ui.util.exceptions.InvalidNoteException
-import com.example.noteapp.ui.util.ext.*
-import com.example.noteapp.ui.util.handleState
 import com.google.android.material.chip.Chip
+import com.noteapp.model.Note
+import com.noteapp.ui.R
+import com.noteapp.ui.databinding.StateLoadingBinding
+import com.noteapp.ui.ext.*
+import com.noteapp.ui.handleState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -93,7 +92,7 @@ class NoteDetailedFragment : Fragment() {
                 categories.categoriesToFlowCategories(constraintLayout, flowCategories) {
                     val action =
                         NoteDetailedFragmentDirections.actionNoteDetailFragmentToChooseCategoryDialog(
-                            type = CategoryOwnerType.NOTE_TYPE, noteId = note.id
+                            type = com.noteapp.core.CategoryOwnerType.NOTE_TYPE, noteId = note.id
                         )
                     findNavController().navigate(action)
                 }
@@ -101,7 +100,7 @@ class NoteDetailedFragment : Fragment() {
                 Chip(context).setBtnAddCategoryStyle {
                     findNavController().navigate(
                         NoteDetailedFragmentDirections.actionNoteDetailFragmentToChooseCategoryDialog(
-                            type = CategoryOwnerType.NOTE_TYPE, noteId = note.id
+                            type = com.noteapp.core.CategoryOwnerType.NOTE_TYPE, noteId = note.id
                         )
                     )
                 }.also{ chip ->

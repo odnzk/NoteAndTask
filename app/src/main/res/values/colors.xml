@@ -7,20 +7,4 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
-    <color name="main_blue">#DEE5FD</color>
-    <color name="dark_grey">#575757</color>
-    <color name="light_grey">#979797</color>
-
-    <!--    color for overdue todoItem-->
-    <color name="todo_item_overdue_red">#FF5151</color>
-    <!--    color for today todoItem-->
-    <color name="todo_item_today_blue">#1D2DCA</color>
-
-    <color name="category_blue">#818DFF</color>
-    <color name="category_red">#FF8181</color>
-    <color name="category_orange">#FFBE81</color>
-    <color name="category_green">#9FD497</color>
-    <color name="category_pink">#D497D5</color>
-    <color name="category_purple">#A097D5</color>
 </resources>

@@ -6,13 +6,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.category.CategoryUseCases
 import com.example.domain.application.usecase.note.NoteUseCases
 import com.example.domain.application.usecase.todo.TodoUseCases
-import com.example.domain.model.Category
-import com.example.domain.model.Note
-import com.example.domain.model.NoteItem
-import com.example.domain.model.Todo
-import com.example.noteapp.model.UiCategory
-import com.example.noteapp.ui.util.CategoryOwnerType
 import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
+import com.noteapp.core.CategoryOwnerType
+import com.noteapp.model.Category
+import com.noteapp.model.Note
+import com.noteapp.model.NoteItem
+import com.noteapp.model.Todo
+import com.noteapp.ui.model.UiCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -66,10 +66,17 @@ class ChooseCategoryViewModel @Inject constructor(
                     }
                     is Todo -> {
                         noteItem.category?.id?.let { noteCategoryId ->
-                            _uiCategoryList.value =
-                                categories.map { UiCategory(it, it.id == noteCategoryId) }
+                            _uiCategoryList.value = categories.map {
+                                UiCategory(
+                                    it, it.id == noteCategoryId
+                                )
+                            }
                         } ?: run {
-                            _uiCategoryList.value = categories.map { UiCategory(it) }
+                            _uiCategoryList.value = categories.map {
+                                UiCategory(
+                                    it
+                                )
+                            }
                         }
                     }
                 }
@@ -84,21 +91,20 @@ class ChooseCategoryViewModel @Inject constructor(
             is ChooseCategoryEvent.DeleteNoteItemCategory -> {
                 when (type) {
                     CategoryOwnerType.NOTE_TYPE -> noteUseCases.removeNoteCategory(
-                        noteItemId,
-                        event.categoryId
+                        noteItemId, event.categoryId
                     )
-                    CategoryOwnerType.TODO_TYPE -> todoUseCases.removeTodoCategory(noteItemId)
+                    CategoryOwnerType.TODO_TYPE -> todoUseCases.removeTodoCategory(
+                        noteItemId
+                    )
                 }
             }
             is ChooseCategoryEvent.AddNoteItemCategory -> {
                 when (type) {
                     CategoryOwnerType.NOTE_TYPE -> noteUseCases.addNoteCategory(
-                        noteItemId,
-                        event.categoryId
+                        noteItemId, event.categoryId
                     )
-                    CategoryOwnerType.TODO_TYPE -> todoUseCases.addTodoCategory(
-                        noteItemId,
-                        event.categoryId
+                   CategoryOwnerType.TODO_TYPE -> todoUseCases.addTodoCategory(
+                        noteItemId, event.categoryId
                     )
                 }
                 }

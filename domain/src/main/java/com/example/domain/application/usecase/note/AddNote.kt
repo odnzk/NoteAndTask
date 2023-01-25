@@ -1,8 +1,8 @@
 package com.example.domain.application.usecase.note
 
-import com.example.domain.model.Note
-import com.example.domain.validation.NoteValidator
 import com.example.domain.repository.NoteRepository
+import com.example.domain.validation.NoteValidator
+import com.noteapp.model.Note
 
 class AddNote(
     private val noteRepository: NoteRepository,

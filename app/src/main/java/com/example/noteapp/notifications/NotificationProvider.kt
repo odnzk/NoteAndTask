@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.example.noteapp.R
+import com.noteapp.ui.R
 import javax.inject.Inject
 
 class NotificationProvider @Inject constructor(

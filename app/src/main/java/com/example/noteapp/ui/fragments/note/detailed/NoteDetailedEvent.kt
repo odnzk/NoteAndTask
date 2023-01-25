@@ -1,6 +1,6 @@
 package com.example.noteapp.ui.fragments.note.detailed
 
-import com.example.domain.model.Note
+import com.noteapp.model.Note
 
 sealed interface NoteDetailedEvent {
     data class UpdateNote(val note: Note) : NoteDetailedEvent

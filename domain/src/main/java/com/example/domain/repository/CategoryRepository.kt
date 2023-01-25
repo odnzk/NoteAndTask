@@ -1,6 +1,6 @@
 package com.example.domain.repository
 
-import com.example.domain.model.Category
+import com.noteapp.model.Category
 
 interface CategoryRepository : BasicRepository<Category> {
 

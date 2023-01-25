@@ -4,9 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.todo.TodoUseCases
-import com.example.domain.model.Todo
-import com.example.noteapp.ui.util.UiState
 import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
+import com.noteapp.model.Todo
+import com.noteapp.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

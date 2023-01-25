@@ -1,9 +1,9 @@
 package com.example.domain.application.usecase.todo
 
-import com.example.domain.model.Todo
-import com.example.domain.model.TodoSortOrder
 import com.example.domain.repository.TodoRepository
 import com.example.domain.util.sorting.TodoSorter
+import com.noteapp.model.Todo
+import com.noteapp.model.TodoSortOrder
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

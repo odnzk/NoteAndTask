@@ -9,8 +9,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.noteapp.databinding.DialogChangeCategoryBinding
-import com.example.noteapp.ui.util.CategoryOwnerType
-import com.example.noteapp.ui.util.ext.toChipGroup
+import com.noteapp.core.CategoryOwnerType
+import com.noteapp.ui.ext.toChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 

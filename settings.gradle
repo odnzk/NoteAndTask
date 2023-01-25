@@ -15,4 +15,11 @@ dependencyResolutionManagement {
 rootProject.name = "NoteApp"
 include ':app'
 include ':domain'
-include ':data'
+include ':model'
+include ':database'
+include ':feature_notelist'
+include ':feature_todolist'
+include ':feature_mainlist'
+include ':ui'
+include ':core'
+
