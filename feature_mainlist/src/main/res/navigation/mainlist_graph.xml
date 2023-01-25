@@ -10,22 +10,22 @@
         android:name="com.example.mainlist.list.ListFragment"
         android:label="ListFragment"
         tools:layout="@layout/fragment_list">
-        <!--        <action-->
-        <!--            android:id="@+id/action_listFragment_to_noteDetailFragment"-->
-        <!--            app:destination="@id/noteDetailFragment">-->
-        <!--            <argument-->
-        <!--                android:name="noteId"-->
-        <!--                app:argType="long"-->
-        <!--                app:nullable="false" />-->
-        <!--        </action>-->
-        <!--        <action-->
-        <!--            android:id="@+id/action_listFragment_to_todoDetailFragment"-->
-        <!--            app:destination="@id/todoDetailFragment">-->
-        <!--            <argument-->
-        <!--                android:name="todoId"-->
-        <!--                app:argType="long"-->
-        <!--                app:nullable="false" />-->
-        <!--        </action>-->
+        <action
+            android:id="@+id/action_listFragment_to_noteDetailFragment"
+            app:destination="@id/noteDetailedFragment">
+            <argument
+                android:name="noteId"
+                app:argType="long"
+                app:nullable="false" />
+        </action>
+        <action
+            android:id="@+id/action_listFragment_to_todoDetailFragment"
+            app:destination="@id/todoDetailedFragment">
+            <argument
+                android:name="todoId"
+                app:argType="long"
+                app:nullable="false" />
+        </action>
         <action
             android:id="@+id/action_listFragment_to_addCategoryDialog"
             app:destination="@id/addCategoryDialog" />
@@ -36,4 +36,14 @@
         android:name="com.example.mainlist.dialog.add_category.AddCategoryDialog"
         android:label="AddCategoryDialog"
         tools:layout="@layout/dialog_add_category" />
+    <fragment
+        android:id="@+id/todoDetailedFragment"
+        android:name="com.noteapp.feature_detailedscreens.fragments.todo.detailed.TodoDetailedFragment"
+        android:label="TodoDetailedFragment"
+        tools:layout="@layout/fragment_detailed_todo" />
+    <fragment
+        android:id="@+id/noteDetailedFragment"
+        android:name="com.noteapp.feature_detailedscreens.fragments.note.detailed.NoteDetailedFragment"
+        android:label="NoteDetailedFragment"
+        tools:layout="@layout/fragment_detailed_note" />
 </navigation>

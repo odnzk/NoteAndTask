@@ -18,7 +18,7 @@ class NoteDetailsViewModel @Inject constructor(
     private val noteUseCases: NoteUseCases, private val state: SavedStateHandle
 ) : ViewModel() {
 
-    private val noteId: Long? by lazy { state.get<Long>("noteId") }
+    val noteId: Long? by lazy { state.get<Long>("noteId") }
     private var _note: MutableStateFlow<UiState<Note>> = MutableStateFlow(UiState.Loading())
     val note = _note.asStateFlow()
 

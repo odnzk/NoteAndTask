@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.domain.validation.Field
 import com.example.noteapp.ui.util.exceptions.InvalidNoteException
 import com.google.android.material.chip.Chip
 import com.noteapp.core.state.handleState
 import com.noteapp.feature_detailedscreens.databinding.FragmentDetailedNoteBinding
+import com.noteapp.feature_detailedscreens.navigation.fromNoteToCategory
 import com.noteapp.model.Note
 import com.noteapp.ui.R
 import com.noteapp.ui.databinding.StateLoadingBinding
@@ -89,19 +91,11 @@ class NoteDetailedFragment : Fragment() {
                     tvDate.text = it.formatToNoteDate()
                 }
                 categories.categoriesToFlowCategories(constraintLayout, flowCategories) {
-//                    val action =
-//                        NoteDetailedFragmentDirections.actionNoteDetailFragmentToChooseCategoryDialog(
-//                            type = CategoryOwnerType.NOTE_TYPE, noteId = note.id
-//                        )
-//                    findNavController().navigate(action) todo
+                    findNavController().fromNoteToCategory(it)
                 }
 
                 Chip(context).setBtnAddCategoryStyle {
-//                    findNavController().navigate(
-//                        NoteDetailedFragmentDirections.actionNoteDetailFragmentToChooseCategoryDialog(
-//                            type = CategoryOwnerType.NOTE_TYPE, noteId = note.id
-//                        )
-//                    ) todo
+                    findNavController().fromNoteToCategory(note.id)
                 }.also{ chip ->
                     chip.id = View.generateViewId()
                     constraintLayout.addView(chip)

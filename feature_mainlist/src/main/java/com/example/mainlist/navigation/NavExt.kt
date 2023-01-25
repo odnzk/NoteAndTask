@@ -5,11 +5,11 @@ import com.example.mainlist.list.ListFragmentDirections
 
 
 internal fun NavController.toDetailedNote(noteId: Long) {
-// todo
+    navigate(ListFragmentDirections.actionListFragmentToNoteDetailFragment(noteId))
 }
 
 internal fun NavController.toDetailedTodo(todoId: Long) {
-// todo
+    navigate(ListFragmentDirections.actionListFragmentToTodoDetailFragment(todoId))
 }
 
 internal fun NavController.toAddCategoryDialog() =

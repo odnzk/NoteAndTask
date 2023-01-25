@@ -5,52 +5,52 @@
     android:id="@+id/main_graph"
     app:startDestination="@id/mainlist_graph">
 
-    <fragment
-        android:id="@+id/noteDetailFragment"
-        android:name="com.noteapp.feature_detailedscreens.fragments.note.detailed.NoteDetailedFragment"
-        android:label="NoteDetailFragment"
-        tools:layout="@layout/fragment_detailed_note">
-        <argument
-            android:name="noteId"
-            app:nullable="false"
-            app:argType="long" />
-        <action
-            android:id="@+id/action_noteDetailFragment_to_chooseCategoryDialog"
-            app:destination="@id/chooseCategoryDialog" />
-    </fragment>
-    <fragment
-        android:id="@+id/todoDetailFragment"
-        android:name="com.noteapp.feature_detailedscreens.fragments.todo.detailed.TodoDetailedFragment"
-        android:label="TodoDetailFragment"
-        tools:layout="@layout/fragment_detailed_todo">
-        <argument
-            android:name="todoId"
-            app:nullable="false"
-            app:argType="long" />
-        <action
-            android:id="@+id/action_todoDetailFragment_to_chooseCategoryDialog"
-            app:destination="@id/chooseCategoryDialog" />
-    </fragment>
-    <dialog
-        android:id="@+id/chooseCategoryDialog"
-        android:name="com.noteapp.feature_detailedscreens.dialog.ChooseCategoryDialog"
-        android:label="ChooseCategoryDialog"
-        tools:layout="@layout/dialog_change_category">
-        <argument
-            android:name="type"
-            app:argType="com.noteapp.core.model.CategoryOwnerType"
-            app:nullable="false"/>
-        <argument
-            android:name="noteId"
-            android:defaultValue="-1L"
-            app:argType="long"
-            app:nullable="false" />
-        <argument
-            android:name="todoId"
-            android:defaultValue="-1L"
-            app:argType="long"
-            app:nullable="false" />
-    </dialog>
+<!--    <fragment-->
+<!--        android:id="@+id/noteDetailFragment"-->
+<!--        android:name="com.noteapp.feature_detailedscreens.fragments.note.detailed.NoteDetailedFragment"-->
+<!--        android:label="NoteDetailFragment"-->
+<!--        tools:layout="@layout/fragment_detailed_note">-->
+<!--        <argument-->
+<!--            android:name="noteId"-->
+<!--            app:nullable="false"-->
+<!--            app:argType="long" />-->
+<!--        <action-->
+<!--            android:id="@+id/action_noteDetailFragment_to_chooseCategoryDialog"-->
+<!--            app:destination="@id/chooseCategoryDialog" />-->
+<!--    </fragment>-->
+<!--    <fragment-->
+<!--        android:id="@+id/todoDetailFragment"-->
+<!--        android:name="com.noteapp.feature_detailedscreens.fragments.todo.detailed.TodoDetailedFragment"-->
+<!--        android:label="TodoDetailFragment"-->
+<!--        tools:layout="@layout/fragment_detailed_todo">-->
+<!--        <argument-->
+<!--            android:name="todoId"-->
+<!--            app:nullable="false"-->
+<!--            app:argType="long" />-->
+<!--        <action-->
+<!--            android:id="@+id/action_todoDetailFragment_to_chooseCategoryDialog"-->
+<!--            app:destination="@id/chooseCategoryDialog" />-->
+<!--    </fragment>-->
+<!--    <dialog-->
+<!--        android:id="@+id/chooseCategoryDialog"-->
+<!--        android:name="com.noteapp.feature_detailedscreens.dialog.ChooseCategoryDialog"-->
+<!--        android:label="ChooseCategoryDialog"-->
+<!--        tools:layout="@layout/dialog_change_category">-->
+<!--        <argument-->
+<!--            android:name="type"-->
+<!--            app:argType="com.noteapp.core.model.CategoryOwnerType"-->
+<!--            app:nullable="false"/>-->
+<!--        <argument-->
+<!--            android:name="noteId"-->
+<!--            android:defaultValue="-1L"-->
+<!--            app:argType="long"-->
+<!--            app:nullable="false" />-->
+<!--        <argument-->
+<!--            android:name="todoId"-->
+<!--            android:defaultValue="-1L"-->
+<!--            app:argType="long"-->
+<!--            app:nullable="false" />-->
+<!--    </dialog>-->
 
     <include app:graph="@navigation/todolist_graph" />
     <include app:graph="@navigation/notelist_graph" />

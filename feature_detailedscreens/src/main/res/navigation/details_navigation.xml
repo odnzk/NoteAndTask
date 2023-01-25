@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/details_navigation"
+    app:startDestination="@id/noteDetailedFragment">
+
+    <fragment
+        android:id="@+id/noteDetailedFragment"
+        android:name="com.noteapp.feature_detailedscreens.fragments.note.detailed.NoteDetailedFragment"
+        android:label="NoteDetailedFragment"
+        tools:layout="@layout/fragment_detailed_note">
+        <argument
+            android:name="noteId"
+            app:argType="long"
+            app:nullable="false" />
+        <action
+            android:id="@+id/action_noteDetailFragment_to_chooseCategoryDialog"
+            app:destination="@id/chooseCategoryDialog" />
+    </fragment>
+    <fragment
+        android:id="@+id/todoDetailedFragment"
+        android:name="com.noteapp.feature_detailedscreens.fragments.todo.detailed.TodoDetailedFragment"
+        android:label="TodoDetailedFragment"
+        tools:layout="@layout/fragment_detailed_todo">
+        <argument
+            android:name="todoId"
+            app:argType="long"
+            app:nullable="false" />
+        <action
+            android:id="@+id/action_todoDetailFragment_to_chooseCategoryDialog"
+            app:destination="@id/chooseCategoryDialog" />
+    </fragment>
+    <dialog
+        android:id="@+id/chooseCategoryDialog"
+        android:name="com.noteapp.feature_detailedscreens.dialog.ChooseCategoryDialog"
+        android:label="ChooseCategoryDialog"
+        tools:layout="@layout/dialog_change_category">
+        <argument
+            android:name="type"
+            app:argType="com.noteapp.core.model.CategoryOwnerType"
+            app:nullable="false" />
+        <argument
+            android:name="noteId"
+            android:defaultValue="-1L"
+            app:argType="long"
+            app:nullable="false" />
+        <argument
+            android:name="todoId"
+            android:defaultValue="-1L"
+            app:argType="long"
+            app:nullable="false" />
+    </dialog>
+</navigation>

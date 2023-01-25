@@ -9,11 +9,13 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.noteapp.ui.util.exceptions.InvalidNoteException
 import com.example.noteapp.ui.util.ext.showDatePicker
 import com.google.android.material.chip.Chip
 import com.noteapp.core.state.handleState
 import com.noteapp.feature_detailedscreens.databinding.FragmentDetailedTodoBinding
+import com.noteapp.feature_detailedscreens.navigation.fromTodoToCategory
 import com.noteapp.model.Todo
 import com.noteapp.ui.R
 import com.noteapp.ui.databinding.StateLoadingBinding
@@ -69,22 +71,11 @@ class TodoDetailedFragment : Fragment() {
                 }
                 category?.let {
                     chipgroupCategory.addView(it.toChipCategory(requireContext()) {
-//                        findNavController().navigate(
-//                            TodoDetailedFragmentDirections.actionTodoDetailFragmentToChooseCategoryDialog(
-//                                type = CategoryOwnerType.TODO_TYPE,
-//                                todoId = viewModel.todoId
-//                            ) todo
-//                        )
+                        findNavController().fromTodoToCategory(viewModel.todoId)
                     })
                 } ?: run {
                     chipgroupCategory.addView(Chip(context).setBtnAddCategoryStyle {
-//                        findNavController().navigate( todo
-//                            TodoDetailedFragmentDirections
-//                                .actionTodoDetailFragmentToChooseCategoryDialog(
-//                                    type = CategoryOwnerType.TODO_TYPE,
-//                                    todoId = viewModel.todoId
-//                                )
-//                        )
+                        findNavController().fromTodoToCategory(viewModel.todoId)
                     })
                 }
                 notificationCalendar?.let {

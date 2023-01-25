@@ -10,9 +10,22 @@
         android:name="com.example.feature_notelist.NotesListFragment"
         android:label="NotesListFragment"
         tools:layout="@layout/fragment_notes_list">
-        <!--        <action-->
-        <!--            android:id="@+id/action_notesListFragment_to_noteDetailFragment"-->
-        <!--            app:destination="@id/noteDetailFragment" />-->
+        <action
+            android:id="@+id/action_notesListFragment_to_noteDetailFragment"
+            app:destination="@id/noteDetailedFragment">
+            <argument
+                android:name="noteId"
+                app:argType="long"
+                app:nullable="false" />
+        </action>
+        <action
+            android:id="@+id/action_notesListFragment_to_noteDetailFragment_create"
+            app:destination="@id/noteDetailedFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/noteDetailedFragment"
+        android:name="com.noteapp.feature_detailedscreens.fragments.note.detailed.NoteDetailedFragment"
+        android:label="NoteDetailedFragment"
+        tools:layout="@layout/fragment_detailed_note" />
 
 </navigation>
