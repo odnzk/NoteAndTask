@@ -10,6 +10,7 @@
         android:name="com.noteapp.feature_detailedscreens.fragments.note.detailed.NoteDetailedFragment"
         android:label="NoteDetailedFragment"
         tools:layout="@layout/fragment_detailed_note">
+        <deepLink app:uri="@string/deeplink_detailed_note" />
         <argument
             android:name="noteId"
             app:argType="long"
@@ -23,6 +24,9 @@
         android:name="com.noteapp.feature_detailedscreens.fragments.todo.detailed.TodoDetailedFragment"
         android:label="TodoDetailedFragment"
         tools:layout="@layout/fragment_detailed_todo">
+
+        <deepLink app:uri="@string/deeplink_detailed_todo" />
+
         <argument
             android:name="todoId"
             app:argType="long"

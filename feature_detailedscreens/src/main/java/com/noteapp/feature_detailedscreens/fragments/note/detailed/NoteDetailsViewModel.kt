@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.note.NoteUseCases
+import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
 import com.noteapp.core.state.UiState
 import com.noteapp.model.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +19,9 @@ class NoteDetailsViewModel @Inject constructor(
     private val noteUseCases: NoteUseCases, private val state: SavedStateHandle
 ) : ViewModel() {
 
-    val noteId: Long? by lazy { state.get<Long>("noteId") }
+    private val noteId: Long by lazy {
+        state.get<Long>("noteId") ?: throw InvalidNavArgumentsException()
+    }
     private var _note: MutableStateFlow<UiState<Note>> = MutableStateFlow(UiState.Loading())
     val note = _note.asStateFlow()
 
@@ -31,8 +34,11 @@ class NoteDetailsViewModel @Inject constructor(
     private fun loadData() {
         _note.value = UiState.Loading()
         viewModelScope.launch {
-            noteId?.let {
-                noteUseCases.getNoteById(it).fold(
+            if (noteId == -1L) {
+                isNewNote = true
+                _note.value = UiState.Success(Note.defaultInstance())
+            } else {
+                noteUseCases.getNoteById(noteId).fold(
                     onSuccess = { note ->
                         _note.value = UiState.Success(note)
                     },
@@ -40,10 +46,20 @@ class NoteDetailsViewModel @Inject constructor(
                         _note.value = UiState.Error(error)
                     }
                 )
-            } ?: run {
-                isNewNote = true
-                _note.value = UiState.Success(Note.defaultInstance())
             }
+//            noteId?.let {
+//                noteUseCases.getNoteById(it).fold(
+//                    onSuccess = { note ->
+//                        _note.value = UiState.Success(note)
+//                    },
+//                    onFailure = { error ->
+//                        _note.value = UiState.Error(error)
+//                    }
+//                )
+//            } ?: run {
+//                isNewNote = true
+//                _note.value = UiState.Success(Note.defaultInstance())
+//            }
         }
     }
 

@@ -74,4 +74,8 @@
     <string name="tasks_notes"><![CDATA[Tasks&Notes]]></string>
     <string name="clear_all">Clear both tasks and notes</string>
 
+
+    <!--    deeplinks-->
+    <string name="deeplink_detailed_todo" translatable="false">noteapp://com.example.noteapp/todoDetailedFragment/{todoId}</string>
+    <string name="deeplink_detailed_note" translatable="false">noteapp://com.example.noteapp/noteDetailedFragment/{noteId}</string>
 </resources>

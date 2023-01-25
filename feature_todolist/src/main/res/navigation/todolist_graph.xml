@@ -12,14 +12,6 @@
         <action
             android:id="@+id/action_todosListFragment_to_addTodoBottomSheetDialog"
             app:destination="@id/addTodoBottomSheetDialog" />
-        <action
-            android:id="@+id/action_todosListFragment_to_todoDetailFragment"
-            app:destination="@id/todoDetailedFragment">
-            <argument
-                android:name="todoId"
-                app:argType="long"
-                app:nullable="false" />
-        </action>
     </fragment>
 
     <dialog
@@ -27,9 +19,4 @@
         android:name="com.noteapp.feature_todolist.dialog.add_task.AddTodoBottomSheetDialog"
         android:label="AddTodoBottomSheetDialog"
         tools:layout="@layout/bottom_sheet_add_todo" />
-    <fragment
-        android:id="@+id/todoDetailedFragment"
-        android:name="com.noteapp.feature_detailedscreens.fragments.todo.detailed.TodoDetailedFragment"
-        android:label="TodoDetailedFragment"
-        tools:layout="@layout/fragment_detailed_todo" />
 </navigation>

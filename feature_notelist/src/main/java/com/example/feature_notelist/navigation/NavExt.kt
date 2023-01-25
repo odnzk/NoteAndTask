@@ -1,16 +1,18 @@
 package com.example.feature_notelist.navigation
 
+import android.net.Uri
 import androidx.navigation.NavController
-import com.example.feature_notelist.NotesListFragmentDirections
+import androidx.navigation.NavDeepLinkRequest
+import com.noteapp.ui.R
 
-internal fun NavController.toDetailedNote(noteId: Long? = null) {
-    noteId?.let {
-        navigate(
-            NotesListFragmentDirections.actionNotesListFragmentToNoteDetailFragment(
-                it
-            )
+internal fun NavController.toDetailedNote(noteId: Long = -1) {
+    val deeplink: NavDeepLinkRequest = NavDeepLinkRequest.Builder.fromUri(
+        Uri.parse(
+            context.getString(R.string.deeplink_detailed_note)
+                .replace("{noteId}", noteId.toString())
         )
-    } ?: navigate(NotesListFragmentDirections.actionNotesListFragmentToNoteDetailFragmentCreate())
-    // null -> create note
+    ).build()
+    navigate(deeplink)
+    // -1 -> create note todo make a constant
     // not null -> open existing note
 }

@@ -32,15 +32,15 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun providesNotesDao(database: com.noteapp.AppDatabase): NoteDao = database.noteDao()
+    fun providesNotesDao(database: AppDatabase): NoteDao = database.noteDao()
 
     @Singleton
     @Provides
-    fun providesTodoDao(database: com.noteapp.AppDatabase): TodoDao = database.todoDao()
+    fun providesTodoDao(database: AppDatabase): TodoDao = database.todoDao()
 
     @Singleton
     @Provides
-    fun providesCategoryDao(database: com.noteapp.AppDatabase): CategoryDao = database.categoryDao()
+    fun providesCategoryDao(database: AppDatabase): CategoryDao = database.categoryDao()
 
     @Provides
     @Singleton
