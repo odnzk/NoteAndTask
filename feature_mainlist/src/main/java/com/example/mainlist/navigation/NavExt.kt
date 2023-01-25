@@ -1,15 +1,16 @@
 package com.example.mainlist.navigation
 
 import androidx.navigation.NavController
-import androidx.navigation.NavOptions
+import com.example.mainlist.list.ListFragmentDirections
 
-const val bookmarksRoute = "bookmarks_route"
-fun NavController.navigateToBookmarks(navOptions: NavOptions? = null) {
-    this.navigate(bookmarksRoute, navOptions)
+
+internal fun NavController.toDetailedNote(noteId: Long) {
+// todo
 }
-//
-//fun NavGraphBuilder.bookmarksScreen() {
-//    composable(route = bookmarksRoute) {
-//        BookmarksRoute()
-//    }
-//}
+
+internal fun NavController.toDetailedTodo(todoId: Long) {
+// todo
+}
+
+internal fun NavController.toAddCategoryDialog() =
+    navigate(ListFragmentDirections.actionListFragmentToAddCategoryDialog())

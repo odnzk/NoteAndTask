@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/todolist_graph"
+    app:startDestination="@id/todosListFragment">
+    <fragment
+        android:id="@+id/todosListFragment"
+        android:name="com.noteapp.feature_todolist.list.TodosListFragment"
+        android:label="TodosListFragment"
+        tools:layout="@layout/fragment_todos_list">
+        <action
+            android:id="@+id/action_todosListFragment_to_addTodoBottomSheetDialog"
+            app:destination="@id/addTodoBottomSheetDialog" />
+        <!--        <action todo -->
+        <!--            android:id="@+id/action_todosListFragment_to_todoDetailFragment"-->
+        <!--            app:destination="@id/todoDetailFragment" />-->
+    </fragment>
+
+    <dialog
+        android:id="@+id/addTodoBottomSheetDialog"
+        android:name="com.noteapp.feature_todolist.dialog.add_task.AddTodoBottomSheetDialog"
+        android:label="AddTodoBottomSheetDialog"
+        tools:layout="@layout/bottom_sheet_add_todo" />
+</navigation>

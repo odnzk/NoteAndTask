@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@id/listFragment"
+        android:id="@id/mainlist_graph"
         android:icon="@drawable/ic_outline_home_24"
         android:title="@string/home"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@id/todosListFragment"
+        android:id="@id/todolist_graph"
         android:icon="@drawable/ic_outline_task"
         android:title="@string/tasks"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@id/notesListFragment"
+        android:id="@id/notelist_graph"
         android:icon="@drawable/ic_outline_notes_24"
         android:title="@string/notes"
         app:showAsAction="ifRoom" />

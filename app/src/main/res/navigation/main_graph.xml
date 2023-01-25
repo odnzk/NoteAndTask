@@ -3,33 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
-    app:startDestination="@id/listFragment">
+    app:startDestination="@id/mainlist_graph">
 
-    <fragment
-        android:id="@+id/listFragment"
-        android:name="com.example.mainlist.list.ListFragment"
-        android:label="ListFragment"
-        tools:layout="@layout/fragment_list">
-        <action
-            android:id="@+id/action_listFragment_to_noteDetailFragment"
-            app:destination="@id/noteDetailFragment">
-            <argument
-                android:name="noteId"
-                app:argType="long"
-                app:nullable="false" />
-        </action>
-        <action
-            android:id="@+id/action_listFragment_to_todoDetailFragment"
-            app:destination="@id/todoDetailFragment">
-            <argument
-                android:name="todoId"
-                app:argType="long"
-                app:nullable="false" />
-        </action>
-        <action
-            android:id="@+id/action_listFragment_to_addCategoryDialog"
-            app:destination="@id/addCategoryDialog" />
-    </fragment>
     <fragment
         android:id="@+id/noteDetailFragment"
         android:name="com.noteapp.feature_detailedscreens.fragments.note.detailed.NoteDetailedFragment"
@@ -69,43 +44,16 @@
             android:name="noteId"
             android:defaultValue="-1L"
             app:argType="long"
-            app:nullable="false"/>
+            app:nullable="false" />
         <argument
             android:name="todoId"
             android:defaultValue="-1L"
             app:argType="long"
-            app:nullable="false"/>
+            app:nullable="false" />
     </dialog>
-    <dialog
-        android:id="@+id/addTodoBottomSheetDialog"
-        android:name="com.noteapp.feature_todolist.dialog.add_task.AddTodoBottomSheetDialog"
-        android:label="AddTodoBottomSheetDialog"
-        tools:layout="@layout/bottom_sheet_add_todo" >
-    </dialog>
-    <fragment
-        android:id="@+id/notesListFragment"
-        tools:layout="@layout/fragment_notes_list"
-        android:name="com.example.feature_notelist.NotesListFragment"
-        android:label="NotesListFragment">
-        <action
-            android:id="@+id/action_notesListFragment_to_noteDetailFragment"
-            app:destination="@id/noteDetailFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/todosListFragment"
-        android:name="com.noteapp.feature_todolist.TodosListFragment"
-        android:label="TodosListFragment"
-        tools:layout="@layout/fragment_todos_list">
-        <action
-            android:id="@+id/action_todosListFragment_to_addTodoBottomSheetDialog"
-            app:destination="@id/addTodoBottomSheetDialog" />
-        <action
-            android:id="@+id/action_todosListFragment_to_todoDetailFragment"
-            app:destination="@id/todoDetailFragment" />
-    </fragment>
-    <dialog
-        android:id="@+id/addCategoryDialog"
-        tools:layout="@layout/dialog_add_category"
-        android:name="com.example.mainlist.dialog.add_category.AddCategoryDialog"
-        android:label="AddCategoryDialog" />
+
+    <include app:graph="@navigation/todolist_graph" />
+    <include app:graph="@navigation/notelist_graph" />
+    <include app:graph="@navigation/mainlist_graph" />
+
 </navigation>

@@ -1,4 +1,4 @@
-package com.noteapp.feature_todolist
+package com.noteapp.feature_todolist.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,9 +10,13 @@ import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.noteapp.core.state.handleState
+import com.noteapp.feature_todolist.R
 import com.noteapp.feature_todolist.databinding.FragmentTodosListBinding
+import com.noteapp.feature_todolist.navigation.toAddTodoBottomSheetDialog
+import com.noteapp.feature_todolist.navigation.toDetailedTodo
 import com.noteapp.model.Todo
 import com.noteapp.model.TodoSortOrder
 import com.noteapp.ui.databinding.StateLoadingBinding
@@ -44,8 +48,7 @@ class TodosListFragment : Fragment() {
     private fun init() {
         with(binding) {
             btnAdd.setOnClickListener {
-                // todo
-//                findNavController().navigate(R.id.action_todosListFragment_to_addTodoBottomSheetDialog)
+                findNavController().toAddTodoBottomSheetDialog()
             }
             btnClearAll.setOnClickListener {
                 viewModel.onEvent(ListTodoEvent.ClearAll)
@@ -121,10 +124,7 @@ class TodosListFragment : Fragment() {
     private fun initAdapter() =
         todosAdapter.apply {
             onTodoClick = { todoId ->
-                // todo
-//                val action =
-//                    TodosListFragmentDirections.actionTodosListFragmentToTodoDetailFragment(todoId)
-//                findNavController().navigate(action)
+                findNavController().toDetailedTodo(todoId)
             }
             onCheckboxClick = { todoId, isCompleted ->
                 viewModel.onEvent(ListTodoEvent.UpdateTodoCompletedStatus(todoId, isCompleted))

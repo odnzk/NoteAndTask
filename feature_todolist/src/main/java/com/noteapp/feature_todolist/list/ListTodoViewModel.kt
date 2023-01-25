@@ -1,4 +1,4 @@
-package com.noteapp.feature_todolist
+package com.noteapp.feature_todolist.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,22 +25,12 @@ class ListTodoViewModel @Inject constructor(
     private var _todos: MutableStateFlow<UiState<List<Todo>>> = MutableStateFlow(UiState.Loading())
     val todos = _todos.asStateFlow()
 
-    private var _categories: MutableStateFlow<List<Category>> = MutableStateFlow(emptyList())
-    val categories = _categories.asStateFlow()
-
     private var recentlyRemoved: Todo? = null
     private var todoSortOrder: TodoSortOrder = TodoSortOrder.DEFAULT
     private var jobObservingTodoList: Job? = null
 
     init {
         loadData()
-        initCategories()
-    }
-
-    private fun initCategories() = viewModelScope.launch {
-        categoryUseCases.getAllCategories().distinctUntilChanged().collectLatest {
-            _categories.value = it
-        }
     }
 
     private fun loadData(todoSortOrder: TodoSortOrder = TodoSortOrder.DEFAULT) {

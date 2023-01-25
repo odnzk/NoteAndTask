@@ -9,8 +9,10 @@ import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.feature_notelist.databinding.FragmentNotesListBinding
+import com.example.feature_notelist.navigation.toDetailedNote
 import com.noteapp.core.state.handleState
 import com.noteapp.model.Note
 import com.noteapp.model.NoteSortOrder
@@ -41,8 +43,7 @@ class NotesListFragment : Fragment() {
     private fun init() {
         with(binding) {
             btnAdd.setOnClickListener {
-                // todo
-//                findNavController().navigate(R.id.action_notesListFragment_to_noteDetailFragment)
+                findNavController().toDetailedNote()
             }
             btnClearAll.setOnClickListener {
                 viewModel.onEvent(ListNoteEvent.ClearAll)
@@ -120,11 +121,7 @@ class NotesListFragment : Fragment() {
     private fun initAdapter() {
         notesAdapter.apply {
             onNoteClick = { noteId ->
-//                val action =
-//                    NotesListFragmentDirections.actionNotesListFragmentToNoteDetailFragment(
-//                        noteId
-//                    )
-//                findNavController().navigate(action) todo
+                findNavController().toDetailedNote(noteId)
             }
             submitList(emptyList())
         }

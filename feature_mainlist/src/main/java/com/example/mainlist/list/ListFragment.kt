@@ -10,8 +10,12 @@ import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.feature_mainlist.databinding.FragmentListBinding
+import com.example.mainlist.navigation.toAddCategoryDialog
+import com.example.mainlist.navigation.toDetailedNote
+import com.example.mainlist.navigation.toDetailedTodo
 import com.example.mainlist.noteitem.NoteItemAdapter
 import com.google.android.material.chip.Chip
 import com.noteapp.core.state.handleState
@@ -152,8 +156,7 @@ class ListFragment : Fragment() {
                 )
             }
             Chip(context).setBtnAddCategoryStyle {
-                // todo
-//                findNavController().navigate(ListFragmentDirections.actionListFragmentToAddCategoryDialog())
+                findNavController().toAddCategoryDialog()
             }.also {
                 chipgroupCategories.addView(it)
             }
@@ -162,14 +165,10 @@ class ListFragment : Fragment() {
 
     private fun initAdapter() {
         listAdapter.onNoteClick = { noteId ->
-            // todo
-//            val action = ListFragmentDirections.actionListFragmentToNoteDetailFragment(noteId)
-//            findNavController().navigate(action)
+            findNavController().toDetailedNote(noteId)
         }
         listAdapter.onTodoClick = { todoId ->
-            // todo
-//            val action = ListFragmentDirections.actionListFragmentToTodoDetailFragment(todoId)
-//            findNavController().navigate(action)
+            findNavController().toDetailedTodo(todoId)
         }
         listAdapter.onTodoCheckboxClick = { id, isCompleted ->
             viewModel.onEvent(ListFragmentEvent.UpdateTodoCompletedStatus(id, isCompleted))

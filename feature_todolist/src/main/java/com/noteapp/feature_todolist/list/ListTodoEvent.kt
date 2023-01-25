@@ -1,4 +1,4 @@
-package com.noteapp.feature_todolist
+package com.noteapp.feature_todolist.list
 
 import com.noteapp.model.Todo
 import com.noteapp.model.TodoSortOrder
