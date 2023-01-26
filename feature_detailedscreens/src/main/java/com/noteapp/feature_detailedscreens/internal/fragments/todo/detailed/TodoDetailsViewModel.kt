@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.todo.TodoUseCases
 import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
 import com.noteapp.core.state.UiState
-import com.noteapp.model.Todo
+import com.example.domain.model.Todo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

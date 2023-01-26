@@ -1,4 +1,4 @@
-package com.noteapp.model
+package com.example.domain.model
 
 data class Category(
     val id: Long = 0,

@@ -7,7 +7,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.noteapp.ui.ext.setTodoDateStyle
 import com.noteapp.ui.ext.setTodoIsCompletedStyle
-import com.noteapp.model.Todo
+import com.example.domain.model.Todo
 import com.noteapp.ui.databinding.ItemTodoBinding
 
 class TodoViewHolder(

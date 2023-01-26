@@ -21,8 +21,8 @@ import com.noteapp.feature_todolist.internal.list.ListTodoEvent
 import com.noteapp.feature_todolist.internal.list.ListTodoViewModel
 import com.noteapp.feature_todolist.internal.navigation.toAddTodoBottomSheetDialog
 import com.noteapp.feature_todolist.internal.navigation.toDetailedTodo
-import com.noteapp.model.Todo
-import com.noteapp.model.TodoSortOrder
+import com.example.domain.model.Todo
+import com.example.domain.model.TodoSortOrder
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
 import com.noteapp.ui.recycler.todo.TodoAdapter

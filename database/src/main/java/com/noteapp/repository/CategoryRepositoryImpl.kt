@@ -4,7 +4,7 @@ import com.example.data.dao.CategoryDao
 import com.example.data.mapper.toCategory
 import com.example.data.mapper.toEntity
 import com.example.domain.repository.CategoryRepository
-import com.noteapp.model.Category
+import com.example.domain.model.Category
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

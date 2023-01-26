@@ -15,7 +15,6 @@ dependencyResolutionManagement {
 rootProject.name = "NoteApp"
 include ':app'
 include ':domain'
-include ':model'
 include ':database'
 include ':feature_notelist'
 include ':feature_todolist'

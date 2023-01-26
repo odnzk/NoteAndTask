@@ -55,7 +55,6 @@ dependencies {
     implementation project(path: ':feature_notelist')
     implementation project(path: ':feature_detailedscreens')
     implementation project(path: ':feature_todolist')
-    implementation project(path: ':model')
     implementation project(path: ':ui')
 
     // hilt

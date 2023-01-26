@@ -1,7 +1,7 @@
 package com.example.mainlist.internal
 
-import com.noteapp.model.Filter
-import com.noteapp.model.NoteItem
+import com.example.domain.model.Filter
+import com.example.domain.model.NoteItem
 
 internal sealed interface ListFragmentEvent {
     data class UpdateTodoCompletedStatus(val todoId: Long, val isCompleted: Boolean) :

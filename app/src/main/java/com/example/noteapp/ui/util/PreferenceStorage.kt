@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import com.noteapp.model.Filter
-import com.noteapp.model.NoteSortOrder
-import com.noteapp.model.TodoSortOrder
+import com.example.domain.model.Filter
+import com.example.domain.model.NoteSortOrder
+import com.example.domain.model.TodoSortOrder
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton

@@ -1,7 +1,7 @@
 package com.example.domain.validation
 
 import com.example.noteapp.ui.util.exceptions.InvalidCategoryException
-import com.noteapp.model.Category
+import com.example.domain.model.Category
 
 class CategoryValidator {
 

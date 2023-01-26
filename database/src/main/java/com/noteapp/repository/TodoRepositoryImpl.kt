@@ -4,7 +4,7 @@ import com.example.data.dao.TodoDao
 import com.example.data.mapper.toEntity
 import com.example.data.mapper.toTodo
 import com.example.domain.repository.TodoRepository
-import com.noteapp.model.Todo
+import com.example.domain.model.Todo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

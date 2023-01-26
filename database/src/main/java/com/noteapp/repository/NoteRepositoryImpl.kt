@@ -4,7 +4,7 @@ import com.example.data.dao.NoteDao
 import com.example.data.mapper.toEntity
 import com.example.data.mapper.toNote
 import com.example.domain.repository.NoteRepository
-import com.noteapp.model.Note
+import com.example.domain.model.Note
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

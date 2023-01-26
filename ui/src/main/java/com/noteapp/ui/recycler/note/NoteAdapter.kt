@@ -2,7 +2,7 @@ package com.noteapp.ui.recycler.note
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.noteapp.model.Note
+import com.example.domain.model.Note
 
 class NoteAdapter : ListAdapter<Note, NoteViewHolder>(NoteCallback()) {
     var onNoteClick: ((Long) -> Unit)? = null // (noteId: Long) -> Unit

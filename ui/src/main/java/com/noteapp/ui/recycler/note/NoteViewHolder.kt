@@ -3,7 +3,7 @@ package com.noteapp.ui.recycler.note
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.noteapp.model.Note
+import com.example.domain.model.Note
 import com.noteapp.ui.databinding.ItemNoteBinding
 import com.noteapp.ui.ext.formatToNoteDate
 import com.noteapp.ui.ext.initCategoriesChipGroup

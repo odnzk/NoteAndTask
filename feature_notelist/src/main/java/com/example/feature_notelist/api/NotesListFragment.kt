@@ -18,8 +18,8 @@ import com.example.feature_notelist.internal.ListNoteEvent
 import com.example.feature_notelist.internal.ListNoteViewModel
 import com.example.feature_notelist.internal.navigation.toDetailedNote
 import com.noteapp.core.state.handleState
-import com.noteapp.model.Note
-import com.noteapp.model.NoteSortOrder
+import com.example.domain.model.Note
+import com.example.domain.model.NoteSortOrder
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
 import com.noteapp.ui.recycler.note.NoteAdapter

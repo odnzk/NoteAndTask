@@ -7,7 +7,7 @@ import com.example.domain.application.usecase.note.NoteUseCases
 import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
 import com.noteapp.core.constants.Constants
 import com.noteapp.core.state.UiState
-import com.noteapp.model.Note
+import com.example.domain.model.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

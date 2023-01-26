@@ -1,7 +1,7 @@
 package com.noteapp.feature_todolist.internal.list
 
-import com.noteapp.model.Todo
-import com.noteapp.model.TodoSortOrder
+import com.example.domain.model.Todo
+import com.example.domain.model.TodoSortOrder
 
 internal sealed interface ListTodoEvent {
     data class DeleteItem(val todo: Todo) : ListTodoEvent

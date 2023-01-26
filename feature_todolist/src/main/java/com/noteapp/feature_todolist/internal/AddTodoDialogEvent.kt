@@ -1,6 +1,6 @@
 package com.noteapp.feature_todolist.internal
 
-import com.noteapp.model.Category
+import com.example.domain.model.Category
 import java.util.*
 
 sealed interface AddTodoDialogEvent {

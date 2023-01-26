@@ -1,4 +1,4 @@
-package com.noteapp.model
+package com.example.domain.model
 
 import java.util.*
 import kotlin.time.Duration

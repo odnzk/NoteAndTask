@@ -1,7 +1,7 @@
 package com.noteapp.ui.recycler.todo
 
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
-import com.noteapp.model.Todo
+import com.example.domain.model.Todo
 
 class TodoCallback : ItemCallback<Todo>() {
     override fun areItemsTheSame(oldItem: Todo, newItem: Todo): Boolean = oldItem.id == newItem.id

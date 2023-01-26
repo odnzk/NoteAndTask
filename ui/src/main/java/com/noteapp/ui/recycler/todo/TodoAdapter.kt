@@ -2,7 +2,7 @@ package com.noteapp.ui.recycler.todo
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import com.noteapp.model.Todo
+import com.example.domain.model.Todo
 
 class TodoAdapter : ListAdapter<Todo, TodoViewHolder>(TodoCallback()) {
     var onTodoClick: ((Long) -> Unit)? = null

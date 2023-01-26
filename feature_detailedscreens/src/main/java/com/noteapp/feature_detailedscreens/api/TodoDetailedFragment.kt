@@ -20,7 +20,7 @@ import com.noteapp.feature_detailedscreens.databinding.FragmentDetailedTodoBindi
 import com.noteapp.feature_detailedscreens.internal.fragments.todo.detailed.TodoDetailedEvent
 import com.noteapp.feature_detailedscreens.internal.fragments.todo.detailed.TodoDetailsViewModel
 import com.noteapp.feature_detailedscreens.internal.navigation.fromTodoToCategory
-import com.noteapp.model.Todo
+import com.example.domain.model.Todo
 import com.noteapp.ui.R
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*

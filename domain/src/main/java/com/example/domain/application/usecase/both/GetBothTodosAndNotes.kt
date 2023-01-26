@@ -2,9 +2,9 @@ package com.example.domain.application.usecase.both
 
 import com.example.domain.repository.NoteRepository
 import com.example.domain.repository.TodoRepository
-import com.noteapp.model.Filter
-import com.noteapp.model.FiltersInfo
-import com.noteapp.model.NoteItem
+import com.example.domain.model.Filter
+import com.example.domain.model.FiltersInfo
+import com.example.domain.model.NoteItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 

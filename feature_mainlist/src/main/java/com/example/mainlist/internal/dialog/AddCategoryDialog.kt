@@ -15,7 +15,7 @@ import com.example.feature_mainlist.R
 import com.example.feature_mainlist.databinding.DialogAddCategoryBinding
 import com.example.noteapp.ui.util.exceptions.InvalidCategoryException
 import com.noteapp.core.state.CompletableState
-import com.noteapp.model.Category
+import com.example.domain.model.Category
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

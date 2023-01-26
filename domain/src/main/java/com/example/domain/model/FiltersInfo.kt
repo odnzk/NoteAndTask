@@ -1,4 +1,4 @@
-package com.noteapp.model
+package com.example.domain.model
 
 // separated because instead of ListFragmentState they are stateless (only success or 'default' state)
 data class FiltersInfo(

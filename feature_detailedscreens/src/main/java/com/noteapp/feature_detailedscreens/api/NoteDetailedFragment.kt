@@ -18,7 +18,7 @@ import com.noteapp.feature_detailedscreens.databinding.FragmentDetailedNoteBindi
 import com.noteapp.feature_detailedscreens.internal.fragments.note.detailed.NoteDetailedEvent
 import com.noteapp.feature_detailedscreens.internal.fragments.note.detailed.NoteDetailsViewModel
 import com.noteapp.feature_detailedscreens.internal.navigation.fromNoteToCategory
-import com.noteapp.model.Note
+import com.example.domain.model.Note
 import com.noteapp.ui.R
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*

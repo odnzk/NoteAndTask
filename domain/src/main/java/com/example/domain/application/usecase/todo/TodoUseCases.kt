@@ -10,5 +10,4 @@ data class TodoUseCases(
     val removeTodoCategory: RemoveTodoCategory,
     val getAllTodos: GetAllTodos,
     val getTodoById: GetTodoById
-) {
-}
+)

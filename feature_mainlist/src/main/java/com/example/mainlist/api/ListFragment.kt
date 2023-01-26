@@ -24,8 +24,8 @@ import com.example.mainlist.internal.navigation.toDetailedNote
 import com.example.mainlist.internal.navigation.toDetailedTodo
 import com.google.android.material.chip.Chip
 import com.noteapp.core.state.handleState
-import com.noteapp.model.Filter
-import com.noteapp.model.NoteItem
+import com.example.domain.model.Filter
+import com.example.domain.model.NoteItem
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
 import dagger.hilt.android.AndroidEntryPoint

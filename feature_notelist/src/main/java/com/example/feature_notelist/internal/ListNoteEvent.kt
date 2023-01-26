@@ -1,7 +1,7 @@
 package com.example.feature_notelist.internal
 
-import com.noteapp.model.Note
-import com.noteapp.model.NoteSortOrder
+import com.example.domain.model.Note
+import com.example.domain.model.NoteSortOrder
 
 internal sealed interface ListNoteEvent {
     data class DeleteItem(val note: Note) : ListNoteEvent

@@ -7,10 +7,10 @@ import com.example.domain.application.usecase.category.CategoryUseCases
 import com.example.domain.application.usecase.note.NoteUseCases
 import com.example.domain.application.usecase.todo.TodoUseCases
 import com.noteapp.core.state.UiState
-import com.noteapp.model.FiltersInfo
-import com.noteapp.model.Note
-import com.noteapp.model.NoteItem
-import com.noteapp.model.Todo
+import com.example.domain.model.FiltersInfo
+import com.example.domain.model.Note
+import com.example.domain.model.NoteItem
+import com.example.domain.model.Todo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

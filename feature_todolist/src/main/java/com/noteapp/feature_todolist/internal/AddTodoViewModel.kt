@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.category.CategoryUseCases
 import com.example.domain.application.usecase.todo.TodoUseCases
 import com.noteapp.core.state.CompletableState
-import com.noteapp.model.Category
-import com.noteapp.model.Todo
+import com.example.domain.model.Category
+import com.example.domain.model.Todo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

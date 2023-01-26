@@ -4,7 +4,7 @@ import com.noteapp.core.ext.isFuture
 import com.noteapp.core.ext.isSameDay
 import com.noteapp.core.ext.setStartOfTheDay
 import com.noteapp.core.ext.toCalendar
-import com.noteapp.model.Todo
+import com.example.domain.model.Todo
 import java.util.*
 
 sealed interface TodoSorter {

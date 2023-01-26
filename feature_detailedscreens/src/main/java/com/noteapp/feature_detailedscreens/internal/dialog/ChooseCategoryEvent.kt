@@ -1,6 +1,6 @@
 package com.noteapp.feature_detailedscreens.internal.dialog
 
-import com.noteapp.model.Category
+import com.example.domain.model.Category
 
 internal sealed interface ChooseCategoryEvent {
     data class UpdateCategory(val category: Category) : ChooseCategoryEvent

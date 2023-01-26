@@ -1,8 +1,8 @@
 package com.example.domain.application.usecase.note
 
 import com.example.domain.repository.NoteRepository
-import com.noteapp.model.Note
-import com.noteapp.model.NoteSortOrder
+import com.example.domain.model.Note
+import com.example.domain.model.NoteSortOrder
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

@@ -12,7 +12,7 @@ import androidx.constraintlayout.helper.widget.Flow
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.noteapp.model.Category
+import com.example.domain.model.Category
 
 private const val WHITE_COLOR = "#FFFFFF"
 private const val CATEGORY_FONT_SIZE = 20f

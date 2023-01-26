@@ -2,7 +2,7 @@ package com.example.data.mapper
 
 import com.example.data.entity.NoteEntity
 import com.example.data.tuples.NoteWithCategoriesTuple
-import com.noteapp.model.Note
+import com.example.domain.model.Note
 
 internal fun Note.toEntity() = NoteEntity(
     id = id, title = title, content = content, date = date

@@ -3,9 +3,9 @@ package com.example.mainlist.api.noteitem
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.noteapp.model.Note
-import com.noteapp.model.NoteItem
-import com.noteapp.model.Todo
+import com.example.domain.model.Note
+import com.example.domain.model.NoteItem
+import com.example.domain.model.Todo
 import com.noteapp.ui.R
 import com.noteapp.ui.recycler.note.NoteViewHolder
 import com.noteapp.ui.recycler.todo.TodoViewHolder
