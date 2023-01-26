@@ -9,17 +9,19 @@ import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.feature_mainlist.databinding.FragmentListBinding
+import com.example.mainlist.api.noteitem.NoteItemAdapter
 import com.example.mainlist.internal.ListFragmentEvent
 import com.example.mainlist.internal.ListFragmentState
 import com.example.mainlist.internal.ListViewModel
 import com.example.mainlist.internal.navigation.toAddCategoryDialog
 import com.example.mainlist.internal.navigation.toDetailedNote
 import com.example.mainlist.internal.navigation.toDetailedTodo
-import com.example.mainlist.api.noteitem.NoteItemAdapter
 import com.google.android.material.chip.Chip
 import com.noteapp.core.state.handleState
 import com.noteapp.model.Filter
@@ -28,6 +30,7 @@ import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -130,8 +133,8 @@ class ListFragment : Fragment() {
         return binding.root
     }
 
-    private fun observeState() =
-        lifecycleScope.launchWhenStarted {
+    private fun observeState() = lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.listState.collectLatest { listState ->
                 listState.handleState(
                     onErrorAction = ::onErrorAction,
@@ -140,6 +143,7 @@ class ListFragment : Fragment() {
                 )
             }
         }
+    }
 
     private fun onErrorAction(error: Throwable) =
         stateLoadingBinding.errorOccurred(error) {

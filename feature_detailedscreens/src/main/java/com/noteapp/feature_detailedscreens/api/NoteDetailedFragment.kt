@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.domain.validation.Field
 import com.example.noteapp.ui.util.exceptions.InvalidNoteException
@@ -60,8 +62,8 @@ class NoteDetailedFragment : Fragment() {
         }
     }
 
-    private fun observeState() =
-        lifecycleScope.launch {
+    private fun observeState() = viewLifecycleOwner.lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.note.collectLatest { state ->
                 state.handleState(
                     onLoadingAction = stateLoadingBinding::loadingStarted,
@@ -70,6 +72,7 @@ class NoteDetailedFragment : Fragment() {
                 )
             }
         }
+    }
 
     private fun onErrorAction(error: Throwable) =
         if (error is InvalidNoteException) {

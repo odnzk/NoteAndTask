@@ -8,7 +8,9 @@ import android.widget.DatePicker
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.ui.util.exceptions.InvalidNoteException
 import com.example.noteapp.ui.util.ext.showDatePicker
@@ -24,6 +26,7 @@ import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.util.*
 
 @AndroidEntryPoint
@@ -42,13 +45,15 @@ class TodoDetailedFragment : Fragment() {
     }
 
     private fun initTodo() {
-        lifecycleScope.launchWhenResumed {
-            viewModel.todo.collectLatest { state ->
-                state.handleState(
-                    onLoadingAction = stateLoadingBinding::loadingStarted,
-                    onSuccessAction = ::showTodo,
-                    onErrorAction = ::errorOccurred
-                )
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.todo.collectLatest { state ->
+                    state.handleState(
+                        onLoadingAction = stateLoadingBinding::loadingStarted,
+                        onSuccessAction = ::showTodo,
+                        onErrorAction = ::errorOccurred
+                    )
+                }
             }
         }
     }

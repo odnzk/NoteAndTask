@@ -8,12 +8,14 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.example.feature_notelist.databinding.FragmentNotesListBinding
 import com.example.feature_notelist.internal.ListNoteEvent
 import com.example.feature_notelist.internal.ListNoteViewModel
-import com.example.feature_notelist.databinding.FragmentNotesListBinding
 import com.example.feature_notelist.internal.navigation.toDetailedNote
 import com.noteapp.core.state.handleState
 import com.noteapp.model.Note
@@ -23,6 +25,7 @@ import com.noteapp.ui.ext.*
 import com.noteapp.ui.recycler.note.NoteAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class NotesListFragment : Fragment() {
@@ -89,14 +92,17 @@ class NotesListFragment : Fragment() {
         }
 
     private fun observeNotes() =
-        lifecycleScope.launchWhenStarted {
-            viewModel.notes.collectLatest { state ->
-                state.handleState(
-                    onLoadingAction = stateLoadingBinding::loadingStarted,
-                    onSuccessAction = ::showNotes,
-                    onErrorAction = ::showError,
-                )
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.notes.collectLatest { state ->
+                    state.handleState(
+                        onLoadingAction = stateLoadingBinding::loadingStarted,
+                        onSuccessAction = ::showNotes,
+                        onErrorAction = ::showError,
+                    )
+                }
             }
+
         }
 
     private fun showError(throwable: Throwable) =

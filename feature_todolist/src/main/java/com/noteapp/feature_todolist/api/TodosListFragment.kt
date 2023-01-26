@@ -9,7 +9,9 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.noteapp.core.state.handleState
@@ -26,6 +28,7 @@ import com.noteapp.ui.ext.*
 import com.noteapp.ui.recycler.todo.TodoAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class TodosListFragment : Fragment() {
@@ -91,13 +94,15 @@ class TodosListFragment : Fragment() {
         }
 
     private fun observeTodos() =
-        lifecycleScope.launchWhenStarted {
-            viewModel.todos.collectLatest { state ->
-                state.handleState(
-                    onLoadingAction = stateLoadingBinding::loadingStarted,
-                    onSuccessAction = ::showTodos,
-                    onErrorAction = ::showError,
-                )
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.todos.collectLatest { state ->
+                    state.handleState(
+                        onLoadingAction = stateLoadingBinding::loadingStarted,
+                        onSuccessAction = ::showTodos,
+                        onErrorAction = ::showError,
+                    )
+                }
             }
         }
 

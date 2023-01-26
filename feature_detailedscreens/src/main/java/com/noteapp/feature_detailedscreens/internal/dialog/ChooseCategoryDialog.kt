@@ -7,12 +7,15 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.noteapp.core.model.CategoryOwnerType
 import com.noteapp.feature_detailedscreens.databinding.DialogChangeCategoryBinding
 import com.noteapp.feature_detailedscreens.internal.ext.toChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 internal class ChooseCategoryDialog : DialogFragment() {
@@ -26,28 +29,29 @@ internal class ChooseCategoryDialog : DialogFragment() {
         observeNoteItem()
     }
 
-    private fun observeNoteItem() {
-        lifecycleScope.launchWhenResumed {
-            viewModel.uiCategoryList.collectLatest { uiCategories ->
-                with(binding) {
-                    if (uiCategories.isEmpty()) {
-                        tvEmptyCategories.isVisible = true
-                    } else {
-                        tvEmptyCategories.isVisible = false
-                        chipgroupCategories.isSingleSelection =
-                            viewModel.type == CategoryOwnerType.TODO_TYPE
-                        uiCategories.toChipGroup(chipgroupCategories) { categoryId ->
-                            viewModel.onEvent(
-                                ChooseCategoryEvent.AddNoteItemCategory(
-                                    categoryId
+    private fun observeNoteItem() =
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiCategoryList.collectLatest { uiCategories ->
+                    with(binding) {
+                        if (uiCategories.isEmpty()) {
+                            tvEmptyCategories.isVisible = true
+                        } else {
+                            tvEmptyCategories.isVisible = false
+                            chipgroupCategories.isSingleSelection =
+                                viewModel.type == CategoryOwnerType.TODO_TYPE
+                            uiCategories.toChipGroup(chipgroupCategories) { categoryId ->
+                                viewModel.onEvent(
+                                    ChooseCategoryEvent.AddNoteItemCategory(
+                                        categoryId
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
                 }
             }
         }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

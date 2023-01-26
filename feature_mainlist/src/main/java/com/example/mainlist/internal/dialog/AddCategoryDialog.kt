@@ -8,7 +8,9 @@ import android.widget.RadioButton
 import androidx.core.view.children
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.feature_mainlist.R
 import com.example.feature_mainlist.databinding.DialogAddCategoryBinding
 import com.example.noteapp.ui.util.exceptions.InvalidCategoryException
@@ -31,18 +33,21 @@ internal class AddCategoryDialog : DialogFragment(R.layout.dialog_add_category) 
         observeState()
     }
 
-    private fun observeState() = lifecycleScope.launchWhenResumed {
-        viewModel.category.collectLatest { state ->
-            when (state) {
-                is CompletableState.Completed -> dismiss()
-                is CompletableState.Error -> if (state.error is InvalidCategoryException) {
-                    binding.etCategoryTitle.error =
-                        getString(com.noteapp.ui.R.string.error_invalid_category_title)
+    private fun observeState() =
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.category.collectLatest { state ->
+                    when (state) {
+                        is CompletableState.Completed -> dismiss()
+                        is CompletableState.Error -> if (state.error is InvalidCategoryException) {
+                            binding.etCategoryTitle.error =
+                                getString(com.noteapp.ui.R.string.error_invalid_category_title)
+                        }
+                        is CompletableState.InProgress -> {}
+                    }
                 }
-                is CompletableState.InProgress -> {}
             }
         }
-    }
 
     private fun init() {
         with(binding) {
