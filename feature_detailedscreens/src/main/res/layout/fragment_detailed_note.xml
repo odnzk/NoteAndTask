@@ -13,13 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.helper.widget.Flow
-            android:id="@+id/flow_categories"
-            style="@style/CategoryFlow"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipgroup_categories"
             android:layout_width="0dp"
-            android:layout_marginEnd="4dp"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids=""
+            android:layout_marginEnd="4dp"
             app:layout_constraintEnd_toStartOf="@id/tv_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -42,7 +40,7 @@
             android:layout_marginTop="@dimen/fragment_default_margin_top"
             app:layout_constraintEnd_toStartOf="@id/btn_delete"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/flow_categories">
+            app:layout_constraintTop_toBottomOf="@id/chipgroup_categories">
 
             <EditText
                 android:id="@+id/et_title"

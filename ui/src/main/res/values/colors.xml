@@ -7,7 +7,9 @@
     <color name="todo_item_overdue_red">#FF5151</color>
     <!--    color for today todoItem-->
     <color name="todo_item_today_blue">#1D2DCA</color>
+
     <color name="color_accent">#1D2DCA</color>
+    <color name="error_color">#FF5151</color>
 
     <color name="main_blue">#DEE5FD</color>
     <color name="dark_grey">#575757</color>

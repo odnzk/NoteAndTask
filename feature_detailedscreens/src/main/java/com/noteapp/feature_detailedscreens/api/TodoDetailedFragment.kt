@@ -1,6 +1,7 @@
 package com.noteapp.feature_detailedscreens.api
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +21,7 @@ import com.noteapp.core.state.handleState
 import com.noteapp.feature_detailedscreens.databinding.FragmentDetailedTodoBinding
 import com.noteapp.feature_detailedscreens.internal.fragments.todo.detailed.TodoDetailedEvent
 import com.noteapp.feature_detailedscreens.internal.fragments.todo.detailed.TodoDetailsViewModel
-import com.noteapp.feature_detailedscreens.internal.navigation.fromTodoToCategory
+import com.noteapp.feature_detailedscreens.internal.navigation.fromTodoToChooseCategoryDialog
 import com.noteapp.ui.R
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
@@ -74,18 +75,22 @@ class TodoDetailedFragment : Fragment() {
                 etTitle.setText(title)
                 cbIsCompleted.isChecked = isCompleted
                 cbIsCompleted.setCategoryColor(category)
+
                 deadlineDate?.let {
                     btnChangeDeadlineDate.text = it.formatToTodoDate()
                 }
+
+                chipgroupCategory.removeAllViews()
                 category?.let {
                     chipgroupCategory.addView(it.toChipCategory(requireContext()) {
-                        findNavController().fromTodoToCategory(viewModel.todoId)
+                        findNavController().fromTodoToChooseCategoryDialog(viewModel.todoId)
                     })
                 } ?: run {
                     chipgroupCategory.addView(Chip(context).setBtnAddCategoryStyle {
-                        findNavController().fromTodoToCategory(viewModel.todoId)
+                        findNavController().fromTodoToChooseCategoryDialog(viewModel.todoId)
                     })
                 }
+
                 notificationCalendar?.let {
                     btnChangeReminderTime.text = it.formatToReminderString()
                 }

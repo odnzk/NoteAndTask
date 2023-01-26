@@ -1,22 +1,20 @@
 package com.noteapp.feature_detailedscreens.internal.dialog
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.category.CategoryUseCases
 import com.example.domain.application.usecase.note.NoteUseCases
 import com.example.domain.application.usecase.todo.TodoUseCases
-import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
-import com.noteapp.core.model.CategoryOwnerType
 import com.example.domain.model.Category
 import com.example.domain.model.Note
 import com.example.domain.model.NoteItem
 import com.example.domain.model.Todo
+import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
+import com.noteapp.core.model.CategoryOwnerType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,7 +33,9 @@ internal class ChooseCategoryViewModel @Inject constructor(
         type.let { state.get<Long>(it.key) ?: throw InvalidNavArgumentsException() }
     }
 
-    private var _uiCategoryList: MutableStateFlow<List<UiCategory>> = MutableStateFlow(emptyList())
+    private var _uiCategoryList: MutableStateFlow<Result<List<UiCategory>>> = MutableStateFlow(
+        Result.success(emptyList())
+    )
     val uiCategoryList = _uiCategoryList.asStateFlow()
 
     init {
@@ -44,9 +44,9 @@ internal class ChooseCategoryViewModel @Inject constructor(
                 CategoryOwnerType.NOTE_TYPE -> noteUseCases.getNoteById(noteItemId)
                 CategoryOwnerType.TODO_TYPE -> todoUseCases.getTodoById(noteItemId)
             }
-            noteItemResult.fold(onSuccess = { observeCategories(it) },
-                onFailure = {
-                // todo somehow show validation exception
+            noteItemResult.fold(onSuccess = { observeCategories(it) }, onFailure = { error ->
+                // NotFoundException
+                _uiCategoryList.update { Result.failure(error) }
             })
         }
     }
@@ -57,26 +57,23 @@ internal class ChooseCategoryViewModel @Inject constructor(
                 when (noteItem) {
                     is Note -> {
                         val selectedCategories: List<Category> = noteItem.categories
-                        _uiCategoryList.value = categories.map { category ->
-                            UiCategory(
-                                category,
-                                isSelected = category in selectedCategories
-                            )
+                        _uiCategoryList.update {
+                            val uiCategories: List<UiCategory> = categories.map { category ->
+                                UiCategory(category, category in selectedCategories)
+                            }
+                            Result.success(uiCategories)
                         }
                     }
                     is Todo -> {
-                        noteItem.category?.id?.let { noteCategoryId ->
-                            _uiCategoryList.value = categories.map {
-                                UiCategory(
-                                    it, it.id == noteCategoryId
-                                )
+                        _uiCategoryList.update {
+                            val uiCategories = noteItem.category?.id?.let { noteCategoryId ->
+                                categories.map { category ->
+                                    UiCategory(category, category.id == noteCategoryId)
+                                }
+                            } ?: run {
+                                categories.map { UiCategory(it) }
                             }
-                        } ?: run {
-                            _uiCategoryList.value = categories.map {
-                                UiCategory(
-                                    it
-                                )
-                            }
+                            Result.success(uiCategories)
                         }
                     }
                 }
@@ -85,10 +82,9 @@ internal class ChooseCategoryViewModel @Inject constructor(
 
     fun onEvent(event: ChooseCategoryEvent) = viewModelScope.launch {
         when (event) {
-            is ChooseCategoryEvent.UpdateCategory -> {
+            is ChooseCategoryEvent.UpdateCategory ->
                 categoryUseCases.updateCategory(event.category)
-            }
-            is ChooseCategoryEvent.DeleteNoteItemCategory -> {
+            is ChooseCategoryEvent.DeleteNoteItemCategory ->
                 when (type) {
                     CategoryOwnerType.NOTE_TYPE -> noteUseCases.removeNoteCategory(
                         noteItemId, event.categoryId
@@ -97,18 +93,17 @@ internal class ChooseCategoryViewModel @Inject constructor(
                         noteItemId
                     )
                 }
-            }
-            is ChooseCategoryEvent.AddNoteItemCategory -> {
+            is ChooseCategoryEvent.AddNoteItemCategory ->
                 when (type) {
                     CategoryOwnerType.NOTE_TYPE -> noteUseCases.addNoteCategory(
                         noteItemId, event.categoryId
                     )
-                   CategoryOwnerType.TODO_TYPE -> todoUseCases.addTodoCategory(
+                    CategoryOwnerType.TODO_TYPE -> todoUseCases.addTodoCategory(
                         noteItemId, event.categoryId
                     )
                 }
-                }
-            }
+
+        }
         }
     }
 

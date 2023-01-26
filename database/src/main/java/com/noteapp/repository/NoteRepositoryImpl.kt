@@ -1,4 +1,4 @@
-package com.example.data.repository
+package com.noteapp.repository
 
 import com.example.data.dao.NoteDao
 import com.example.data.mapper.toEntity

@@ -1,6 +1,8 @@
 package com.noteapp.feature_detailedscreens.internal.dialog
 
+import android.content.res.Resources.NotFoundException
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.noteapp.core.model.CategoryOwnerType
 import com.noteapp.feature_detailedscreens.databinding.DialogChangeCategoryBinding
 import com.noteapp.feature_detailedscreens.internal.ext.toChipGroup
+import com.noteapp.ui.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -33,25 +36,42 @@ internal class ChooseCategoryDialog : DialogFragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiCategoryList.collectLatest { uiCategories ->
-                    with(binding) {
-                        if (uiCategories.isEmpty()) {
-                            tvEmptyCategories.isVisible = true
-                        } else {
-                            tvEmptyCategories.isVisible = false
-                            chipgroupCategories.isSingleSelection =
-                                viewModel.type == CategoryOwnerType.TODO_TYPE
-                            uiCategories.toChipGroup(chipgroupCategories) { categoryId ->
-                                viewModel.onEvent(
-                                    ChooseCategoryEvent.AddNoteItemCategory(
-                                        categoryId
-                                    )
-                                )
-                            }
-                        }
-                    }
+                    uiCategories.fold(
+                        onSuccess = ::init,
+                        onFailure = ::showError
+                    )
                 }
             }
         }
+
+    private fun showError(error: Throwable) {
+        with(binding.tvError) {
+            val resString = when (error) {
+                is NotFoundException -> R.string.error_not_found
+                else -> R.string.error_unknown
+            }
+            text = getString(resString)
+            isVisible = true
+        }
+    }
+
+    private fun init(categoryList: List<UiCategory>) {
+        with(binding) {
+            if (categoryList.isEmpty()) {
+                tvError.text = getString(R.string.state_categories_is_empty)
+                tvError.isVisible = true
+            } else {
+                tvError.isVisible = false
+                chipgroupCategories.isSingleSelection =
+                    viewModel.type == CategoryOwnerType.TODO_TYPE
+                categoryList.toChipGroup(chipgroupCategories) { categoryId ->
+                    viewModel.onEvent(
+                        ChooseCategoryEvent.AddNoteItemCategory(categoryId)
+                    )
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

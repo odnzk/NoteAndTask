@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.example.domain.model.Note
 import com.example.domain.validation.Field
 import com.example.noteapp.ui.util.exceptions.InvalidNoteException
 import com.google.android.material.chip.Chip
@@ -17,8 +18,7 @@ import com.noteapp.core.state.handleState
 import com.noteapp.feature_detailedscreens.databinding.FragmentDetailedNoteBinding
 import com.noteapp.feature_detailedscreens.internal.fragments.note.detailed.NoteDetailedEvent
 import com.noteapp.feature_detailedscreens.internal.fragments.note.detailed.NoteDetailsViewModel
-import com.noteapp.feature_detailedscreens.internal.navigation.fromNoteToCategory
-import com.example.domain.model.Note
+import com.noteapp.feature_detailedscreens.internal.navigation.fromNoteToChooseCategoryDialog
 import com.noteapp.ui.R
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
@@ -95,16 +95,14 @@ class NoteDetailedFragment : Fragment() {
                 date?.let {
                     tvDate.text = it.formatToNoteDate()
                 }
-                categories.categoriesToFlowCategories(constraintLayout, flowCategories) {
-                    findNavController().fromNoteToCategory(it)
+                categories.initCategoriesChipGroup(chipgroupCategories) {
+                    findNavController().fromNoteToChooseCategoryDialog(note.id)
                 }
 
                 Chip(context).setBtnAddCategoryStyle {
-                    findNavController().fromNoteToCategory(note.id)
-                }.also{ chip ->
-                    chip.id = View.generateViewId()
-                    constraintLayout.addView(chip)
-                    flowCategories.addView(chip)
+                    findNavController().fromNoteToChooseCategoryDialog(note.id)
+                }.also { chip ->
+                    chipgroupCategories.addView(chip)
                 }
             }
         }

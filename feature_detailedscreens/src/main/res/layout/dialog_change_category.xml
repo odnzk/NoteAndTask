@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/tv_change_category_title"
         style="@style/Headline"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/change_category"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,12 +27,12 @@
         app:layout_constraintTop_toBottomOf="@id/tv_change_category_title" />
 
     <TextView
-        android:id="@+id/tv_empty_categories"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_error"
+        style="@style/AdditionalText"
         android:layout_height="wrap_content"
-        android:text="@string/state_categories_is_empty"
+        android:layout_width="wrap_content"
+        android:textColor="@color/error_color"
         android:visibility="gone"
-        app:layout_constraintHorizontal_bias=".0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chipgroup_categories" />

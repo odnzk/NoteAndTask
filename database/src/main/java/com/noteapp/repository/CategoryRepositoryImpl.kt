@@ -1,4 +1,4 @@
-package com.example.data.repository
+package com.noteapp.repository
 
 import com.example.data.dao.CategoryDao
 import com.example.data.mapper.toCategory

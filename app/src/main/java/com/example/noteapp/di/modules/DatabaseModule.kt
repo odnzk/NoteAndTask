@@ -5,9 +5,9 @@ import androidx.room.Room
 import com.example.data.dao.CategoryDao
 import com.example.data.dao.NoteDao
 import com.example.data.dao.TodoDao
-import com.example.data.repository.CategoryRepositoryImpl
-import com.example.data.repository.NoteRepositoryImpl
-import com.example.data.repository.TodoRepositoryImpl
+import com.noteapp.repository.CategoryRepositoryImpl
+import com.noteapp.repository.NoteRepositoryImpl
+import com.noteapp.repository.TodoRepositoryImpl
 import com.example.domain.repository.CategoryRepository
 import com.example.domain.repository.NoteRepository
 import com.example.domain.repository.TodoRepository

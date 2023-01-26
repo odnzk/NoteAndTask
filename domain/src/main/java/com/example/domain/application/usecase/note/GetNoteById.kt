@@ -8,9 +8,7 @@ class GetNoteById(private val noteRepository: NoteRepository) {
 
     suspend operator fun invoke(noteId: Long): Result<Note> {
         return noteRepository.getById(noteId)?.let { note -> Result.success(note) }
-            ?: Result.failure(
-                NotFoundException()
-            )
+            ?: Result.failure(NotFoundException())
     }
 
 }
