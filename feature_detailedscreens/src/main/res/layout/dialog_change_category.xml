@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/dialog_margin"
-    android:theme="@style/Theme.NoteApp"
-    android:padding="@dimen/fragment_default_margin_horizontal">
+    android:padding="@dimen/fragment_default_margin_horizontal"
+    android:theme="@style/Theme.NoteApp">
 
     <TextView
         android:id="@+id/tv_change_category_title"
         style="@style/Headline"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/change_category"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,20 +19,20 @@
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipgroup_categories"
-        android:layout_marginTop="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_change_category_title" />
 
     <TextView
-        android:id="@+id/tv_empty_categories"
+        android:id="@+id/tv_error"
+        style="@style/AdditionalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/state_categories_is_empty"
+        android:textColor="@color/error_color"
         android:visibility="gone"
-        app:layout_constraintHorizontal_bias=".0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chipgroup_categories" />

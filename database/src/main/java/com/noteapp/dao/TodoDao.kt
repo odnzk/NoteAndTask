@@ -3,21 +3,20 @@ package com.example.data.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import com.example.data.BaseDao
+import com.noteapp.dao.BaseDao
 import com.example.data.entity.TodoEntity
 import com.example.data.tuples.TodoWithCategoryTuple
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TodoDao : BaseDao<TodoEntity> {
-//    @Insert(onConflict = REPLACE)
-//    suspend fun add(toodo: TodoEntity): Long
 
     @Query("DELETE FROM todos WHERE id = :todoId")
     suspend fun deleteById(todoId: Long)
 
-//    @Update
-//    suspend fun update(toodo: TodoEntity)
+    @Transaction
+    @Query("SELECT * FROM todos WHERE id = :id")
+    fun getFlowById(id: Long): Flow<TodoWithCategoryTuple?>
 
     @Query("DELETE FROM todos")
     suspend fun deleteAll()

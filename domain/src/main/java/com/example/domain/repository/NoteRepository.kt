@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface NoteRepository : BasicRepository<Note> {
 
+    fun getNoteFlowById(noteId: Long): Flow<Note?>
+
     suspend fun deleteAll()
 
     fun getByTitle(title: String): Flow<List<Note>>

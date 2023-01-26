@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/main_blue"
-    android:theme="@style/Theme.NoteApp"
-    android:padding="@dimen/fragment_default_margin_horizontal">
+    android:padding="@dimen/fragment_default_margin_horizontal"
+    android:theme="@style/Theme.NoteApp">
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipgroup_category"
-        android:layout_height="wrap_content"
         android:layout_width="0dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@id/tv_date"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
@@ -39,13 +39,13 @@
         <EditText
             android:id="@+id/et_title"
             style="@style/Headline"
-            android:hint="@string/hint_task_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:hint="@string/hint_task_title"
+            android:importantForAutofill="no"
+            android:inputType="none"
             android:maxLines="4"
             android:text="@string/unknown_todo"
-            android:inputType="none"
-            android:importantForAutofill="no"
             tools:text="@tools:sample/lorem/random" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,38 +75,38 @@
         android:layout_marginTop="@dimen/fragment_default_margin_top"
         android:insetBottom="0dp"
         android:text="@string/btn_set_deadline"
-            app:icon="@drawable/ic_schedule"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/barrier" />
+        app:icon="@drawable/ic_schedule"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrier" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_change_reminder_time"
-            style="@style/MaterialButtonWithIcon"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="@string/btn_set_reminder"
-            app:cornerRadius="0dp"
-            app:icon="@drawable/ic_baseline_notifications_none_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_change_deadline_date" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_change_reminder_time"
+        style="@style/MaterialButtonWithIcon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/btn_set_reminder"
+        app:cornerRadius="0dp"
+        app:icon="@drawable/ic_baseline_notifications_none_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_change_deadline_date" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_change_repeat_period"
-            style="@style/MaterialButtonWithIcon"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:insetTop="0dp"
-            android:text="@string/btn_set_period"
-            app:icon="@drawable/ic_baseline_repeat_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_change_reminder_time" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_change_repeat_period"
+        style="@style/MaterialButtonWithIcon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:insetTop="0dp"
+        android:text="@string/btn_set_period"
+        app:icon="@drawable/ic_baseline_repeat_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_change_reminder_time" />
 
-        <include layout="@layout/state_loading"/>
+    <include layout="@layout/state_loading" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

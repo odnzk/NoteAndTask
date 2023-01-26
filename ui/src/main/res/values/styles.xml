@@ -84,7 +84,7 @@
         <item name="android:textSize">9sp</item>
         <item name="android:fontFamily">@font/inter_light</item>
         <item name="android:textColor">@color/white</item>
-        <!--        <item name="closeIconVisible">true</item>-->
+        <item name="chipIconVisible">true</item>
         <item name="checkedIcon">@drawable/ic_baseline_check_24</item>
         <item name="chipIconTint">@color/white</item>
         <item name="closeIcon">@drawable/ic_baseline_cancel_24</item>

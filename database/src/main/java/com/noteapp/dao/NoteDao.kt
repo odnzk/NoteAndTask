@@ -1,9 +1,8 @@
-package com.example.data.dao
+package com.noteapp.dao
 
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import com.example.data.BaseDao
 import com.example.data.entity.NoteEntity
 import com.example.data.tuples.NoteWithCategoriesTuple
 import kotlinx.coroutines.flow.Flow
@@ -31,14 +30,12 @@ interface NoteDao : BaseDao<NoteEntity> {
     @Query("SELECT * FROM notes WHERE title LIKE '%' || :noteTitle || '%'")
     fun getByTitle(noteTitle: String): Flow<List<NoteWithCategoriesTuple>>
 
-//    @Insert(onConflict = REPLACE)
-//    suspend fun insert(note: NoteEntity): Long
-
     @Query("DELETE FROM notes WHERE note_id = :noteId")
     suspend fun deleteById(noteId: Long)
-//
-//    @Update(onConflict = REPLACE)
-//    suspend fun update(note: NoteEntity)
+
+    @Transaction
+    @Query("SELECT * FROM notes WHERE note_id = :id")
+    fun getFlowById(id: Long): Flow<NoteWithCategoriesTuple?>
 
     @Query("DELETE FROM notes")
     suspend fun deleteAll()

@@ -1,10 +1,10 @@
-package com.example.data.repository
+package com.noteapp.repository
 
 import com.example.data.dao.TodoDao
 import com.example.data.mapper.toEntity
 import com.example.data.mapper.toTodo
-import com.example.domain.repository.TodoRepository
 import com.example.domain.model.Todo
+import com.example.domain.repository.TodoRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -25,6 +25,10 @@ class TodoRepositoryImpl(
 
     override fun getAll(): Flow<List<Todo>> =
         dao.getAll().map { list -> list.map { todoEntity -> todoEntity.toTodo() } }
+
+    override fun getTodoFlowById(todoId: Long): Flow<Todo?> {
+        return dao.getFlowById(todoId).map { it?.toTodo() }
+    }
 
 
     override fun getByTitle(title: String): Flow<List<Todo>> =

@@ -20,7 +20,7 @@ import com.noteapp.core.state.handleState
 import com.noteapp.feature_detailedscreens.databinding.FragmentDetailedTodoBinding
 import com.noteapp.feature_detailedscreens.internal.fragments.todo.detailed.TodoDetailedEvent
 import com.noteapp.feature_detailedscreens.internal.fragments.todo.detailed.TodoDetailsViewModel
-import com.noteapp.feature_detailedscreens.internal.navigation.fromTodoToCategory
+import com.noteapp.feature_detailedscreens.internal.navigation.fromTodoToChooseCategoryDialog
 import com.noteapp.ui.R
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
@@ -42,6 +42,29 @@ class TodoDetailedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initTodo()
+        initClickListeners()
+    }
+
+    private fun initClickListeners() {
+        with(binding) {
+            // init listeners only if loading finished successfully
+            btnDelete.setOnClickListener {
+                viewModel.onEvent(TodoDetailedEvent.DeleteTodo)
+                binding.root.showSnackbar(getString(R.string.success_delete))
+            }
+            etTitle.doAfterTextChanged {
+                viewModel.todo.value.data?.let { todo ->
+                    viewModel.onEvent(
+                        TodoDetailedEvent.UpdateTodo(
+                            todo.copy(title = etTitle.text.toString())
+                        )
+                    )
+                }
+            }
+            btnChangeDeadlineDate.setOnClickListener {
+                context?.showDatePicker(::setDeadlineDate)
+            }
+        }
     }
 
     private fun initTodo() {
@@ -74,38 +97,25 @@ class TodoDetailedFragment : Fragment() {
                 etTitle.setText(title)
                 cbIsCompleted.isChecked = isCompleted
                 cbIsCompleted.setCategoryColor(category)
+
                 deadlineDate?.let {
                     btnChangeDeadlineDate.text = it.formatToTodoDate()
                 }
+
+                chipgroupCategory.removeAllViews()
                 category?.let {
                     chipgroupCategory.addView(it.toChipCategory(requireContext()) {
-                        findNavController().fromTodoToCategory(viewModel.todoId)
+                        findNavController().fromTodoToChooseCategoryDialog(viewModel.todoId)
                     })
                 } ?: run {
                     chipgroupCategory.addView(Chip(context).setBtnAddCategoryStyle {
-                        findNavController().fromTodoToCategory(viewModel.todoId)
+                        findNavController().fromTodoToChooseCategoryDialog(viewModel.todoId)
                     })
                 }
+
                 notificationCalendar?.let {
                     btnChangeReminderTime.text = it.formatToReminderString()
                 }
-            }
-            // init listeners only if loading finished successfully
-            btnDelete.setOnClickListener {
-                viewModel.onEvent(TodoDetailedEvent.DeleteTodo)
-                binding.root.showSnackbar(getString(R.string.success_delete))
-            }
-            etTitle.doAfterTextChanged {
-                viewModel.todo.value.data?.let { todo ->
-                    viewModel.onEvent(
-                        TodoDetailedEvent.UpdateTodo(
-                            todo.copy(title = etTitle.text.toString())
-                        )
-                    )
-                }
-            }
-            btnChangeDeadlineDate.setOnClickListener {
-                context?.showDatePicker(::setDeadlineDate)
             }
         }
     }

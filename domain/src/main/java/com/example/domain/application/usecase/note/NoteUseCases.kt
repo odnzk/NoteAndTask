@@ -8,5 +8,6 @@ data class NoteUseCases(
     val removeNoteCategory: RemoveNoteCategory,
     val updateNote: UpdateNote,
     val getAllNotes: GetAllNotes,
-    val getNoteById: GetNoteById
+    val getNoteById: GetNoteById,
+    val getNoteFlowById: GetNoteFlowById
 )

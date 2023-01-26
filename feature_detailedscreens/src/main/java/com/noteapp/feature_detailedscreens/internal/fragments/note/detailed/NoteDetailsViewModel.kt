@@ -4,14 +4,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.note.NoteUseCases
+import com.example.domain.model.Note
 import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
+import com.example.noteapp.ui.util.exceptions.NotFoundException
 import com.noteapp.core.constants.Constants
 import com.noteapp.core.state.UiState
-import com.example.domain.model.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -39,18 +39,26 @@ internal class NoteDetailsViewModel @Inject constructor(
                 isNewNote = true
                 _note.value = UiState.Success(Note.defaultInstance())
             } else {
-                noteUseCases.getNoteById(noteId).fold(
-                    onSuccess = { note ->
-                        _note.value = UiState.Success(note)
-                    },
-                    onFailure = { error ->
-                        _note.value = UiState.Error(error)
+                noteUseCases.getNoteFlowById(noteId).distinctUntilChanged().collectLatest { note ->
+                    _note.update {
+                        note?.let { note -> UiState.Success(note) } ?: UiState.Error(
+                            NotFoundException()
+                        )
                     }
-                )
+                }
+//                noteUseCases.getNoteById(noteId).fold(
+//                    onSuccess = { note ->
+//                        _note.value = UiState.Success(note)
+//                    },
+//                    onFailure = { error ->
+//                        _note.value = UiState.Error(error)
+//                    }
+//                )
             }
         }
     }
 
+    // todo Dispatchers
     fun onEvent(event: NoteDetailedEvent) = viewModelScope.launch(Dispatchers.Default) {
         when (event) {
             is NoteDetailedEvent.UpdateNote -> {
