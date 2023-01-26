@@ -33,7 +33,11 @@ internal class ChooseCategoryViewModel @Inject constructor(
     }
 
     // noteItem to observe, categoryList
-//    private var _noteItem: Flow<NoteItem?> = todoUseCases.getTodoFlowById(noteItemId)
+    private var _noteItem: Flow<NoteItem> = when (type) {
+        CategoryOwnerType.TODO_TYPE -> todoUseCases.getTodoFlowById(noteItemId).filterNotNull()
+        CategoryOwnerType.NOTE_TYPE -> noteUseCases.getNoteFlowById(noteItemId).filterNotNull()
+    }
+    private var categories: Flow<List<Category>> = categoryUseCases.getAllCategories()
 
     private var _uiCategoryList: MutableStateFlow<Result<List<UiCategory>>> = MutableStateFlow(
         Result.success(emptyList())
@@ -42,72 +46,63 @@ internal class ChooseCategoryViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val noteItemResult: Result<NoteItem> = when (type) {
-                CategoryOwnerType.NOTE_TYPE -> noteUseCases.getNoteById(noteItemId)
-                CategoryOwnerType.TODO_TYPE -> todoUseCases.getTodoById(noteItemId)
-            }
-            noteItemResult.fold(onSuccess = { observeCategories(it) }, onFailure = { error ->
-                // NotFoundException
-                _uiCategoryList.update { Result.failure(error) }
-            })
+            combine(categories, _noteItem) { categories, noteItem ->
+                _uiCategoryList.update {
+                    Result.success(updateUiCategories(noteItem, categories))
+                }
+            }.collect()
         }
     }
 
-    private suspend fun observeCategories(noteItem: NoteItem) {
-        categoryUseCases.getAllCategories().distinctUntilChanged()
-            .collectLatest { categories ->
-                when (noteItem) {
-                    is Note -> {
-                        val selectedCategories: List<Category> = noteItem.categories
-                        _uiCategoryList.update {
-                            val uiCategories: List<UiCategory> = categories.map { category ->
-                                UiCategory(category, category in selectedCategories)
-                            }
-                            Result.success(uiCategories)
-                        }
-                    }
-                    is Todo -> {
-                        _uiCategoryList.update {
-                            val uiCategories = noteItem.category?.id?.let { noteCategoryId ->
-                                categories.map { category ->
-                                    UiCategory(category, category.id == noteCategoryId)
-                                }
-                            } ?: run {
-                                categories.map { UiCategory(it) }
-                            }
-                            Result.success(uiCategories)
-                        }
-                    }
+    private fun updateUiCategories(
+        noteItem: NoteItem,
+        categories: List<Category>
+    ): List<UiCategory> {
+        return when (noteItem) {
+            is Note -> {
+                val selectedCategories: List<Category> = noteItem.categories
+                val uiCategories: List<UiCategory> = categories.map { category ->
+                    UiCategory(category, category in selectedCategories)
                 }
+                uiCategories
             }
+            is Todo -> {
+                val uiCategories = noteItem.category?.id?.let { noteCategoryId ->
+                    categories.map { category ->
+                        UiCategory(category, category.id == noteCategoryId)
+                    }
+                } ?: run {
+                    categories.map { UiCategory(it) }
+                }
+                uiCategories
+            }
+        }
     }
 
     fun onEvent(event: ChooseCategoryEvent) = viewModelScope.launch {
         when (event) {
-            is ChooseCategoryEvent.UpdateCategory ->
-                categoryUseCases.updateCategory(event.category)
-            is ChooseCategoryEvent.DeleteNoteItemCategory ->
-                when (type) {
-                    CategoryOwnerType.NOTE_TYPE -> noteUseCases.removeNoteCategory(
-                        noteItemId, event.categoryId
-                    )
-                    CategoryOwnerType.TODO_TYPE -> todoUseCases.removeTodoCategory(
-                        noteItemId
-                    )
-                }
-            is ChooseCategoryEvent.AddNoteItemCategory ->
-                // check if selected -> remove
+            is ChooseCategoryEvent.UpdateCategory -> categoryUseCases.updateCategory(event.category)
+            is ChooseCategoryEvent.DeleteNoteItemCategory -> when (type) {
+                CategoryOwnerType.NOTE_TYPE -> noteUseCases.removeNoteCategory(
+                    noteItemId, event.categoryId
+                )
+                CategoryOwnerType.TODO_TYPE -> todoUseCases.removeTodoCategory(
+                    noteItemId
+                )
+            }
+            is ChooseCategoryEvent.AddNoteItemCategory -> {
                 when (type) {
                     CategoryOwnerType.NOTE_TYPE -> noteUseCases.addNoteCategory(
-                        noteItemId,
-                        event.categoryId
+                        noteId = noteItemId,
+                        categoryId = event.categoryId
                     )
-                    CategoryOwnerType.TODO_TYPE -> todoUseCases.addTodoCategory(
-                        noteItemId,
-                        event.categoryId
+                    CategoryOwnerType.TODO_TYPE -> todoUseCases.updateTodoCategory(
+                        todoId = noteItemId,
+                        newCategoryId = event.categoryId
                     )
                 }
 
+            }
         }
         }
     }

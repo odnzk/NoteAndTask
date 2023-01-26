@@ -1,6 +1,6 @@
 package com.noteapp.repository
 
-import com.example.data.dao.CategoryDao
+import com.noteapp.dao.CategoryDao
 import com.example.data.mapper.toCategory
 import com.example.data.mapper.toEntity
 import com.example.domain.repository.CategoryRepository

@@ -1,10 +1,10 @@
 package com.noteapp.repository
 
-import com.example.data.dao.NoteDao
 import com.example.data.mapper.toEntity
 import com.example.data.mapper.toNote
-import com.example.domain.repository.NoteRepository
 import com.example.domain.model.Note
+import com.example.domain.repository.NoteRepository
+import com.noteapp.dao.NoteDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -24,6 +24,9 @@ class NoteRepositoryImpl(
 
     override suspend fun getById(id: Long): Note? =
         dao.getById(id)?.toNote()
+
+    override fun getNoteFlowById(noteId: Long): Flow<Note?> =
+        dao.getFlowById(noteId).map { it?.toNote() }
 
     override suspend fun deleteAll() {
         dao.deleteAll()

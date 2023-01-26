@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface TodoRepository : BasicRepository<Todo> {
 
-    // todo
     fun getTodoFlowById(todoId: Long): Flow<Todo?>
 
     fun getByTitle(title: String): Flow<List<Todo>>

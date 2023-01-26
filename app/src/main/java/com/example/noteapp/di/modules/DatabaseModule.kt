@@ -2,8 +2,8 @@ package com.example.noteapp.di.modules
 
 import android.app.Application
 import androidx.room.Room
-import com.example.data.dao.CategoryDao
-import com.example.data.dao.NoteDao
+import com.noteapp.dao.CategoryDao
+import com.noteapp.dao.NoteDao
 import com.example.data.dao.TodoDao
 import com.noteapp.repository.CategoryRepositoryImpl
 import com.noteapp.repository.NoteRepositoryImpl

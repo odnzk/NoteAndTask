@@ -34,7 +34,8 @@ object UseCasesModule {
         addNoteCategory = AddNoteCategory(noteRepository),
         removeNoteCategory = RemoveNoteCategory(noteRepository),
         getAllNotes = GetAllNotes(noteRepository),
-        getNoteById = GetNoteById(noteRepository)
+        getNoteById = GetNoteById(noteRepository),
+        getNoteFlowById = GetNoteFlowById(noteRepository)
     )
 
     @Provides
@@ -47,7 +48,7 @@ object UseCasesModule {
         deleteAllTodo = DeleteAllTodos(todoRepository),
         updateTodo = UpdateTodo(todoRepository, todoValidator),
         updateIsCompleted = UpdateIsCompleted(todoRepository),
-        addTodoCategory = AddTodoCategory(todoRepository),
+        updateTodoCategory = UpdateTodoCategory(todoRepository),
         removeTodoCategory = RemoveTodoCategory(todoRepository),
         getAllTodos = GetAllTodos(todoRepository),
         getTodoById = GetTodoById(todoRepository),

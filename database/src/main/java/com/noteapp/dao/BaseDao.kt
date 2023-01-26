@@ -1,4 +1,4 @@
-package com.example.data
+package com.noteapp.dao
 
 import androidx.room.Delete
 import androidx.room.Insert
