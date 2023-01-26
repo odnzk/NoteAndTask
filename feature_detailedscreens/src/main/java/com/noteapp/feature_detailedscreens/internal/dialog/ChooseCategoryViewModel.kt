@@ -1,6 +1,5 @@
 package com.noteapp.feature_detailedscreens.internal.dialog
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -32,6 +31,9 @@ internal class ChooseCategoryViewModel @Inject constructor(
     private val noteItemId: Long by lazy {
         type.let { state.get<Long>(it.key) ?: throw InvalidNavArgumentsException() }
     }
+
+    // noteItem to observe, categoryList
+//    private var _noteItem: Flow<NoteItem?> = todoUseCases.getTodoFlowById(noteItemId)
 
     private var _uiCategoryList: MutableStateFlow<Result<List<UiCategory>>> = MutableStateFlow(
         Result.success(emptyList())
@@ -94,12 +96,15 @@ internal class ChooseCategoryViewModel @Inject constructor(
                     )
                 }
             is ChooseCategoryEvent.AddNoteItemCategory ->
+                // check if selected -> remove
                 when (type) {
                     CategoryOwnerType.NOTE_TYPE -> noteUseCases.addNoteCategory(
-                        noteItemId, event.categoryId
+                        noteItemId,
+                        event.categoryId
                     )
                     CategoryOwnerType.TODO_TYPE -> todoUseCases.addTodoCategory(
-                        noteItemId, event.categoryId
+                        noteItemId,
+                        event.categoryId
                     )
                 }
 

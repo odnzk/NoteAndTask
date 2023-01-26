@@ -65,9 +65,7 @@ internal class ChooseCategoryDialog : DialogFragment() {
                 chipgroupCategories.isSingleSelection =
                     viewModel.type == CategoryOwnerType.TODO_TYPE
                 categoryList.toChipGroup(chipgroupCategories) { categoryId ->
-                    viewModel.onEvent(
-                        ChooseCategoryEvent.AddNoteItemCategory(categoryId)
-                    )
+                    viewModel.onEvent(ChooseCategoryEvent.AddNoteItemCategory(categoryId))
                 }
             }
         }

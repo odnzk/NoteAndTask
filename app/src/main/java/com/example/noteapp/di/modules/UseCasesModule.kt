@@ -6,12 +6,12 @@ import com.example.domain.application.usecase.both.UnitedUseCases
 import com.example.domain.application.usecase.category.*
 import com.example.domain.application.usecase.note.*
 import com.example.domain.application.usecase.todo.*
-import com.example.domain.validation.CategoryValidator
-import com.example.domain.validation.NoteValidator
-import com.example.domain.validation.TodoValidator
 import com.example.domain.repository.CategoryRepository
 import com.example.domain.repository.NoteRepository
 import com.example.domain.repository.TodoRepository
+import com.example.domain.validation.CategoryValidator
+import com.example.domain.validation.NoteValidator
+import com.example.domain.validation.TodoValidator
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -50,7 +50,8 @@ object UseCasesModule {
         addTodoCategory = AddTodoCategory(todoRepository),
         removeTodoCategory = RemoveTodoCategory(todoRepository),
         getAllTodos = GetAllTodos(todoRepository),
-        getTodoById = GetTodoById(todoRepository)
+        getTodoById = GetTodoById(todoRepository),
+        getTodoFlowById = GetTodoFlowById(todoRepository)
     )
 
     @Provides

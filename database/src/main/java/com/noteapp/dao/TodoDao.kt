@@ -16,6 +16,10 @@ interface TodoDao : BaseDao<TodoEntity> {
     @Query("DELETE FROM todos WHERE id = :todoId")
     suspend fun deleteById(todoId: Long)
 
+    // todo
+    @Transaction
+    @Query("SELECT * FROM todos WHERE id = :id")
+    fun getFlowById(id: Long): Flow<TodoWithCategoryTuple?>
 //    @Update
 //    suspend fun update(toodo: TodoEntity)
 

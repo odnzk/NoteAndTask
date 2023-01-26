@@ -4,10 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.note.NoteUseCases
+import com.example.domain.model.Note
 import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
 import com.noteapp.core.constants.Constants
 import com.noteapp.core.state.UiState
-import com.example.domain.model.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,6 +51,7 @@ internal class NoteDetailsViewModel @Inject constructor(
         }
     }
 
+    // todo Dispatchers
     fun onEvent(event: NoteDetailedEvent) = viewModelScope.launch(Dispatchers.Default) {
         when (event) {
             is NoteDetailedEvent.UpdateNote -> {

@@ -4,12 +4,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.todo.TodoUseCases
-import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
-import com.noteapp.core.state.UiState
 import com.example.domain.model.Todo
+import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
+import com.example.noteapp.ui.util.exceptions.NotFoundException
+import com.noteapp.core.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,12 +30,12 @@ internal class TodoDetailsViewModel @Inject constructor(
     }
 
     private fun loadData() {
-        _todo.value = UiState.Loading()
         viewModelScope.launch {
-            todoUseCases.getTodoById(todoId).fold(
-                onSuccess = { _todo.value = UiState.Success(it) },
-                onFailure = { _todo.value = UiState.Error(it) }
-            )
+            todoUseCases.getTodoFlowById(todoId).distinctUntilChanged().collectLatest { todo ->
+                _todo.update {
+                    todo?.let { UiState.Success(todo) } ?: UiState.Error(NotFoundException())
+                }
+            }
         }
     }
 

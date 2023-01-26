@@ -16,7 +16,6 @@ internal fun List<UiCategory>.toChipGroup(
             onCategoryClick?.invoke(uiCategory.category.id)
         }.apply {
             if (uiCategory.isSelected) {
-                Log.d("hello", "checked") // todo
                 setChipIconResource(R.drawable.ic_baseline_check_24)
             }
 //            setCheckedIconResource(R.drawable.ic_baseline_add_24)

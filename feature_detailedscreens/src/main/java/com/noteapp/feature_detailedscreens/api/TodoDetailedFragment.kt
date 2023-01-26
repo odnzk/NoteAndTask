@@ -1,7 +1,6 @@
 package com.noteapp.feature_detailedscreens.api
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,6 +42,29 @@ class TodoDetailedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initTodo()
+        initClickListeners()
+    }
+
+    private fun initClickListeners() {
+        with(binding) {
+            // init listeners only if loading finished successfully
+            btnDelete.setOnClickListener {
+                viewModel.onEvent(TodoDetailedEvent.DeleteTodo)
+                binding.root.showSnackbar(getString(R.string.success_delete))
+            }
+            etTitle.doAfterTextChanged {
+                viewModel.todo.value.data?.let { todo ->
+                    viewModel.onEvent(
+                        TodoDetailedEvent.UpdateTodo(
+                            todo.copy(title = etTitle.text.toString())
+                        )
+                    )
+                }
+            }
+            btnChangeDeadlineDate.setOnClickListener {
+                context?.showDatePicker(::setDeadlineDate)
+            }
+        }
     }
 
     private fun initTodo() {
@@ -94,23 +116,6 @@ class TodoDetailedFragment : Fragment() {
                 notificationCalendar?.let {
                     btnChangeReminderTime.text = it.formatToReminderString()
                 }
-            }
-            // init listeners only if loading finished successfully
-            btnDelete.setOnClickListener {
-                viewModel.onEvent(TodoDetailedEvent.DeleteTodo)
-                binding.root.showSnackbar(getString(R.string.success_delete))
-            }
-            etTitle.doAfterTextChanged {
-                viewModel.todo.value.data?.let { todo ->
-                    viewModel.onEvent(
-                        TodoDetailedEvent.UpdateTodo(
-                            todo.copy(title = etTitle.text.toString())
-                        )
-                    )
-                }
-            }
-            btnChangeDeadlineDate.setOnClickListener {
-                context?.showDatePicker(::setDeadlineDate)
             }
         }
     }

@@ -9,5 +9,6 @@ data class TodoUseCases(
     val addTodoCategory: AddTodoCategory,
     val removeTodoCategory: RemoveTodoCategory,
     val getAllTodos: GetAllTodos,
-    val getTodoById: GetTodoById
+    val getTodoById: GetTodoById, // todo remove?
+    val getTodoFlowById: GetTodoFlowById
 )
