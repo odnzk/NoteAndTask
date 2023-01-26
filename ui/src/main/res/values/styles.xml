@@ -112,4 +112,20 @@
         <item name="buttonTint">@color/black</item>
     </style>
 
+<!--    <style name="EditTextTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
+<!--        <item name="colorControlNormal">@color/black</item>-->
+<!--        <item name="colorControlActivated">@color/category_blue</item>-->
+<!--        &lt;!&ndash;        <item name="colorControlHighlight">@color/category_purple</item>&ndash;&gt;-->
+<!--    </style>-->
+
+<!--    <style name="TextLabel" parent="TextAppearance.AppCompat">-->
+<!--        &lt;!&ndash; Hint color and label color in FALSE state &ndash;&gt;-->
+<!--        <item name="android:textColorHint">@color/dark_grey</item>-->
+<!--        &lt;!&ndash;        <item name="android:textSize">20sp</item>&ndash;&gt;-->
+<!--        &lt;!&ndash; Label color in TRUE state and bar color FALSE and TRUE State &ndash;&gt;-->
+<!--        <item name="colorAccent">@color/textinputlayout_active</item>-->
+<!--        <item name="colorControlNormal">@color/black</item>-->
+<!--        <item name="colorControlActivated">@color/textinputlayout_active</item>-->
+<!--    </style>-->
+
 </resources>

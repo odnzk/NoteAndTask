@@ -1,14 +1,14 @@
 package com.noteapp.ui.recycler.todo
 
-import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.noteapp.ui.ext.setTodoDateStyle
-import com.noteapp.ui.ext.setTodoIsCompletedStyle
 import com.example.domain.model.Todo
 import com.noteapp.ui.databinding.ItemTodoBinding
+import com.noteapp.ui.ext.setCategoryColor
+import com.noteapp.ui.ext.setTodoDateStyle
+import com.noteapp.ui.ext.setTodoIsCompletedStyle
 
 class TodoViewHolder(
     private val binding: ItemTodoBinding,
@@ -27,9 +27,7 @@ class TodoViewHolder(
                 ivDeadlineDateIcon.isVisible = deadlineDate != null
                 cbCompleted.isChecked = isCompleted
 
-                category?.let { category ->
-                    cbCompleted.buttonTintList = ColorStateList.valueOf(category.color)
-                }
+                cbCompleted.setCategoryColor(category)
             }
             cbCompleted.setOnClickListener {
                 onCheckboxClick?.invoke(todo.id, !todo.isCompleted)

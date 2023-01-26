@@ -72,7 +72,6 @@
             app:constraint_referenced_ids="btn_delete, til_title" />
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/fragment_default_margin_top"
@@ -85,6 +84,7 @@
             <EditText
                 android:id="@+id/et_content"
                 style="@style/ContentText"
+                android:hint="@string/hint_note_content"
                 android:importantForAutofill="no"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

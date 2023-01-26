@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.example.domain.model.Todo
 import com.example.noteapp.ui.util.exceptions.InvalidNoteException
 import com.example.noteapp.ui.util.ext.showDatePicker
 import com.google.android.material.chip.Chip
@@ -20,7 +21,6 @@ import com.noteapp.feature_detailedscreens.databinding.FragmentDetailedTodoBindi
 import com.noteapp.feature_detailedscreens.internal.fragments.todo.detailed.TodoDetailedEvent
 import com.noteapp.feature_detailedscreens.internal.fragments.todo.detailed.TodoDetailsViewModel
 import com.noteapp.feature_detailedscreens.internal.navigation.fromTodoToCategory
-import com.example.domain.model.Todo
 import com.noteapp.ui.R
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
@@ -73,6 +73,7 @@ class TodoDetailedFragment : Fragment() {
             todo.run {
                 etTitle.setText(title)
                 cbIsCompleted.isChecked = isCompleted
+                cbIsCompleted.setCategoryColor(category)
                 deadlineDate?.let {
                     btnChangeDeadlineDate.text = it.formatToTodoDate()
                 }

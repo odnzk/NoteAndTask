@@ -2,8 +2,10 @@ package com.noteapp.ui.ext
 
 import android.content.res.ColorStateList
 import android.graphics.Paint
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.domain.model.Category
 import com.noteapp.core.ext.isSameDay
 import com.noteapp.core.ext.toCalendar
 import com.noteapp.ui.R
@@ -41,6 +43,10 @@ fun TextView.setTodoDateStyle(todoDate: Date, ivIcon: ImageView? = null) {
         }
         text = todoDate.formatToTodoDate()
     }
+}
+
+fun CheckBox.setCategoryColor(category: Category?) {
+    category?.let { buttonTintList = ColorStateList.valueOf(it.color) }
 }
 
 
