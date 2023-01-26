@@ -104,6 +104,7 @@
     <style name="PrimaryButton" parent="ThemeOverlay.Material3.Button">
         <item name="backgroundTint">@color/black</item>
         <item name="iconGravity">end</item>
+        <item name="textAppearanceButton">@style/TextAppearance.AppCompat.Button</item>
     </style>
 
     <style name="TodoCheckbox" parent="Widget.AppCompat.CompoundButton.CheckBox">

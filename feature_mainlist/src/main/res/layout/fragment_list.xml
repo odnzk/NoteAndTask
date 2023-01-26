@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_blue"
+    android:theme="@style/Theme.NoteApp"
     android:paddingHorizontal="@dimen/fragment_default_margin_horizontal"
     android:paddingTop="@dimen/fragment_default_margin_horizontal">
 

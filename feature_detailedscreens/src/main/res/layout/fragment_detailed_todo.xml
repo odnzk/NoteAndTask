@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/main_blue"
+    android:theme="@style/Theme.NoteApp"
     android:padding="@dimen/fragment_default_margin_horizontal">
 
     <com.google.android.material.chip.ChipGroup
