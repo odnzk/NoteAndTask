@@ -17,5 +17,5 @@ interface TodoRepository : BasicRepository<Todo> {
 
     suspend fun removeCategory(todoId: Long)
 
-    fun getByCategoryId(categoryId: Long, todoTitle: String): Flow<List<Todo>>
+    fun getByCategoriesId(categoryIds: Set<Long>, todoTitle: String = ""): Flow<List<Todo>>
 }

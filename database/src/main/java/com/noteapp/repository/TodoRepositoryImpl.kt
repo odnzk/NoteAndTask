@@ -54,6 +54,6 @@ class TodoRepositoryImpl(
         dao.removeTodoCategory(todoId)
     }
 
-    override fun getByCategoryId(categoryId: Long, todoTitle: String): Flow<List<Todo>> =
-        dao.getByCategoryId(categoryId, todoTitle).map { list -> list.map { it.toTodo() } }
+    override fun getByCategoriesId(categoryIds: Set<Long>, todoTitle: String): Flow<List<Todo>> =
+        dao.getByCategoryId(categoryIds, todoTitle).map { list -> list.map { it.toTodo() } }
 }

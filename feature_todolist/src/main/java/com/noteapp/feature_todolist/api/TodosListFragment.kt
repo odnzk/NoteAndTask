@@ -1,6 +1,7 @@
 package com.noteapp.feature_todolist.api
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -12,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.example.domain.model.Todo
 import com.noteapp.core.state.handleState
 import com.noteapp.feature_todolist.R
 import com.noteapp.feature_todolist.databinding.FragmentTodosListBinding
@@ -19,7 +21,6 @@ import com.noteapp.feature_todolist.internal.list.ListTodoEvent
 import com.noteapp.feature_todolist.internal.list.ListTodoViewModel
 import com.noteapp.feature_todolist.internal.navigation.toAddTodoBottomSheetDialog
 import com.noteapp.feature_todolist.internal.navigation.toDetailedTodo
-import com.example.domain.model.Todo
 import com.noteapp.feature_todolist.internal.navigation.toTodoFiltersDialog
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
@@ -56,25 +57,6 @@ class TodosListFragment : Fragment() {
             btnFilters.setOnClickListener {
                 findNavController().toTodoFiltersDialog()
             }
-//            spinnerSort.onItemSelectedListener = object : OnItemSelectedListener {
-//                override fun onItemSelected(
-//                    adapter: AdapterView<*>?,
-//                    p1: View?,
-//                    pos: Int,
-//                    id: Long
-//                ) {
-//                    val sortOrder = when (pos) {
-//                        1 -> TodoSortOrder.BY_DEADLINE
-//                        2 -> TodoSortOrder.TODAY
-//                        3 -> TodoSortOrder.THIS_WEEK
-//                        else -> TodoSortOrder.DEFAULT
-//                    }
-//                    viewModel.onEvent(ListTodoEvent.UpdateSortOrder(sortOrder))
-//                }
-//
-//                override fun onNothingSelected(p0: AdapterView<*>?) = Unit
-//
-//            }
         }
     }
 
@@ -95,6 +77,7 @@ class TodosListFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.todos.collectLatest { state ->
+                    Log.d("hello", "$state")
                     state.handleState(
                         onLoadingAction = stateLoadingBinding::loadingStarted,
                         onSuccessAction = ::showTodos,
@@ -102,6 +85,7 @@ class TodosListFragment : Fragment() {
                     )
                 }
             }
+
         }
 
     private fun showError(throwable: Throwable) {

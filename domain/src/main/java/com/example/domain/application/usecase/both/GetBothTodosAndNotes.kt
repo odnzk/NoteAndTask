@@ -22,7 +22,7 @@ class GetBothTodosAndNotes
         var tasks = todoRepository.getByTitle(filterInfo.searchQuery)
         filterInfo.selectedCategoryId?.let {
             notes = noteRepository.getByCategoryId(noteTitle = filterInfo.searchQuery, categoryId = it)
-            tasks = todoRepository.getByCategoryId(todoTitle = filterInfo.searchQuery, categoryId = it)
+            tasks = todoRepository.getByCategoriesId(todoTitle = filterInfo.searchQuery, categoryIds = setOf(it)) // todo change to multiple selecting categories
         }
         return when (filterInfo.filter) {
             // combine because we are waiting for both notes and task
@@ -32,6 +32,7 @@ class GetBothTodosAndNotes
         }
     }
 
+    // todo
     private fun mergeIntoOneList(notes: List<NoteItem>, tasks: List<NoteItem>): List<NoteItem> =
         tasks.toMutableList().apply { addAll(notes) }
 

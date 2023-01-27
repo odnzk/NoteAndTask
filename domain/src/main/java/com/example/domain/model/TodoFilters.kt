@@ -8,11 +8,6 @@ enum class TodoFilterAdditionalConditions {
     HIDE_COMPLETED, HIDE_WITHOUT_DEADLINE
 }
 
-// hide completed
-// hide without deadline
-// sort by deadline
-// selected categories (set)
-// todoSortOrder
 data class TodoFilters(
     val selectedCategoriesId: Set<Long> = emptySet(),
     val todoFilterPeriod: TodoPeriod = TodoPeriod.NO_PERIOD,
