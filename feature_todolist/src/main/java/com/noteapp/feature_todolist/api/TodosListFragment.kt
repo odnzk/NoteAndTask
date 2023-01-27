@@ -7,7 +7,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -37,7 +37,7 @@ class TodosListFragment : Fragment() {
     private var _stateLoadingBinding: StateLoadingBinding? = null
     private val stateLoadingBinding: StateLoadingBinding get() = _stateLoadingBinding!!
 
-    private val viewModel: ListTodoViewModel by viewModels()
+    private val viewModel by activityViewModels<ListTodoViewModel>()
     private val todosAdapter = TodoAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

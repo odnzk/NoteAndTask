@@ -39,7 +39,6 @@ internal class ListTodoViewModel @Inject constructor(
             todoUseCases.getAllTodos(_todoFilters.value).distinctUntilChanged()
                 .collectLatest { newList ->
                     _todos.value = UiState.Success(newList)
-                    Log.d("hello", "updating state ${_todos.value.data}")
 //                    _todos.update {
 //                        UiState.Success(newList)
 //                    }
