@@ -84,8 +84,12 @@
         <item name="android:textSize">9sp</item>
         <item name="android:fontFamily">@font/inter_light</item>
         <item name="android:textColor">@color/white</item>
-        <item name="chipIconVisible">true</item>
+
         <item name="checkedIcon">@drawable/ic_baseline_check_24</item>
+        <item name="checkedIconEnabled">true</item>
+        <item name="android:checkable">true</item>
+        <item name="checkedIconVisible">true</item>
+
         <item name="chipIconTint">@color/white</item>
         <item name="closeIcon">@drawable/ic_baseline_cancel_24</item>
         <item name="closeIconTint">@color/white</item>
@@ -112,20 +116,20 @@
         <item name="buttonTint">@color/black</item>
     </style>
 
-<!--    <style name="EditTextTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
-<!--        <item name="colorControlNormal">@color/black</item>-->
-<!--        <item name="colorControlActivated">@color/category_blue</item>-->
-<!--        &lt;!&ndash;        <item name="colorControlHighlight">@color/category_purple</item>&ndash;&gt;-->
+<!--    <style name="PrimaryToggleButton" parent="ThemeOverlay.Material3.Button">-->
+<!--        <item name="android:layout_height">wrap_content</item>-->
+<!--        <item name="android:layout_width">wrap_content</item>-->
+<!--        <item name="android:textSize">10sp</item>-->
+<!--        <item name="android:textColor">@color/black</item>-->
+<!--        <item name="textAllCaps">true</item>-->
 <!--    </style>-->
 
-<!--    <style name="TextLabel" parent="TextAppearance.AppCompat">-->
-<!--        &lt;!&ndash; Hint color and label color in FALSE state &ndash;&gt;-->
-<!--        <item name="android:textColorHint">@color/dark_grey</item>-->
-<!--        &lt;!&ndash;        <item name="android:textSize">20sp</item>&ndash;&gt;-->
-<!--        &lt;!&ndash; Label color in TRUE state and bar color FALSE and TRUE State &ndash;&gt;-->
-<!--        <item name="colorAccent">@color/textinputlayout_active</item>-->
-<!--        <item name="colorControlNormal">@color/black</item>-->
-<!--        <item name="colorControlActivated">@color/textinputlayout_active</item>-->
-<!--    </style>-->
+    <!--    todo replace with this style all checkbox-->
+    <style name="PrimaryCheckbox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textSize">11sp</item>
+        <item name="android:buttonTint">@color/black</item>
+        <item name="buttonTint">@color/black</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 
 </resources>

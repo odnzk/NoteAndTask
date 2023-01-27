@@ -1,4 +1,4 @@
-package com.noteapp.feature_todolist.internal
+package com.noteapp.feature_todolist.internal.dialog
 
 
 import android.os.Bundle
@@ -19,7 +19,7 @@ import com.noteapp.core.state.CompletableState
 import com.noteapp.feature_todolist.databinding.BottomSheetAddTodoBinding
 import com.noteapp.ui.R
 import com.noteapp.ui.ext.formatToReminderString
-import com.noteapp.ui.ext.init
+import com.noteapp.ui.ext.initClickListeners
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.single
@@ -33,13 +33,22 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
 
     private val viewModel by viewModels<AddTodoViewModel>()
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = BottomSheetAddTodoBinding.inflate(inflater, container, false)
+
+        observeState()
+
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initCategoriesSpinner()
         initDeadlineSpinner()
-        observeState()
-        init()
+        initClickListeners()
     }
 
     private fun initDeadlineSpinner() {
@@ -76,7 +85,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private fun init() {
+    private fun initClickListeners() {
         with(binding) {
             btnAdd.setOnClickListener {
                 viewModel.onEvent(AddTodoDialogEvent.AddTodo)
@@ -138,7 +147,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
                     .apply {
                         add(0, getString(com.noteapp.ui.R.string.spinner_no_category))
                     }.toTypedArray()
-            binding.spinnerCategories.init(
+            binding.spinnerCategories.initClickListeners(
                 categoriesTitleArray
             )
             binding.spinnerCategories.onItemSelectedListener = object : OnItemSelectedListener {
@@ -162,13 +171,6 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
             }
 
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = BottomSheetAddTodoBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     override fun onDestroyView() {

@@ -12,11 +12,19 @@
         <action
             android:id="@+id/action_todosListFragment_to_addTodoBottomSheetDialog"
             app:destination="@id/addTodoBottomSheetDialog" />
+        <action
+            android:id="@+id/action_todosListFragment_to_filtersTodoBottomSheetDialog"
+            app:destination="@id/filtersTodoBottomSheetDialog" />
     </fragment>
 
     <dialog
         android:id="@+id/addTodoBottomSheetDialog"
-        android:name="com.noteapp.feature_todolist.internal.AddTodoBottomSheetDialog"
+        android:name="com.noteapp.feature_todolist.internal.dialog.AddTodoBottomSheetDialog"
         android:label="AddTodoBottomSheetDialog"
         tools:layout="@layout/bottom_sheet_add_todo" />
+    <dialog
+        android:id="@+id/filtersTodoBottomSheetDialog"
+        android:name="com.noteapp.feature_todolist.internal.dialog.filters.FiltersTodoBottomSheetDialog"
+        android:label="FiltersTodoBottomSheetDialog"
+        tools:layout="@layout/bottom_sheet_todo_filters" />
 </navigation>

@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.noteapp.dao.CategoryDao
 import com.noteapp.dao.NoteDao
-import com.example.data.dao.TodoDao
+import com.noteapp.dao.TodoDao
 import com.example.data.entity.*
 import com.example.data.entity.jtable.NoteCategoryTable
 import com.noteapp.util.RoomTypeConverter

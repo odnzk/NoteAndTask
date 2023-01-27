@@ -1,19 +1,19 @@
 package com.noteapp.feature_todolist.api
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.example.domain.model.Todo
 import com.noteapp.core.state.handleState
 import com.noteapp.feature_todolist.R
 import com.noteapp.feature_todolist.databinding.FragmentTodosListBinding
@@ -21,8 +21,7 @@ import com.noteapp.feature_todolist.internal.list.ListTodoEvent
 import com.noteapp.feature_todolist.internal.list.ListTodoViewModel
 import com.noteapp.feature_todolist.internal.navigation.toAddTodoBottomSheetDialog
 import com.noteapp.feature_todolist.internal.navigation.toDetailedTodo
-import com.example.domain.model.Todo
-import com.example.domain.model.TodoSortOrder
+import com.noteapp.feature_todolist.internal.navigation.toTodoFiltersDialog
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
 import com.noteapp.ui.recycler.todo.TodoAdapter
@@ -38,7 +37,7 @@ class TodosListFragment : Fragment() {
     private var _stateLoadingBinding: StateLoadingBinding? = null
     private val stateLoadingBinding: StateLoadingBinding get() = _stateLoadingBinding!!
 
-    private val viewModel: ListTodoViewModel by viewModels()
+    private val viewModel by activityViewModels<ListTodoViewModel>()
     private val todosAdapter = TodoAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,36 +45,17 @@ class TodosListFragment : Fragment() {
 
         observeTodos()
         initRecyclerView()
-        init()
+        initClickListeners()
 
     }
 
-    private fun init() {
+    private fun initClickListeners() {
         with(binding) {
             btnAdd.setOnClickListener {
                 findNavController().toAddTodoBottomSheetDialog()
             }
-            btnClearAll.setOnClickListener {
-                viewModel.onEvent(ListTodoEvent.ClearAll)
-            }
-            spinnerSort.onItemSelectedListener = object : OnItemSelectedListener {
-                override fun onItemSelected(
-                    adapter: AdapterView<*>?,
-                    p1: View?,
-                    pos: Int,
-                    id: Long
-                ) {
-                    val sortOrder = when (pos) {
-                        1 -> TodoSortOrder.BY_DEADLINE
-                        2 -> TodoSortOrder.TODAY
-                        3 -> TodoSortOrder.THIS_WEEK
-                        else -> TodoSortOrder.DEFAULT
-                    }
-                    viewModel.onEvent(ListTodoEvent.UpdateSortOrder(sortOrder))
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) = Unit
-
+            btnFilters.setOnClickListener {
+                findNavController().toTodoFiltersDialog()
             }
         }
     }
@@ -97,6 +77,7 @@ class TodosListFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.todos.collectLatest { state ->
+                    Log.d("hello", "$state")
                     state.handleState(
                         onLoadingAction = stateLoadingBinding::loadingStarted,
                         onSuccessAction = ::showTodos,
@@ -104,6 +85,7 @@ class TodosListFragment : Fragment() {
                     )
                 }
             }
+
         }
 
     private fun showError(throwable: Throwable) {

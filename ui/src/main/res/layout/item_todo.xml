@@ -39,7 +39,7 @@
         <TextView
             android:id="@+id/tv_deadline_date"
             style="@style/AdditionalText"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"

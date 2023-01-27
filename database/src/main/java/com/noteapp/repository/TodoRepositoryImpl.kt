@@ -1,6 +1,6 @@
 package com.noteapp.repository
 
-import com.example.data.dao.TodoDao
+import com.noteapp.dao.TodoDao
 import com.example.data.mapper.toEntity
 import com.example.data.mapper.toTodo
 import com.example.domain.model.Todo
@@ -54,6 +54,6 @@ class TodoRepositoryImpl(
         dao.removeTodoCategory(todoId)
     }
 
-    override fun getByCategoryId(categoryId: Long, todoTitle: String): Flow<List<Todo>> =
-        dao.getByCategoryId(categoryId, todoTitle).map { list -> list.map { it.toTodo() } }
+    override fun getByCategoriesId(categoryIds: Set<Long>, todoTitle: String): Flow<List<Todo>> =
+        dao.getByCategoryId(categoryIds, todoTitle).map { list -> list.map { it.toTodo() } }
 }

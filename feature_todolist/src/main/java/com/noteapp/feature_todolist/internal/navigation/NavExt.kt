@@ -10,6 +10,10 @@ internal fun NavController.toAddTodoBottomSheetDialog() {
     navigate(TodosListFragmentDirections.actionTodosListFragmentToAddTodoBottomSheetDialog())
 }
 
+internal fun NavController.toTodoFiltersDialog() {
+    navigate(TodosListFragmentDirections.actionTodosListFragmentToFiltersTodoBottomSheetDialog())
+}
+
 internal fun NavController.toDetailedTodo(todoId: Long) {
     val deeplink: NavDeepLinkRequest = NavDeepLinkRequest.Builder.fromUri(
         Uri.parse(

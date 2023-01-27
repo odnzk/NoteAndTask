@@ -1,4 +1,4 @@
-package com.noteapp.feature_todolist.internal
+package com.noteapp.feature_todolist.internal.dialog
 
 import com.example.domain.model.Category
 import java.util.*

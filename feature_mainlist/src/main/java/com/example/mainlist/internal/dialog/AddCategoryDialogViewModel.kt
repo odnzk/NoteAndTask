@@ -3,11 +3,12 @@ package com.example.mainlist.internal.dialog
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.category.CategoryUseCases
-import com.noteapp.core.state.CompletableState
 import com.example.domain.model.Category
+import com.noteapp.core.state.CompletableState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,13 +26,14 @@ internal class AddCategoryDialogViewModel @Inject constructor(
             is AddCategoryDialogEvent.AddCategory -> categoryUseCases.addCategory(event.category)
                 .fold(
                     onSuccess = {
-                        _category.value = CompletableState.Completed(_category.value.data)
+                        _category.update { CompletableState.Completed(_category.value.data) }
                     },
                     onFailure = { error ->
-                        _category.value = CompletableState.Error(
-                            data = _category.value.data,
-                            error = error
-                        )
+                        _category.update {
+                            CompletableState.Error(
+                                data = _category.value.data, error = error
+                            )
+                        }
                     }
                 )
         }
