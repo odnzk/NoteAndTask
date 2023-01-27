@@ -26,7 +26,6 @@ class FiltersTodoBottomSheetDialog : BottomSheetDialogFragment() {
     private var _binding: BottomSheetTodoFiltersBinding? = null
     private val binding: BottomSheetTodoFiltersBinding get() = _binding!!
 
-    // todo replace all dame dialog ViewModels
     private val viewModel by activityViewModels<ListTodoViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,7 +38,7 @@ class FiltersTodoBottomSheetDialog : BottomSheetDialogFragment() {
 
     private fun initClickListeners() {
         with(binding) {
-            tgTaskFilterPeriod.addOnButtonCheckedListener { group, checkedId, isChecked ->
+            tgTaskFilterPeriod.addOnButtonCheckedListener { group, checkedId, _ ->
                 val newPeriod = if (group.checkedButtonId != -1) {
                     when (checkedId) {
                         R.id.btn_filter_today -> TodoPeriod.TODAY
@@ -51,14 +50,14 @@ class FiltersTodoBottomSheetDialog : BottomSheetDialogFragment() {
                 }
                 viewModel.onEvent(ListTodoEvent.UpdateTodoFilterPeriod(newPeriod))
             }
-            cbHideCompleted.setOnCheckedChangeListener { compoundButton, checked ->
+            cbHideCompleted.setOnCheckedChangeListener { _, _ ->
                 viewModel.onEvent(
                     ListTodoEvent.UpdateTodoAdditionalFilters(
                         TodoFilterAdditionalConditions.HIDE_COMPLETED
                     )
                 )
             }
-            cbHideWithoutDeadline.setOnCheckedChangeListener { compoundButton, checked ->
+            cbHideWithoutDeadline.setOnCheckedChangeListener { _, _ ->
                 viewModel.onEvent(
                     ListTodoEvent.UpdateTodoAdditionalFilters(
                         TodoFilterAdditionalConditions.HIDE_WITHOUT_DEADLINE

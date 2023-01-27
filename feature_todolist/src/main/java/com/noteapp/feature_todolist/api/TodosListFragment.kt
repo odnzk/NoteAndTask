@@ -45,11 +45,11 @@ class TodosListFragment : Fragment() {
 
         observeTodos()
         initRecyclerView()
-        init()
+        initClickListeners()
 
     }
 
-    private fun init() {
+    private fun initClickListeners() {
         with(binding) {
             btnAdd.setOnClickListener {
                 findNavController().toAddTodoBottomSheetDialog()

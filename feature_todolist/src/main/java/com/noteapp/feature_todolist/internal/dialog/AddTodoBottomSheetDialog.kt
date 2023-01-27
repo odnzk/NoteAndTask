@@ -33,13 +33,22 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
 
     private val viewModel by viewModels<AddTodoViewModel>()
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = BottomSheetAddTodoBinding.inflate(inflater, container, false)
+
+        observeState()
+
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initCategoriesSpinner()
         initDeadlineSpinner()
-        observeState()
-        init()
+        initClickListeners()
     }
 
     private fun initDeadlineSpinner() {
@@ -76,7 +85,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private fun init() {
+    private fun initClickListeners() {
         with(binding) {
             btnAdd.setOnClickListener {
                 viewModel.onEvent(AddTodoDialogEvent.AddTodo)
@@ -162,13 +171,6 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
             }
 
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = BottomSheetAddTodoBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     override fun onDestroyView() {

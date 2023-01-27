@@ -1,6 +1,5 @@
 package com.noteapp.feature_todolist.internal.list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.category.CategoryUseCases
@@ -38,10 +37,9 @@ internal class ListTodoViewModel @Inject constructor(
         jobObservingTodoList = viewModelScope.launch {
             todoUseCases.getAllTodos(_todoFilters.value).distinctUntilChanged()
                 .collectLatest { newList ->
-                    _todos.value = UiState.Success(newList)
-//                    _todos.update {
-//                        UiState.Success(newList)
-//                    }
+                    _todos.update {
+                        UiState.Success(newList)
+                    }
                 }
         }
     }

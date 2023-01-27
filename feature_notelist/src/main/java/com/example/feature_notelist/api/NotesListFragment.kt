@@ -13,13 +13,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.example.domain.model.Note
+import com.example.domain.model.NoteSortOrder
 import com.example.feature_notelist.databinding.FragmentNotesListBinding
 import com.example.feature_notelist.internal.ListNoteEvent
 import com.example.feature_notelist.internal.ListNoteViewModel
 import com.example.feature_notelist.internal.navigation.toDetailedNote
 import com.noteapp.core.state.handleState
-import com.example.domain.model.Note
-import com.example.domain.model.NoteSortOrder
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
 import com.noteapp.ui.recycler.note.NoteAdapter
@@ -40,12 +40,13 @@ class NotesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         observeNotes()
         initRecyclerView()
-        init()
+        initClickListeners()
     }
 
-    private fun init() {
+    private fun initClickListeners() {
         with(binding) {
             btnAdd.setOnClickListener {
                 findNavController().toDetailedNote()

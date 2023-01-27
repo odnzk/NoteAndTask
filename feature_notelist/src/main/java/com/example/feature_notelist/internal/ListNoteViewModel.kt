@@ -3,15 +3,12 @@ package com.example.feature_notelist.internal
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.note.NoteUseCases
-import com.noteapp.core.state.UiState
 import com.example.domain.model.Note
 import com.example.domain.model.NoteSortOrder
+import com.noteapp.core.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,8 +31,8 @@ internal class ListNoteViewModel @Inject constructor(
     private fun loadData(noteSort: NoteSortOrder = NoteSortOrder.DEFAULT) {
         jobObservingNoteList?.cancel()
         jobObservingNoteList = viewModelScope.launch {
-            noteUseCases.getAllNotes(noteSort).distinctUntilChanged().collectLatest {
-                _notes.value = UiState.Success(it)
+            noteUseCases.getAllNotes(noteSort).distinctUntilChanged().collectLatest { list ->
+                _notes.update { UiState.Success(list) }
             }
         }
     }
