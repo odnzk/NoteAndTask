@@ -7,6 +7,7 @@ import com.example.domain.application.usecase.category.CategoryUseCases
 import com.example.domain.application.usecase.note.NoteUseCases
 import com.example.domain.application.usecase.todo.TodoUseCases
 import com.example.domain.model.*
+import com.noteapp.core.ext.addButIfExistRemove
 import com.noteapp.core.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -16,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class ListViewModel @Inject constructor(
-//    private val preferenceStorage: PreferenceStorage, // saved state handler
+//    private val preferenceStorage: PreferenceStorage, // saved state handler todo
     private val noteUseCases: NoteUseCases,
     private val todoUseCases: TodoUseCases,
     categoryUseCases: CategoryUseCases,
@@ -68,11 +69,12 @@ internal class ListViewModel @Inject constructor(
                     updateNoteItemList(filterInfo.value)
                 }
                 ListFragmentEvent.ReloadData -> updateNoteItemList(filterInfo.value)
-                is ListFragmentEvent.UpdateSelectedCategoryId -> {
-                    if (filterInfo.value.selectedCategoryId == event.id) {
-                        filterInfo.value = filterInfo.value.copy(selectedCategoryId = null)
-                    } else {
-                        filterInfo.value = filterInfo.value.copy(selectedCategoryId = event.id)
+                is ListFragmentEvent.UpdateSelectedCategoriesId -> {
+                    filterInfo.update {
+                        it.copy(
+                            selectedCategoriesId
+                            = it.selectedCategoriesId.addButIfExistRemove(event.id)
+                        )
                     }
                     updateNoteItemList(filterInfo.value)
                 }

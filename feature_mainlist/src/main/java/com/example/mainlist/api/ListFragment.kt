@@ -69,7 +69,7 @@ class ListFragment : Fragment() {
                 viewModel.categories.collectLatest { categories ->
                     categories.initCategoriesChipGroup(binding.chipgroupCategories) { categoryId ->
                         viewModel.onEvent(
-                            ListFragmentEvent.UpdateSelectedCategoryId(
+                            ListFragmentEvent.UpdateSelectedCategoriesId(
                                 categoryId
                             )
                         )

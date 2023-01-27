@@ -6,6 +6,7 @@ import com.example.domain.application.usecase.category.CategoryUseCases
 import com.example.domain.application.usecase.todo.TodoUseCases
 import com.example.domain.model.Todo
 import com.example.domain.model.TodoFilters
+import com.noteapp.core.ext.addButIfExistRemove
 import com.noteapp.core.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -61,13 +62,19 @@ internal class ListTodoViewModel @Inject constructor(
             }
             is ListTodoEvent.UpdateTodoAdditionalFilters -> {
                 _todoFilters.update { filters ->
-                    filters.copy(additionalConditions = filters.updateAdditionalConditions(event.newCondition))
+                    filters.copy(
+                        additionalConditions
+                        = filters.additionalConditions.addButIfExistRemove(event.newCondition)
+                    )
                 }
                 loadData()
             }
             is ListTodoEvent.UpdateSelectedCategoriesId -> {
                 _todoFilters.update { filters ->
-                    filters.copy(selectedCategoriesId = filters.updateSelectedCategories(event.newId))
+                    filters.copy(
+                        selectedCategoriesId
+                        = filters.selectedCategoriesId.addButIfExistRemove(event.newId)
+                    )
                 }
                 loadData()
             }

@@ -10,7 +10,7 @@ internal sealed interface ListFragmentEvent {
     data class DeleteItem(val noteItem: NoteItem) : ListFragmentEvent
     data class UpdateFilter(val filter: Filter) : ListFragmentEvent
     data class UpdateSearchQuery(val query: String) : ListFragmentEvent
-    data class UpdateSelectedCategoryId(val id: Long) : ListFragmentEvent
+    data class UpdateSelectedCategoriesId(val id: Long) : ListFragmentEvent
 
     object RestoreItem : ListFragmentEvent
     object ClearAll : ListFragmentEvent

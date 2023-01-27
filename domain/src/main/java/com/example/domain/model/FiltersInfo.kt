@@ -4,7 +4,7 @@ package com.example.domain.model
 data class FiltersInfo(
     val searchQuery: String = "", // no loading/error state
     val filter: Filter = Filter.BOTH, // no loading/error state
-    val selectedCategoryId: Long? = null // no loading/error state
+    val selectedCategoriesId: Set<Long> = emptySet() // no loading/error state
 )
 
 enum class Filter(val key: String) { TODO_ONLY("only tasks"), NOTES_ONLY("only notes"), BOTH("all") }

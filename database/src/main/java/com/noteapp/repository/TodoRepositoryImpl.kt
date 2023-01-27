@@ -1,6 +1,6 @@
 package com.noteapp.repository
 
-import com.example.data.dao.TodoDao
+import com.noteapp.dao.TodoDao
 import com.example.data.mapper.toEntity
 import com.example.data.mapper.toTodo
 import com.example.domain.model.Todo

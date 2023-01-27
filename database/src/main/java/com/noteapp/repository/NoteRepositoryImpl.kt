@@ -47,7 +47,7 @@ class NoteRepositoryImpl(
         dao.removeNoteCategory(noteId, categoryId)
     }
 
-    override fun getByCategoryId(categoryId: Long, noteTitle: String): Flow<List<Note>> {
-        return dao.getByCategoryId(categoryId, noteTitle).map { list -> list.map { it.toNote() } }
+    override fun getByCategoryId(categoryIds: Set<Long>, noteTitle: String): Flow<List<Note>> {
+        return dao.getByCategoryId(categoryIds, noteTitle).map { list -> list.map { it.toNote() } }
     }
 }

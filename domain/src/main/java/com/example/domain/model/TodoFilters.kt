@@ -12,22 +12,5 @@ data class TodoFilters(
     val selectedCategoriesId: Set<Long> = emptySet(),
     val todoFilterPeriod: TodoPeriod = TodoPeriod.NO_PERIOD,
     val additionalConditions: Set<TodoFilterAdditionalConditions> = emptySet()
-) {
-    fun updateAdditionalConditions(newCondition: TodoFilterAdditionalConditions): Set<TodoFilterAdditionalConditions> =
-        additionalConditions.toMutableSet().apply {
-            if (newCondition in additionalConditions) {
-                remove(newCondition)
-            } else {
-                add(newCondition)
-            }
-        }
+)
 
-    fun updateSelectedCategories(newCategoryId: Long): Set<Long> =
-        selectedCategoriesId.toMutableSet().apply {
-            if (newCategoryId in selectedCategoriesId) {
-                remove(newCategoryId)
-            } else {
-                add(newCategoryId)
-            }
-        }
-}
