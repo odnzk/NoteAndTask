@@ -1,6 +1,5 @@
 package com.noteapp.feature_detailedscreens.internal.ext
 
-import android.util.Log
 import com.google.android.material.chip.ChipGroup
 import com.noteapp.feature_detailedscreens.internal.dialog.UiCategory
 import com.noteapp.ui.R

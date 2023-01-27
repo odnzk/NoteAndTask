@@ -26,19 +26,30 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_filter_today"
-            style="@style/PrimaryToggleButton"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:textSize="11sp"
             android:text="@string/task_filter_today" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_filter_tomorrow"
-            style="@style/PrimaryToggleButton"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
             android:text="@string/task_filter_tomorrow" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_filter_week"
-            style="@style/PrimaryToggleButton"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
             android:text="@string/task_filter_week" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
+
 
     <CheckBox
         android:id="@+id/cb_hide_completed"
