@@ -1,11 +1,15 @@
 package com.example.domain.util.sorting
 
 import com.example.domain.model.Todo
-import com.noteapp.core.ext.isFuture
 import com.noteapp.core.ext.isSameDay
-import com.noteapp.core.ext.setStartOfTheDay
 import com.noteapp.core.ext.toCalendar
+import java.time.DayOfWeek
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.temporal.TemporalAdjusters
 import java.util.*
+
 
 //  NO_PERIOD, TODAY, TOMORROW, THIS_WEEK
 sealed interface TodoSorter {
@@ -45,27 +49,20 @@ object TomorrowSorter : TodoSorter {
 
 }
 
-// todo fix!!!
 object ThisWeekSorter : TodoSorter {
     override fun sort(items: List<Todo>): List<Todo> {
         return items
             .filter { it.deadlineDate != null }
             .filter { todo ->
-                val weekStart = getWeekStart()
-                val weekEnd = weekStart.apply {
-                    add(Calendar.WEEK_OF_MONTH, 1)
-                }.timeInMillis
-                todo.deadlineDate!!.time in weekStart.timeInMillis until weekEnd
+                val today = LocalDate.now(ZoneId.systemDefault())
+                val previousMonday: LocalDate =
+                    today.with(TemporalAdjusters.previous(DayOfWeek.MONDAY))
+                val nextMonday: LocalDate =
+                    today.with(TemporalAdjusters.next(DayOfWeek.MONDAY))
+                val date: LocalDate =
+                    Instant.ofEpochMilli(todo.deadlineDate!!.time).atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                (previousMonday <= date) && (nextMonday > date)
             }
-    }
-
-    private fun getWeekStart(): Calendar {
-        return Calendar.getInstance(Locale.getDefault()).apply {
-            set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-            setStartOfTheDay()
-            if (isFuture()) {
-                add(Calendar.WEEK_OF_MONTH, -1)
-            }
-        }
     }
 }
