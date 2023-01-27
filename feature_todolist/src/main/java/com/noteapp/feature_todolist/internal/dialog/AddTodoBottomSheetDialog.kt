@@ -19,7 +19,7 @@ import com.noteapp.core.state.CompletableState
 import com.noteapp.feature_todolist.databinding.BottomSheetAddTodoBinding
 import com.noteapp.ui.R
 import com.noteapp.ui.ext.formatToReminderString
-import com.noteapp.ui.ext.init
+import com.noteapp.ui.ext.initClickListeners
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.single
@@ -138,7 +138,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
                     .apply {
                         add(0, getString(com.noteapp.ui.R.string.spinner_no_category))
                     }.toTypedArray()
-            binding.spinnerCategories.init(
+            binding.spinnerCategories.initClickListeners(
                 categoriesTitleArray
             )
             binding.spinnerCategories.onItemSelectedListener = object : OnItemSelectedListener {

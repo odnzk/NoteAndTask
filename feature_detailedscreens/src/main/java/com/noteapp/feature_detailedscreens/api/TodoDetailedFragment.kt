@@ -39,8 +39,10 @@ class TodoDetailedFragment : Fragment() {
 
     private val viewModel: TodoDetailsViewModel by viewModels()
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initTodo()
         initClickListeners()
     }

@@ -6,17 +6,11 @@ import com.example.domain.application.usecase.both.UnitedUseCases
 import com.example.domain.application.usecase.category.CategoryUseCases
 import com.example.domain.application.usecase.note.NoteUseCases
 import com.example.domain.application.usecase.todo.TodoUseCases
+import com.example.domain.model.*
 import com.noteapp.core.state.UiState
-import com.example.domain.model.FiltersInfo
-import com.example.domain.model.Note
-import com.example.domain.model.NoteItem
-import com.example.domain.model.Todo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,44 +19,22 @@ internal class ListViewModel @Inject constructor(
 //    private val preferenceStorage: PreferenceStorage, // saved state handler
     private val noteUseCases: NoteUseCases,
     private val todoUseCases: TodoUseCases,
-    private val categoryUseCases: CategoryUseCases,
+    categoryUseCases: CategoryUseCases,
     private val unitedUseCases: UnitedUseCases
 ) :
     ViewModel() {
 
-    private var _listState: MutableStateFlow<UiState<ListFragmentState>> =
+    private var _categories: Flow<List<Category>> = categoryUseCases.getAllCategories()
+    val categories = _categories
+
+    private var _list: MutableStateFlow<UiState<List<NoteItem>>> =
         MutableStateFlow(UiState.Loading())
-    val listState = _listState.asStateFlow()
+    val list = _list.asStateFlow()
 
     private var filterInfo: MutableStateFlow<FiltersInfo> = MutableStateFlow(FiltersInfo())
     private var recentlyRemoved: NoteItem? = null
     private var jobObservingNoteItemList: Job? = null
 
-    init {
-        loadData()
-    }
-
-    private fun loadData() =
-        viewModelScope.launch {
-            _listState.value = UiState.Loading()
-
-            updateNoteItemList(filterInfo.value)
-
-            // subscribe to categories
-            categoryUseCases
-                .getAllCategories()
-                .distinctUntilChanged()
-                .collectLatest { categories ->
-                    // if state = Success -> update existing state
-                    listState.value.data?.let {
-                        _listState.value = UiState.Success(it.copy(categories = categories))
-                    } ?: run {
-                        // if state != Success -> create new state
-                        _listState.value =
-                            UiState.Success(ListFragmentState(categories = categories))
-                    }
-                }
-        }
 
     fun onEvent(event: ListFragmentEvent) =
         viewModelScope.launch {
@@ -107,17 +79,12 @@ internal class ListViewModel @Inject constructor(
             }
         }
 
-
     private fun updateNoteItemList(filterInfo: FiltersInfo) = run {
         jobObservingNoteItemList?.cancel()
         jobObservingNoteItemList = viewModelScope.launch {
             unitedUseCases.getBothTodosAndNotes(filterInfo).distinctUntilChanged()
                 .collectLatest { noteItems ->
-                    _listState.value.data?.let {
-                        _listState.value = UiState.Success(it.copy(noteItems = noteItems))
-                    } ?: run {
-                        _listState.value = UiState.Success(ListFragmentState(noteItems = noteItems))
-                    }
+                    _list.update { UiState.Success(noteItems) }
                 }
         }
     }

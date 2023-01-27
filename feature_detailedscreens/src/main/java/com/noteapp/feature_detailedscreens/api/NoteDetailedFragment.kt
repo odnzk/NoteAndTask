@@ -38,9 +38,13 @@ class NoteDetailedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding) {
-            observeState()
 
+        observeState()
+        initClickListeners()
+    }
+
+    private fun initClickListeners() {
+        with(binding) {
             btnDelete.setOnClickListener {
                 viewModel.onEvent(NoteDetailedEvent.DeleteNote)
                 root.showSnackbar(getString(R.string.success_delete))

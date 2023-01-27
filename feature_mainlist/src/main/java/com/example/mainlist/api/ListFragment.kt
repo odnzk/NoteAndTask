@@ -14,18 +14,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.example.domain.model.Filter
+import com.example.domain.model.NoteItem
 import com.example.feature_mainlist.databinding.FragmentListBinding
 import com.example.mainlist.api.noteitem.NoteItemAdapter
 import com.example.mainlist.internal.ListFragmentEvent
-import com.example.mainlist.internal.ListFragmentState
 import com.example.mainlist.internal.ListViewModel
 import com.example.mainlist.internal.navigation.toAddCategoryDialog
 import com.example.mainlist.internal.navigation.toDetailedNote
 import com.example.mainlist.internal.navigation.toDetailedTodo
 import com.google.android.material.chip.Chip
 import com.noteapp.core.state.handleState
-import com.example.domain.model.Filter
-import com.example.domain.model.NoteItem
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,16 +43,48 @@ class ListFragment : Fragment() {
     private val listAdapter = NoteItemAdapter()
     private val viewModel by viewModels<ListViewModel>()
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentListBinding.inflate(inflater, container, false)
+        _stateLoadingBinding = StateLoadingBinding.bind(binding.root)
+
+        initAdapter()
+        observeState()
+        observeCategories()
+
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        observeState()
         initRecyclerView()
-        initAll()
-
+        initClickListeners()
     }
 
-    private fun initAll() {
+    private fun observeCategories() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.categories.collectLatest { categories ->
+                    categories.initCategoriesChipGroup(binding.chipgroupCategories) { categoryId ->
+                        viewModel.onEvent(
+                            ListFragmentEvent.UpdateSelectedCategoryId(
+                                categoryId
+                            )
+                        )
+                    }
+                }
+            }
+        }
+        Chip(context).setBtnAddCategoryStyle {
+            findNavController().toAddCategoryDialog()
+        }.also {
+            binding.chipgroupCategories.addView(it)
+        }
+    }
+
+    private fun initClickListeners() {
         with(binding) {
             spinnerFilter.onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(
@@ -122,20 +153,9 @@ class ListFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentListBinding.inflate(inflater, container, false)
-        _stateLoadingBinding = StateLoadingBinding.bind(binding.root)
-
-        initAdapter()
-
-        return binding.root
-    }
-
     private fun observeState() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.listState.collectLatest { listState ->
+            viewModel.list.collectLatest { listState ->
                 listState.handleState(
                     onErrorAction = ::onErrorAction,
                     onLoadingAction = { stateLoadingBinding.loadingStarted() },
@@ -151,36 +171,24 @@ class ListFragment : Fragment() {
         }
 
 
-    private fun onSuccessAction(data: ListFragmentState) {
+    private fun onSuccessAction(data: List<NoteItem>) {
         stateLoadingBinding.loadingFinished()
-        listAdapter.submitList(data.noteItems)
-        with(binding) {
-            data.categories.initCategoriesChipGroup(chipgroupCategories) { categoryId ->
-                viewModel.onEvent(
-                    ListFragmentEvent.UpdateSelectedCategoryId(
-                        categoryId
-                    )
-                )
-            }
-            Chip(context).setBtnAddCategoryStyle {
-                findNavController().toAddCategoryDialog()
-            }.also {
-                chipgroupCategories.addView(it)
-            }
-        }
+        listAdapter.submitList(data)
     }
 
     private fun initAdapter() {
-        listAdapter.onNoteClick = { noteId ->
-            findNavController().toDetailedNote(noteId)
+        listAdapter.run {
+            onNoteClick = { noteId ->
+                findNavController().toDetailedNote(noteId)
+            }
+            onTodoClick = { todoId ->
+                findNavController().toDetailedTodo(todoId)
+            }
+            onTodoCheckboxClick = { id, isCompleted ->
+                viewModel.onEvent(ListFragmentEvent.UpdateTodoCompletedStatus(id, isCompleted))
+            }
+            submitList(emptyList())
         }
-        listAdapter.onTodoClick = { todoId ->
-            findNavController().toDetailedTodo(todoId)
-        }
-        listAdapter.onTodoCheckboxClick = { id, isCompleted ->
-            viewModel.onEvent(ListFragmentEvent.UpdateTodoCompletedStatus(id, isCompleted))
-        }
-        listAdapter.submitList(emptyList())
     }
 
     override fun onDestroyView() {

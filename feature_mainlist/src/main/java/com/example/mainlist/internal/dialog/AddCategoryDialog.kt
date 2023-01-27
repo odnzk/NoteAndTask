@@ -29,7 +29,7 @@ internal class AddCategoryDialog : DialogFragment(R.layout.dialog_add_category) 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init()
+        initClickListeners()
         observeState()
     }
 
@@ -49,7 +49,7 @@ internal class AddCategoryDialog : DialogFragment(R.layout.dialog_add_category) 
             }
         }
 
-    private fun init() {
+    private fun initClickListeners() {
         with(binding) {
             btnAddNewCategory.setOnClickListener {
                 val selectedId = rgColors.checkedRadioButtonId
