@@ -1,4 +1,4 @@
-package com.noteapp.feature_todolist.internal
+package com.noteapp.feature_todolist.internal.dialog
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

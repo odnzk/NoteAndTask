@@ -6,14 +6,14 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.domain.model.Filter
 import com.example.domain.model.NoteSortOrder
-import com.example.domain.model.TodoSortOrder
+import com.example.domain.model.TodoPeriod
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 data class FilterInfo(
     val sortOrder: NoteSortOrder,
-    val todoSortOrder: TodoSortOrder,
+    val todoSortOrder: TodoPeriod,
     val filter: Filter
 )
 

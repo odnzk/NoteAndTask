@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -22,7 +20,7 @@ import com.noteapp.feature_todolist.internal.list.ListTodoViewModel
 import com.noteapp.feature_todolist.internal.navigation.toAddTodoBottomSheetDialog
 import com.noteapp.feature_todolist.internal.navigation.toDetailedTodo
 import com.example.domain.model.Todo
-import com.example.domain.model.TodoSortOrder
+import com.noteapp.feature_todolist.internal.navigation.toTodoFiltersDialog
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
 import com.noteapp.ui.recycler.todo.TodoAdapter
@@ -55,28 +53,28 @@ class TodosListFragment : Fragment() {
             btnAdd.setOnClickListener {
                 findNavController().toAddTodoBottomSheetDialog()
             }
-            btnClearAll.setOnClickListener {
-                viewModel.onEvent(ListTodoEvent.ClearAll)
+            btnFilters.setOnClickListener {
+                findNavController().toTodoFiltersDialog()
             }
-            spinnerSort.onItemSelectedListener = object : OnItemSelectedListener {
-                override fun onItemSelected(
-                    adapter: AdapterView<*>?,
-                    p1: View?,
-                    pos: Int,
-                    id: Long
-                ) {
-                    val sortOrder = when (pos) {
-                        1 -> TodoSortOrder.BY_DEADLINE
-                        2 -> TodoSortOrder.TODAY
-                        3 -> TodoSortOrder.THIS_WEEK
-                        else -> TodoSortOrder.DEFAULT
-                    }
-                    viewModel.onEvent(ListTodoEvent.UpdateSortOrder(sortOrder))
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) = Unit
-
-            }
+//            spinnerSort.onItemSelectedListener = object : OnItemSelectedListener {
+//                override fun onItemSelected(
+//                    adapter: AdapterView<*>?,
+//                    p1: View?,
+//                    pos: Int,
+//                    id: Long
+//                ) {
+//                    val sortOrder = when (pos) {
+//                        1 -> TodoSortOrder.BY_DEADLINE
+//                        2 -> TodoSortOrder.TODAY
+//                        3 -> TodoSortOrder.THIS_WEEK
+//                        else -> TodoSortOrder.DEFAULT
+//                    }
+//                    viewModel.onEvent(ListTodoEvent.UpdateSortOrder(sortOrder))
+//                }
+//
+//                override fun onNothingSelected(p0: AdapterView<*>?) = Unit
+//
+//            }
         }
     }
 

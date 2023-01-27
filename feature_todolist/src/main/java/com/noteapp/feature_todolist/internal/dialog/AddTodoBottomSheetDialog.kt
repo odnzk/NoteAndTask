@@ -1,4 +1,4 @@
-package com.noteapp.feature_todolist.internal
+package com.noteapp.feature_todolist.internal.dialog
 
 
 import android.os.Bundle

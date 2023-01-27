@@ -21,26 +21,27 @@
             android:layout_marginHorizontal="@dimen/rv_item_padding"
             android:layout_marginTop="@dimen/fragment_default_margin_top"
             android:text="@string/tasks"
-            app:layout_constraintEnd_toStartOf="@id/spinner_sort"
+            app:layout_constraintEnd_toStartOf="@id/btn_filters"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Spinner
-            android:id="@+id/spinner_sort"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/todo_sort_order"
-            app:layout_constraintBottom_toBottomOf="@id/tv_list_title"
-            app:layout_constraintStart_toEndOf="@id/tv_list_title"
-            app:layout_constraintTop_toTopOf="@id/tv_list_title" />
+        <!--        <Spinner-->
+        <!--            android:id="@+id/spinner_sort"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:entries="@array/todo_sort_order"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@id/tv_list_title"-->
+        <!--            app:layout_constraintStart_toEndOf="@id/tv_list_title"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/tv_list_title" />-->
 
         <ImageButton
-            android:id="@+id/btn_clear_all"
-            style="@style/ButtonClearAll"
-            android:contentDescription="@string/clear_all_tasks"
+            android:id="@+id/btn_filters"
+            style="@style/PrimaryImageButton"
+            android:contentDescription="@string/task_filter_week"
+            android:scaleType="center"
+            android:src="@drawable/ic_baseline_more_vert_24"
             app:layout_constraintBottom_toBottomOf="@id/tv_list_title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/spinner_sort"
             app:layout_constraintTop_toTopOf="@id/tv_list_title" />
 
         <androidx.recyclerview.widget.RecyclerView
