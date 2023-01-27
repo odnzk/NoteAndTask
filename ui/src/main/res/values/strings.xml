@@ -74,6 +74,14 @@
     <string name="tasks_notes"><![CDATA[Tasks&Notes]]></string>
     <string name="clear_all">Clear both tasks and notes</string>
 
+    <!--    task filters/sorting options -->
+    <string name="task_filter_all">All</string>
+    <string name="task_filter_today">Today</string>
+    <string name="task_filter_tomorrow">Tomorrow</string>
+    <string name="task_filter_week">Next 7 days</string>
+    <string name="task_hide_completed">Hide completed</string>
+    <string name="task_hide_without_deadline">Hide without deadline</string>
+
 
     <!--    deeplinks-->
     <string name="deeplink_detailed_todo" translatable="false">noteapp://com.example.noteapp/todoDetailedFragment/{todoId}</string>

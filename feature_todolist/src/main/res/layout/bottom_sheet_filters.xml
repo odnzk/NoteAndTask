@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/fragment_default_margin_horizontal"
+    android:theme="@style/Theme.NoteApp">
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipgroup_categories"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/tg_task_filter_options"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:checkedButton="@id/btn_filter_all"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chipgroup_categories"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_filter_all"
+            style="@style/PrimaryToggleButton"
+            android:text="@string/task_filter_all" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_filter_today"
+            style="@style/PrimaryToggleButton"
+            android:text="@string/task_filter_today" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_filter_tomorrow"
+            style="@style/PrimaryToggleButton"
+            android:text="@string/task_filter_tomorrow" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_filter_week"
+            style="@style/PrimaryToggleButton"
+            android:text="@string/task_filter_week" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <CheckBox
+        android:id="@+id/cb_hide_completed"
+        style="@style/PrimaryCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/task_hide_completed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tg_task_filter_options" />
+
+    <CheckBox
+        android:id="@+id/cb_hide_without_deadline"
+        style="@style/PrimaryCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/task_hide_without_deadline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cb_hide_completed" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
