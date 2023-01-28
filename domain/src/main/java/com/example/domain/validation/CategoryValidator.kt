@@ -6,7 +6,7 @@ import com.example.noteapp.ui.util.exceptions.InvalidCategoryException
 class CategoryValidator {
 
     fun isValid(category: Category): Result<Boolean> {
-        return if (category.title.isBlank()) {
+        return if (category.title.isBlank() || category.title.length !in MIN_LENGTH..MAX_LENGTH) {
             Result.failure(InvalidCategoryException(Field.TITLE))
         } else Result.success(true)
     }
