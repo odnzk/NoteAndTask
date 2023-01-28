@@ -61,8 +61,9 @@ fun List<Category>.categoriesToFlowCategories(
     }
 }
 
-fun List<Category>.initCategoriesChipGroup(
+fun List<Category>.toChipGroup(
     chipGroup: ChipGroup,
+    onAddCategoryClick: (() -> Unit)? = null,
     onCategoryChipClick: ((Long) -> Unit)? = null
 ) {
     chipGroup.removeAllViews()
@@ -72,7 +73,13 @@ fun List<Category>.initCategoriesChipGroup(
         }
         chipGroup.addView(categoryChip)
     }
+    onAddCategoryClick?.let {
+        chipGroup.addView(Chip(chipGroup.context).setBtnAddCategoryStyle {
+            onAddCategoryClick()
+        })
+    }
 }
+
 
 fun Chip.setBtnAddCategoryStyle(onAction: () -> Unit): Chip =
     Chip(ContextThemeWrapper(context, R.style.ChipCategoryStyle), null, 0).apply {

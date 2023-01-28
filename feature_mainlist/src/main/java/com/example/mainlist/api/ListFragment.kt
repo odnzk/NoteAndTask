@@ -23,7 +23,6 @@ import com.example.mainlist.internal.ListViewModel
 import com.example.mainlist.internal.navigation.toAddCategoryDialog
 import com.example.mainlist.internal.navigation.toDetailedNote
 import com.example.mainlist.internal.navigation.toDetailedTodo
-import com.google.android.material.chip.Chip
 import com.noteapp.core.state.handleState
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
@@ -67,7 +66,8 @@ class ListFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.categories.collectLatest { categories ->
-                    categories.initCategoriesChipGroup(binding.chipgroupCategories) { categoryId ->
+                    categories.toChipGroup(binding.chipgroupCategories,
+                        onAddCategoryClick = { findNavController().toAddCategoryDialog() }) { categoryId ->
                         viewModel.onEvent(
                             ListFragmentEvent.UpdateSelectedCategoriesId(
                                 categoryId
@@ -76,11 +76,6 @@ class ListFragment : Fragment() {
                     }
                 }
             }
-        }
-        Chip(context).setBtnAddCategoryStyle {
-            findNavController().toAddCategoryDialog()
-        }.also {
-            binding.chipgroupCategories.addView(it)
         }
     }
 
