@@ -12,8 +12,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.domain.model.Note
 import com.example.domain.validation.Field
+import com.example.domain.validation.NoteValidator
 import com.example.noteapp.ui.util.exceptions.InvalidNoteException
-import com.google.android.material.chip.Chip
 import com.noteapp.core.state.handleState
 import com.noteapp.feature_detailedscreens.databinding.FragmentDetailedNoteBinding
 import com.noteapp.feature_detailedscreens.internal.fragments.note.detailed.NoteDetailedEvent
@@ -81,7 +81,11 @@ class NoteDetailedFragment : Fragment() {
     private fun onErrorAction(error: Throwable) =
         if (error is InvalidNoteException) {
             when (error.field) {
-                Field.TITLE -> binding.etTitle.error = getString(R.string.error_invalid_note_tile)
+                Field.TITLE -> binding.etTitle.error = getString(
+                    R.string.error_invalid_note_tile,
+                    NoteValidator.MIN_LENGTH,
+                    NoteValidator.MAX_LENGTH
+                )
                 else -> binding.etContent.error = getString(R.string.error_invalid_note_content)
             }
         } else stateLoadingBinding.errorOccurred(error) {
@@ -99,15 +103,9 @@ class NoteDetailedFragment : Fragment() {
                 date?.let {
                     tvDate.text = it.formatToNoteDate()
                 }
-                categories.initCategoriesChipGroup(chipgroupCategories) {
-                    findNavController().fromNoteToChooseCategoryDialog(note.id)
-                }
-
-                Chip(context).setBtnAddCategoryStyle {
-                    findNavController().fromNoteToChooseCategoryDialog(note.id)
-                }.also { chip ->
-                    chipgroupCategories.addView(chip)
-                }
+                categories.toChipGroup(chipgroupCategories,
+                    onAddCategoryClick = { findNavController().fromNoteToChooseCategoryDialog(note.id) },
+                    onCategoryChipClick = { findNavController().fromNoteToChooseCategoryDialog(note.id) })
             }
         }
         stateLoadingBinding.loadingFinished()

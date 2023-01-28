@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.Note
 import com.noteapp.ui.databinding.ItemNoteBinding
 import com.noteapp.ui.ext.formatToNoteDate
-import com.noteapp.ui.ext.initCategoriesChipGroup
+import com.noteapp.ui.ext.toChipGroup
 
 class NoteViewHolder(
     private val binding: ItemNoteBinding,
@@ -19,7 +19,7 @@ class NoteViewHolder(
                 tvTitle.text = title
                 tvContent.text = content
                 date?.let { tvDate.text = it.formatToNoteDate() }
-                categories.initCategoriesChipGroup(chipgroupCategories)
+                categories.toChipGroup(chipgroupCategories)
             }
             root.setOnClickListener {
                 onNoteClick?.invoke(note.id)

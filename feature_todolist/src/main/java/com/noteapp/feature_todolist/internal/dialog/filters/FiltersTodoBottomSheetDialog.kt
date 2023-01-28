@@ -15,7 +15,7 @@ import com.noteapp.feature_todolist.R
 import com.noteapp.feature_todolist.databinding.BottomSheetTodoFiltersBinding
 import com.noteapp.feature_todolist.internal.list.ListTodoEvent
 import com.noteapp.feature_todolist.internal.list.ListTodoViewModel
-import com.noteapp.ui.ext.initCategoriesChipGroup
+import com.noteapp.ui.ext.toChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -71,7 +71,7 @@ class FiltersTodoBottomSheetDialog : BottomSheetDialogFragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.categories.distinctUntilChanged().collectLatest { categories ->
-                    categories.initCategoriesChipGroup(binding.chipgroupCategories) { selectedCategoryId ->
+                    categories.toChipGroup(binding.chipgroupCategories) { selectedCategoryId ->
                         viewModel.onEvent(
                             ListTodoEvent.UpdateSelectedCategoriesId(
                                 selectedCategoryId
