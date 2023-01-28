@@ -20,7 +20,7 @@
     <string name="error_empty_or_blanc_category_title">Cannot be empty or blanc</string>
     <string name="error_invalid_note_tile">Note title cannot be blank</string>
     <string name="error_invalid_todo_title">Task title cannot be blank or contain less than %1$d or more than %2$d characters</string>
-    <string name="error_invalid_category_title">Category title cannot be blank</string>
+    <string name="error_invalid_category_title">Category title cannot be blank or contain less than %1$d or more than %2$d characters</string>
     <string name="error_invalid_note_content">Note content cannot be blank</string>
 
     <string name="success_delete">Successfully deleted</string>

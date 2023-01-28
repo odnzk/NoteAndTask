@@ -11,17 +11,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.feature_mainlist.R
+import com.example.domain.model.Category
+import com.example.domain.validation.CategoryValidator
 import com.example.feature_mainlist.databinding.DialogAddCategoryBinding
 import com.example.noteapp.ui.util.exceptions.InvalidCategoryException
 import com.noteapp.core.state.CompletableState
-import com.example.domain.model.Category
+import com.noteapp.ui.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-internal class AddCategoryDialog : DialogFragment(R.layout.dialog_add_category) {
+internal class AddCategoryDialog : DialogFragment() {
     private var _binding: DialogAddCategoryBinding? = null
     private val binding: DialogAddCategoryBinding get() = _binding!!
 
@@ -41,7 +42,11 @@ internal class AddCategoryDialog : DialogFragment(R.layout.dialog_add_category) 
                         is CompletableState.Completed -> dismiss()
                         is CompletableState.Error -> if (state.error is InvalidCategoryException) {
                             binding.etCategoryTitle.error =
-                                getString(com.noteapp.ui.R.string.error_invalid_category_title)
+                                getString(
+                                    R.string.error_invalid_category_title,
+                                    CategoryValidator.MIN_LENGTH,
+                                    CategoryValidator.MAX_LENGTH
+                                )
                         }
                         is CompletableState.InProgress -> {}
                     }
