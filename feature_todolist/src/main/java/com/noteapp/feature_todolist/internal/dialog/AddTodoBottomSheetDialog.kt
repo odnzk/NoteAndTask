@@ -11,6 +11,7 @@ import android.widget.DatePicker
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.domain.validation.TodoValidator
 import com.example.noteapp.ui.util.exceptions.InvalidTodoException
 import com.example.noteapp.ui.util.ext.showDatePicker
 import com.example.noteapp.ui.util.ext.showDateTimePicker
@@ -121,7 +122,11 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
                         state.error?.let { error ->
                             if (error is InvalidTodoException) {
                                 binding.tilTitle.error =
-                                    getString(com.noteapp.ui.R.string.error_invalid_todo_title)
+                                    getString(
+                                        R.string.error_invalid_todo_title,
+                                        TodoValidator.MIN_LENGTH,
+                                        TodoValidator.MAX_LENGTH
+                                    )
                             }
                         }
                     }
