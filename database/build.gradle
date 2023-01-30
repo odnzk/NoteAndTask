@@ -2,7 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-//    id 'com.google.dagger.hilt.android' version '2.44.2' apply false
+    id 'com.google.dagger.hilt.android' version '2.44.2' apply false
 }
 
 android {
@@ -51,4 +51,9 @@ dependencies {
 //    annotationProcessor("androidx.room:room-compiler:$room_version")
     // To use Kotlin annotation processing tool (kapt)
     kapt("androidx.room:room-compiler:$room_version")
+
+
+    // hilt
+    implementation 'com.google.dagger:hilt-android:2.44.2'
+    kapt 'com.google.dagger:hilt-compiler:2.44.2'
 }

@@ -7,8 +7,9 @@ import com.example.domain.repository.NoteRepository
 import com.noteapp.dao.NoteDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class NoteRepositoryImpl(
+class NoteRepositoryImpl @Inject constructor(
     private val dao: NoteDao
 ) : NoteRepository {
 

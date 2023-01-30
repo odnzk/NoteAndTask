@@ -1,14 +1,15 @@
 package com.noteapp.repository
 
-import com.noteapp.dao.TodoDao
 import com.example.data.mapper.toEntity
 import com.example.data.mapper.toTodo
 import com.example.domain.model.Todo
 import com.example.domain.repository.TodoRepository
+import com.noteapp.dao.TodoDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class TodoRepositoryImpl(
+class TodoRepositoryImpl @Inject constructor(
     private val dao: TodoDao
 ) : TodoRepository {
     override suspend fun add(elem: Todo): Long {

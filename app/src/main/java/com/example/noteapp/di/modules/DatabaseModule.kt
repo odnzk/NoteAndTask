@@ -2,16 +2,17 @@ package com.example.noteapp.di.modules
 
 import android.app.Application
 import androidx.room.Room
+import com.example.domain.repository.CategoryRepository
+import com.example.domain.repository.NoteRepository
+import com.example.domain.repository.TodoRepository
+import com.noteapp.AppDatabase
 import com.noteapp.dao.CategoryDao
 import com.noteapp.dao.NoteDao
 import com.noteapp.dao.TodoDao
 import com.noteapp.repository.CategoryRepositoryImpl
 import com.noteapp.repository.NoteRepositoryImpl
 import com.noteapp.repository.TodoRepositoryImpl
-import com.example.domain.repository.CategoryRepository
-import com.example.domain.repository.NoteRepository
-import com.example.domain.repository.TodoRepository
-import com.noteapp.AppDatabase
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,19 +42,5 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun providesCategoryDao(database: AppDatabase): CategoryDao = database.categoryDao()
-
-    @Provides
-    @Singleton
-    fun providesNoteRepository(noteDao: NoteDao): NoteRepository = NoteRepositoryImpl(noteDao)
-
-    @Provides
-    @Singleton
-    fun providesTodoRepository(todoDao: TodoDao): TodoRepository = TodoRepositoryImpl(todoDao)
-
-    @Provides
-    @Singleton
-    fun providesCategoryRepository(categoryDao: CategoryDao): CategoryRepository =
-        CategoryRepositoryImpl(categoryDao)
-
 
 }
