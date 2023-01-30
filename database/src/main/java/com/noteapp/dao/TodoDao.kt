@@ -32,7 +32,7 @@ interface TodoDao : BaseDao<TodoEntity> {
     fun getAll(): Flow<List<TodoWithCategoryTuple>>
 
     @Transaction
-    @Query("SELECT * FROM todos WHERE title LIKE '%' || :title || '%'")
+    @Query("SELECT * FROM todos WHERE LOWER(title) LIKE '%' || LOWER(:title) || '%'")
     fun getByTitle(title: String): Flow<List<TodoWithCategoryTuple>>
 
     @Query("update todos set category_id = null where id = :todoId")
@@ -42,7 +42,7 @@ interface TodoDao : BaseDao<TodoEntity> {
     suspend fun updateTodoCategory(todoId: Long, categoryId: Long)
 
     @Transaction
-    @Query("SELECT * FROM todos WHERE category_id in (:categoryIds) AND title LIKE '%' || :title || '%'")
+    @Query("SELECT * FROM todos WHERE category_id in (:categoryIds) AND LOWER(title) LIKE '%' || LOWER(:title) || '%'")
     fun getByCategoryId(categoryIds: Set<Long>, title: String): Flow<List<TodoWithCategoryTuple>>
 
 }

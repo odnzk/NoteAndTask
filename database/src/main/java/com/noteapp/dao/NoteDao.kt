@@ -22,7 +22,7 @@ interface NoteDao : BaseDao<NoteEntity> {
     @Query(
         "SELECT * FROM note_categories_table" +
                 " JOIN notes ON notes.note_id = note_categories_table.note_id" +
-                " AND category_id in (:categoryIds) AND notes.title LIKE '%' || :noteTitle || '%'"
+                " AND category_id in (:categoryIds) AND LOWER(title) LIKE '%' || LOWER(:noteTitle) || '%'"
     )
     fun getByCategoryId(
         categoryIds: Set<Long>,
@@ -30,7 +30,7 @@ interface NoteDao : BaseDao<NoteEntity> {
     ): Flow<List<NoteWithCategoriesTuple>>
 
     @Transaction
-    @Query("SELECT * FROM notes WHERE title LIKE '%' || :noteTitle || '%'")
+    @Query("SELECT * FROM notes WHERE LOWER(title) LIKE '%' || LOWER(:noteTitle) || '%'")
     fun getByTitle(noteTitle: String): Flow<List<NoteWithCategoriesTuple>>
 
     @Query("DELETE FROM notes WHERE note_id = :noteId")
