@@ -9,9 +9,10 @@ java {
 }
 
 dependencies {
-    // coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation 'androidx.annotation:annotation:1.5.0'
-
     implementation project(path: ':core')
+
+    def coroutines_version = "1.6.4"
+    // coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    implementation 'androidx.annotation:annotation:1.5.0'
 }
