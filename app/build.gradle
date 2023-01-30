@@ -39,10 +39,9 @@ android {
 }
 
 dependencies {
-//    implementation Dependencies.core
-    implementation('androidx.core:core-ktx:1.9.0')
+    implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.0'
-    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -57,37 +56,40 @@ dependencies {
     implementation project(path: ':feature_todolist')
     implementation project(path: ':ui')
 
+    def room_version = '2.5.0'
+    def hilt_version = '2.44.2'
+    def lifecycle_version = "2.5.1"
+    def nav_version = "2.5.3"
+    def activity_version = "1.6.1"
+    def fragment_version = "1.5.5"
+    def work_version = "2.7.1"
+    def datastore_version = "1.0.0"
+
     // hilt
-    implementation 'com.google.dagger:hilt-android:2.44.2'
-    kapt 'com.google.dagger:hilt-compiler:2.44.2'
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
     // room
-    def room_version = '2.5.0'
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
     // To use Kotlin annotation processing tool (kapt)
     kapt("androidx.room:room-compiler:$room_version")
 
     // data store
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.datastore:datastore-preferences:$datastore_version"
 
     // view model
-    def lifecycle_version = "2.5.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
     // to use by viewModels()
-    def activity_version = "1.6.1"
-    def fragment_version = "1.5.5"
     implementation "androidx.activity:activity-ktx:$activity_version"
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
     // jetpack navigation
-    def nav_version = "2.5.3"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     // work manager
-    def work_version = "2.7.1"
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
 }
