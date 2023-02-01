@@ -3,7 +3,7 @@ package com.noteapp.ui.ext
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 
-fun Spinner.initClickListeners(
+fun Spinner.initValues(
     array: Array<String>
 ) {
     ArrayAdapter(

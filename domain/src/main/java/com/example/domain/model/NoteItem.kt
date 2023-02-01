@@ -23,7 +23,7 @@ data class Todo(
     val isCompleted: Boolean = false,
     val category: Category?,
     var deadlineDate: Date? = null,
-    val notificationCalendar: Calendar? = null, // todo
+    val reminderCalendar: Calendar? = null, // todo
     val periodDuration: Duration? = null // todo
 ) : NoteItem(id) {
     companion object {

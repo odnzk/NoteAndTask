@@ -82,6 +82,21 @@
     <string name="task_hide_completed">Hide completed</string>
     <string name="task_hide_without_deadline">Hide without deadline</string>
 
+    <!--    task settings variant -->
+    <string name="todo_setting_reminder_no_reminder">No reminder</string>
+    <string name="todo_setting_reminder_later_today">Later today</string>
+    <string name="todo_setting_reminder_later_tomorrow">Later tomorrow</string>
+    <string name="todo_setting_reminder_custom">Custom</string>
+    <string name="todo_setting_deadline_no_deadline">No reminder</string>
+    <string name="todo_setting_deadline_today">Today</string>
+    <string name="todo_setting_deadline_tomorrow">Tomorrow</string>
+    <string name="todo_setting_deadline_custom">Custom</string>
+    <string name="todo_setting_period_no_period">No period</string>
+    <string name="todo_setting_period_daily">Daily</string>
+    <string name="todo_setting_period_weekly">Weekly</string>
+    <string name="todo_setting_period_monthly">Monthly</string>
+    <string name="todo_setting_period_annually">Annually</string>
+    <string name="todo_setting_period_custom">Custom</string>
 
     <!--    deeplinks-->
     <string name="deeplink_detailed_todo" translatable="false">noteapp://com.example.noteapp/todoDetailedFragment/{todoId}</string>

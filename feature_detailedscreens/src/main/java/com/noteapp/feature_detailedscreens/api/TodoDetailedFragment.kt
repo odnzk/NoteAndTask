@@ -115,7 +115,7 @@ class TodoDetailedFragment : Fragment() {
                     })
                 }
 
-                notificationCalendar?.let {
+                reminderCalendar?.let {
                     btnChangeReminderTime.text = it.formatToReminderString()
                 }
             }

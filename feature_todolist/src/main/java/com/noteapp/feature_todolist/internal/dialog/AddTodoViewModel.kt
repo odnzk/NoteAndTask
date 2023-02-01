@@ -46,7 +46,7 @@ class AddTodoViewModel @Inject constructor(
             is AddTodoDialogEvent.UpdateReminderInfo -> _currentTodo.value =
                 CompletableState.InProgress(
                     data = currentTodo.value.data.copy(
-                        notificationCalendar = event.calendar
+                        reminderCalendar = event.calendar
                     )
                 )
             is AddTodoDialogEvent.UpdatePeriodInfo -> TODO()
