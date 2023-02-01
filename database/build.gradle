@@ -2,7 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'com.google.dagger.hilt.android' version '2.44.2' apply false
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -32,30 +32,25 @@ android {
     }
 }
 dependencies {
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation 'androidx.appcompat:appcompat:1.6.0'
-    implementation 'com.google.android.material:material:1.8.0'
-    implementation project(path: ':domain')
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation Deps.core
+    implementation Deps.appCompat
+    implementation Deps.material
+    testImplementation Deps.junitTest
+    androidTestImplementation Deps.junit
+    androidTestImplementation Deps.espressoCore
 
     implementation project(path: ':domain')
-
-    def room_version = '2.5.0'
-    def hilt_version = '2.44.2'
-    def coroutines_version = "1.6.4"
+    implementation project(path: ':domain')
 
     // room
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    // To use Kotlin annotation processing tool (kapt)
-    kapt("androidx.room:room-compiler:$room_version")
+    implementation Deps.roomRuntime
+    implementation Deps.room
+    kapt Deps.roomCompiler
 
     // coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
+    implementation Deps.coroutinesAndroid
 
     // hilt
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation Deps.hilt
+    kapt Deps.hiltCompiler
 }

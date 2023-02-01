@@ -37,35 +37,27 @@ android {
 }
 
 dependencies {
-
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.0'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation Deps.core
+    implementation Deps.appCompat
+    implementation Deps.material
+    testImplementation Deps.junitTest
+    androidTestImplementation Deps.junit
+    androidTestImplementation Deps.espressoCore
 
     implementation project(path: ':ui')
     implementation project(path: ':domain')
     implementation project(path: ':core')
 
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-
-
-    def hilt_version = '2.44.2'
-    def lifecycle_version = "2.5.1"
-    def nav_version = "2.5.3"
-    def fragment_version = "1.5.5"
-
     // view model
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation Deps.lifecycleViewmodel
     // to use by viewModels()
-    implementation "androidx.fragment:fragment-ktx:$fragment_version"
+    implementation Deps.fragment
 
     // hilt
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation Deps.hilt
+    kapt Deps.hiltCompiler
 
     // jetpack navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation Deps.navigationFragment
+    implementation Deps.navigationUi
 }
