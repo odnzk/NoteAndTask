@@ -116,11 +116,13 @@ class NoteDetailedFragment : Fragment() {
                 date?.let {
                     tvDate.text = it.formatToNoteDate()
                 }
-                categories.toChipGroup(
-                    chipgroupCategories,
-                    isCheckedStyleEnabled = false,
-                    onAddCategoryClick = { findNavController().fromNoteToChooseCategoryDialog(note.id) },
-                    onCategoryChipClick = { findNavController().fromNoteToChooseCategoryDialog(note.id) })
+                if (!viewModel.isNewNote){
+                    categories.toChipGroup(
+                        chipgroupCategories,
+                        isCheckedStyleEnabled = false,
+                        onAddCategoryClick = { findNavController().fromNoteToChooseCategoryDialog(note.id) },
+                        onCategoryChipClick = { findNavController().fromNoteToChooseCategoryDialog(note.id) })
+                }
             }
         }
         stateLoadingBinding.loadingFinished()
