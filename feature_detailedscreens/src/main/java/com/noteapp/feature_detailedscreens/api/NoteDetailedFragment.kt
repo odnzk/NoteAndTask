@@ -116,7 +116,9 @@ class NoteDetailedFragment : Fragment() {
                 date?.let {
                     tvDate.text = it.formatToNoteDate()
                 }
-                categories.toChipGroup(chipgroupCategories,
+                categories.toChipGroup(
+                    chipgroupCategories,
+                    isCheckedStyleEnabled = false,
                     onAddCategoryClick = { findNavController().fromNoteToChooseCategoryDialog(note.id) },
                     onCategoryChipClick = { findNavController().fromNoteToChooseCategoryDialog(note.id) })
             }

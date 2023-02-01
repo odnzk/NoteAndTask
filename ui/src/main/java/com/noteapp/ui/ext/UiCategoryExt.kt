@@ -21,39 +21,35 @@ private const val WHITE_COLOR = "#FFFFFF"
 private const val CATEGORY_FONT_SIZE = 20f
 
 // todo @ColorInt annotation everywhere
-fun Category.toChipCategory(context: Context, onCategoryChipClick: (() -> Unit)? = null): Chip =
+fun Category.toChipCategory(
+    context: Context,
+    isCheckedStyleEnabled: Boolean,
+    onCategoryChipClick: (() -> Unit)? = null
+): Chip =
     Chip(ContextThemeWrapper(context, R.style.ChipCategoryStyle), null, 0).apply {
         id = View.generateViewId()
-        //
-        isCheckable = true
-        setCheckedIconResource(R.drawable.ic_baseline_check_24)
-        isCheckedIconVisible = true
-        checkedIconTint = ColorStateList.valueOf(Color.parseColor(WHITE_COLOR))
-        //
         text = title
-//        val colorStateList = ColorStateList(
-//            arrayOf(
-//                intArrayOf(-android.R.attr.state_checked),
-//                intArrayOf(android.R.attr.state_checked)
-//            ), intArrayOf(
-//                color, // unchecked
-//                makeDarkerColor(color) // checked
-//            )
-//        )
-//        chipBackgroundColor = colorStateList
         chipBackgroundColor = ColorStateList.valueOf(color)
         setOnClickListener {
             onCategoryChipClick?.invoke()
         }
+
+        if (isCheckedStyleEnabled) {
+            isCheckable = true
+            setCheckedIconResource(R.drawable.ic_baseline_check_24)
+            isCheckedIconVisible = true
+            checkedIconTint = ColorStateList.valueOf(Color.parseColor(WHITE_COLOR))
+        }
     }
 
 fun List<Category>.categoriesToFlowCategories(
+    checkable: Boolean = true,
     constraintLayout: ConstraintLayout,
     flow: Flow,
     onCategoryChipClick: ((Long) -> Unit)? = null
 ) {
     forEach { category ->
-        val categoryChip = category.toChipCategory(constraintLayout.context) {
+        val categoryChip = category.toChipCategory(constraintLayout.context, checkable) {
             onCategoryChipClick?.invoke(category.id)
         }
         constraintLayout.addView(categoryChip)
@@ -63,12 +59,13 @@ fun List<Category>.categoriesToFlowCategories(
 
 fun List<Category>.toChipGroup(
     chipGroup: ChipGroup,
+    isCheckedStyleEnabled: Boolean = true,
     onAddCategoryClick: (() -> Unit)? = null,
     onCategoryChipClick: ((Long) -> Unit)? = null
 ) {
     chipGroup.removeAllViews()
     forEach { category ->
-        val categoryChip = category.toChipCategory(chipGroup.context) {
+        val categoryChip = category.toChipCategory(chipGroup.context, isCheckedStyleEnabled) {
             onCategoryChipClick?.invoke(category.id)
         }
         chipGroup.addView(categoryChip)

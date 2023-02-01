@@ -6,11 +6,12 @@ import com.noteapp.ui.ext.toChipCategory
 
 internal fun List<UiCategory>.toChipGroup(
     chipGroup: ChipGroup,
+    isCheckableStyleEnabled: Boolean = true,
     onCategoryClick: ((Long) -> Unit)? = null
 ) {
     chipGroup.removeAllViews()
     forEach { uiCategory ->
-        val chipCategory = uiCategory.category.toChipCategory(chipGroup.context) {
+        val chipCategory = uiCategory.category.toChipCategory(chipGroup.context, isCheckableStyleEnabled) {
             onCategoryClick?.invoke(uiCategory.category.id)
         }.apply {
             isChecked = uiCategory.isSelected
