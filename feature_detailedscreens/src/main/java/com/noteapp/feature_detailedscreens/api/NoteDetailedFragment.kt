@@ -40,7 +40,20 @@ class NoteDetailedFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         observeState()
+        observeIsNoteSaved()
         initClickListeners()
+    }
+
+    private fun observeIsNoteSaved() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isNoteSavedSuccessfully.collectLatest { isSaved ->
+                    if (isSaved) {
+                        binding.root.showSnackbar(getString(R.string.success_save))
+                    }
+                }
+            }
+        }
     }
 
     private fun initClickListeners() {
@@ -103,9 +116,13 @@ class NoteDetailedFragment : Fragment() {
                 date?.let {
                     tvDate.text = it.formatToNoteDate()
                 }
-                categories.toChipGroup(chipgroupCategories,
-                    onAddCategoryClick = { findNavController().fromNoteToChooseCategoryDialog(note.id) },
-                    onCategoryChipClick = { findNavController().fromNoteToChooseCategoryDialog(note.id) })
+                if (!viewModel.isNewNote){
+                    categories.toChipGroup(
+                        chipgroupCategories,
+                        isCheckedStyleEnabled = false,
+                        onAddCategoryClick = { findNavController().fromNoteToChooseCategoryDialog(note.id) },
+                        onCategoryChipClick = { findNavController().fromNoteToChooseCategoryDialog(note.id) })
+                }
             }
         }
         stateLoadingBinding.loadingFinished()

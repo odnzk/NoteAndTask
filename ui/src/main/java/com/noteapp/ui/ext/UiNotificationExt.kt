@@ -10,7 +10,11 @@ fun View.showSnackbar(message: String) {
         .show()
 }
 
-fun View.showSnackbar(@StringRes resId: Int, actionListener: View.OnClickListener? = null,@StringRes actionTitleId: Int = R.string.action_undo) {
+fun View.showSnackbar(
+    @StringRes resId: Int,
+    actionListener: View.OnClickListener? = null,
+    @StringRes actionTitleId: Int = R.string.action_undo
+) {
     Snackbar.make(this, resId, Snackbar.LENGTH_SHORT).run {
         actionListener?.let { setAction(actionTitleId, actionListener) }
         show()
