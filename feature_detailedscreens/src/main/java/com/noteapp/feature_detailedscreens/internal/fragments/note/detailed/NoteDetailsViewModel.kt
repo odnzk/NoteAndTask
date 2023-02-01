@@ -28,6 +28,9 @@ internal class NoteDetailsViewModel @Inject constructor(
 
     private var isNewNote: Boolean = false
 
+    private var _isNoteSavedSuccessfully: MutableSharedFlow<Boolean> = MutableSharedFlow()
+    val isNoteSavedSuccessfully = _isNoteSavedSuccessfully.asSharedFlow()
+
     init {
         loadData()
     }
@@ -46,19 +49,10 @@ internal class NoteDetailsViewModel @Inject constructor(
                         )
                     }
                 }
-//                noteUseCases.getNoteById(noteId).fold(
-//                    onSuccess = { note ->
-//                        _note.value = UiState.Success(note)
-//                    },
-//                    onFailure = { error ->
-//                        _note.value = UiState.Error(error)
-//                    }
-//                )
             }
         }
     }
 
-    // todo Dispatchers
     fun onEvent(event: NoteDetailedEvent) = viewModelScope.launch(Dispatchers.Default) {
         when (event) {
             is NoteDetailedEvent.UpdateNote -> {
@@ -69,7 +63,12 @@ internal class NoteDetailsViewModel @Inject constructor(
                     isNewNote = false
                 } else {
                     noteUseCases.updateNote(event.note).also { result ->
-                        result.exceptionOrNull()?.let { _note.value = UiState.Error(it) }
+                        result.fold(onSuccess = {
+                            _isNoteSavedSuccessfully.emit(true)
+                        }, onFailure = {
+                            _isNoteSavedSuccessfully.emit(false)
+                            result.exceptionOrNull()?.let { _note.value = UiState.Error(it) }
+                        })
                     }
                 }
             }
