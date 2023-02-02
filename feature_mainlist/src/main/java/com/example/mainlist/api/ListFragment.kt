@@ -67,6 +67,7 @@ class ListFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.categories.collectLatest { categories ->
                     categories.toChipGroup(binding.chipgroupCategories,
+                        isCheckedStyleEnabled = true,
                         onAddCategoryClick = { findNavController().toAddCategoryDialog() }) { categoryId ->
                         viewModel.onEvent(
                             ListFragmentEvent.UpdateSelectedCategoriesId(

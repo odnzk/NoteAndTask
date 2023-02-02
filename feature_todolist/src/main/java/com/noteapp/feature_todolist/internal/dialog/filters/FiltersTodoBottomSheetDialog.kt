@@ -71,7 +71,10 @@ class FiltersTodoBottomSheetDialog : BottomSheetDialogFragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.categories.distinctUntilChanged().collectLatest { categories ->
-                    categories.toChipGroup(binding.chipgroupCategories) { selectedCategoryId ->
+                    categories.toChipGroup(
+                        binding.chipgroupCategories,
+                        isCheckedStyleEnabled = true
+                    ) { selectedCategoryId ->
                         viewModel.onEvent(
                             ListTodoEvent.UpdateSelectedCategoriesId(
                                 selectedCategoryId

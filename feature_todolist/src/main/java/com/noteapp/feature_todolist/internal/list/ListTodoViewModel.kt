@@ -80,10 +80,12 @@ internal class ListTodoViewModel @Inject constructor(
             }
             is ListTodoEvent.UpdateSelectedCategoriesId -> {
                 _todoFilters.update { filters ->
-                    filters.copy(
-                        selectedCategoriesId
-                        = filters.selectedCategoriesId.addButIfExistRemove(event.newId)
-                    )
+//                    filters.copy(
+//                        selectedCategoriesId
+//                        = filters.selectedCategoriesId.addButIfExistRemove(event.newId)
+//                    )
+                    // todo
+                    filters
                 }
                 loadData()
             }
