@@ -1,13 +1,15 @@
 package com.noteapp.feature_todolist.internal.list
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.category.CategoryUseCases
 import com.example.domain.application.usecase.todo.TodoUseCases
 import com.example.domain.model.Todo
-import com.example.domain.model.TodoFilters
 import com.noteapp.core.ext.addButIfExistRemove
 import com.noteapp.core.state.UiState
+import com.noteapp.feature_todolist.internal.model.UiTodoFilters
+import com.noteapp.feature_todolist.internal.util.mappers.toTodoFilters
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
@@ -17,13 +19,20 @@ import javax.inject.Inject
 @HiltViewModel
 internal class ListTodoViewModel @Inject constructor(
     categoryUseCases: CategoryUseCases,
-    private val todoUseCases: TodoUseCases
+    private val todoUseCases: TodoUseCases,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private var _todos: MutableStateFlow<UiState<List<Todo>>> = MutableStateFlow(UiState.Loading())
     val todos = _todos.asStateFlow()
 
-    private var _todoFilters: MutableStateFlow<TodoFilters> = MutableStateFlow(TodoFilters())
+    private var _todoFilters: MutableStateFlow<UiTodoFilters> = MutableStateFlow(
+        savedStateHandle.get<UiTodoFilters>(
+            TODO_FILTERS_KEY
+        ) ?: UiTodoFilters()
+    )
+    val todoFilters = _todoFilters.asStateFlow()
+
     val categories = categoryUseCases.getAllCategories()
 
     private var recentlyRemoved: Todo? = null
@@ -36,7 +45,7 @@ internal class ListTodoViewModel @Inject constructor(
     private fun loadData() {
         jobObservingTodoList?.cancel()
         jobObservingTodoList = viewModelScope.launch {
-            todoUseCases.getAllTodos(_todoFilters.value).distinctUntilChanged()
+            todoUseCases.getAllTodos(_todoFilters.value.toTodoFilters()).distinctUntilChanged()
                 .collectLatest { newList ->
                     _todos.update {
                         UiState.Success(newList)
@@ -78,7 +87,15 @@ internal class ListTodoViewModel @Inject constructor(
                 }
                 loadData()
             }
+            ListTodoEvent.SaveTodoFilters -> saveTodoFilters()
         }
     }
 
+    private fun saveTodoFilters() {
+        savedStateHandle[TODO_FILTERS_KEY] = _todoFilters.value
+    }
+
+    companion object {
+        private const val TODO_FILTERS_KEY = "todo-filters"
+    }
 }

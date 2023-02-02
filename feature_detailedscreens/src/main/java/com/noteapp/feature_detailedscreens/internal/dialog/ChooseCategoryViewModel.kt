@@ -12,6 +12,8 @@ import com.example.domain.model.NoteItem
 import com.example.domain.model.Todo
 import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
 import com.noteapp.core.model.CategoryOwnerType
+import com.noteapp.ui.mappers.toUiCategory
+import com.noteapp.ui.model.UiCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -62,17 +64,17 @@ internal class ChooseCategoryViewModel @Inject constructor(
             is Note -> {
                 val selectedCategories: List<Category> = noteItem.categories
                 val uiCategories: List<UiCategory> = categories.map { category ->
-                    UiCategory(category, category in selectedCategories)
+                    category.toUiCategory(category in selectedCategories)
                 }
                 uiCategories
             }
             is Todo -> {
                 val uiCategories = noteItem.category?.id?.let { noteCategoryId ->
                     categories.map { category ->
-                        UiCategory(category, category.id == noteCategoryId)
+                        category.toUiCategory(category.id == noteCategoryId)
                     }
                 } ?: run {
-                    categories.map { UiCategory(it) }
+                    categories.map { it.toUiCategory() }
                 }
                 uiCategories
             }

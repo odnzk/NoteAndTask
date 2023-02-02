@@ -7,14 +7,14 @@ import android.util.TypedValue
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.ColorInt
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.domain.model.Category
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.noteapp.ui.R
-import kotlin.math.roundToInt
+import com.noteapp.ui.mappers.toCategory
+import com.noteapp.ui.model.UiCategory
 
 
 private const val WHITE_COLOR = "#FFFFFF"
@@ -24,23 +24,13 @@ private const val CATEGORY_FONT_SIZE = 20f
 fun Category.toChipCategory(context: Context, onCategoryChipClick: (() -> Unit)? = null): Chip =
     Chip(ContextThemeWrapper(context, R.style.ChipCategoryStyle), null, 0).apply {
         id = View.generateViewId()
-        //
+
         isCheckable = true
         setCheckedIconResource(R.drawable.ic_baseline_check_24)
         isCheckedIconVisible = true
         checkedIconTint = ColorStateList.valueOf(Color.parseColor(WHITE_COLOR))
-        //
+
         text = title
-//        val colorStateList = ColorStateList(
-//            arrayOf(
-//                intArrayOf(-android.R.attr.state_checked),
-//                intArrayOf(android.R.attr.state_checked)
-//            ), intArrayOf(
-//                color, // unchecked
-//                makeDarkerColor(color) // checked
-//            )
-//        )
-//        chipBackgroundColor = colorStateList
         chipBackgroundColor = ColorStateList.valueOf(color)
         setOnClickListener {
             onCategoryChipClick?.invoke()
@@ -103,26 +93,17 @@ fun Chip.setBtnAddCategoryStyle(onAction: () -> Unit): Chip =
         setOnClickListener { onAction() }
     }
 
-@ColorInt
-private fun adjustAlpha(@ColorInt color: Int, factor: Float): Int {
-    val alpha = (Color.alpha(color) * factor).roundToInt()
-    val red = Color.red(color)
-    val green = Color.green(color)
-    val blue = Color.blue(color)
-    return Color.argb(alpha, red, green, blue)
+fun List<UiCategory>.toChipGroup(
+    chipGroup: ChipGroup,
+    onCategoryClick: ((Long) -> Unit)? = null
+) {
+    chipGroup.removeAllViews()
+    forEach { uiCategory ->
+        val chipCategory = uiCategory.toCategory().toChipCategory(chipGroup.context) {
+            onCategoryClick?.invoke(uiCategory.id)
+        }.apply {
+            isChecked = uiCategory.isSelected
+        }
+        chipGroup.addView(chipCategory)
+    }
 }
-
-private fun makeDarkerColor(color: Int, factor: Float = 0.9f): Int {
-    val a = Color.alpha(color)
-    val r = (Color.red(color) * factor).roundToInt()
-    val g = (Color.green(color) * factor).roundToInt()
-    val b = (Color.blue(color) * factor).roundToInt()
-    return Color.argb(
-        a,
-        r / 5,
-        g / 5,
-        b / 5
-    )
-}
-
-
