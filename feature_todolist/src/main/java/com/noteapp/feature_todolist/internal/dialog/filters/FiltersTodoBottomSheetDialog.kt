@@ -31,7 +31,7 @@ class FiltersTodoBottomSheetDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        observeState()
+        observeFilters()
         initClickListeners()
 
     }
@@ -67,7 +67,7 @@ class FiltersTodoBottomSheetDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private fun observeState() {
+    private fun observeFilters() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.categories.distinctUntilChanged().collectLatest { categories ->

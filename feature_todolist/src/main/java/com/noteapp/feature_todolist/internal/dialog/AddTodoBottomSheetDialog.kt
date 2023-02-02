@@ -14,14 +14,16 @@ import androidx.lifecycle.lifecycleScope
 import com.example.domain.validation.TodoValidator
 import com.example.noteapp.ui.util.exceptions.InvalidTodoException
 import com.example.noteapp.ui.util.ext.showDatePicker
-import com.example.noteapp.ui.util.ext.showDateTimePicker
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.noteapp.core.state.CompletableState
 import com.noteapp.feature_todolist.databinding.BottomSheetAddTodoBinding
+import com.noteapp.feature_todolist.internal.TodoDeadline
+import com.noteapp.feature_todolist.internal.TodoPeriodicity
+import com.noteapp.feature_todolist.internal.TodoReminder
 import com.noteapp.ui.R
-import com.noteapp.ui.ext.formatToReminderString
-import com.noteapp.ui.ext.initClickListeners
+import com.noteapp.ui.ext.initValues
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.single
 import java.util.*
@@ -49,27 +51,63 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
 
         initCategoriesSpinner()
         initDeadlineSpinner()
+        initReminderSpinner()
+        initPeriodicitySpinner()
+
         initClickListeners()
     }
 
+    private fun initPeriodicitySpinner() {
+        val periodicityTitles: Array<String> =
+            TodoPeriodicity.values().map { getString(it.titleId) }.toTypedArray()
+        binding.spinnerReminder.initValues(periodicityTitles)
+        binding.spinnerReminder.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?, p1: View?, pos: Int, id: Long
+            ) {
+                viewModel.onEvent(AddTodoDialogEvent.UpdatePeriodInfo(TodoPeriodicity.values()[pos]))
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) = Unit
+        }
+    }
+
+    private fun initReminderSpinner() {
+        val reminderTitles: Array<String> =
+            TodoReminder.values().map { getString(it.titleId) }.toTypedArray()
+        binding.spinnerReminder.initValues(reminderTitles)
+        binding.spinnerReminder.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?, p1: View?, pos: Int, id: Long
+            ) {
+                val variant = TodoReminder.values()[pos]
+                // todo load into worker?
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) = Unit
+        }
+    }
+
     private fun initDeadlineSpinner() {
+        val deadlineTitles: Array<String> =
+            TodoDeadline.values().map { getString(it.titleId) }.toTypedArray()
+        binding.spinnerDeadline.initValues(deadlineTitles)
         binding.spinnerDeadline.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?, p1: View?, pos: Int, id: Long
             ) {
-                when (pos) {
-                    1 -> {
-                        // today
-                        viewModel.onEvent(AddTodoDialogEvent.UpdateDeadlineDate(Date()))
+                when (TodoDeadline.values()[pos]) {
+                    TodoDeadline.NO_DEADLINE -> {}
+                    TodoDeadline.TODAY -> viewModel.onEvent(
+                        AddTodoDialogEvent.UpdateDeadlineDate(
+                            Date()
+                        )
+                    )
+                    TodoDeadline.TOMORROW -> Calendar.getInstance().also {
+                        it.add(Calendar.DAY_OF_MONTH, 1)
+                        viewModel.onEvent(AddTodoDialogEvent.UpdateDeadlineDate(Date(it.timeInMillis)))
                     }
-                    2 -> {
-                        // tomorrow
-                        Calendar.getInstance().also {
-                            it.add(Calendar.DAY_OF_MONTH, 1)
-                            viewModel.onEvent(AddTodoDialogEvent.UpdateDeadlineDate(Date(it.timeInMillis)))
-                        }
-                    }
-                    3 -> {
+                    TodoDeadline.CUSTOM -> {
                         context?.showDatePicker { datePicker: DatePicker, year: Int, month: Int, day: Int ->
                             val date = Calendar.getInstance().apply {
                                 set(Calendar.YEAR, year)
@@ -90,18 +128,6 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
         with(binding) {
             btnAdd.setOnClickListener {
                 viewModel.onEvent(AddTodoDialogEvent.AddTodo)
-            }
-            btnSetReminder.setOnClickListener {
-                context?.showDateTimePicker { calendar ->
-                    viewModel.onEvent(
-                        AddTodoDialogEvent.UpdateReminderInfo(
-                            calendar
-                        )
-                    )
-                }
-            }
-            btnSetRepeating.setOnClickListener {
-                // todo show spinner
             }
             tilTitle.editText?.doOnTextChanged { text, start, before, count ->
                 viewModel.onEvent(
@@ -131,13 +157,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
                         }
                     }
                     is CompletableState.InProgress -> {
-                        with(binding) {
-                            val todo = state.data
-                            todo.notificationCalendar?.let {
-                                binding.btnSetReminder.text = it.formatToReminderString()
-                            }
-                            // todo set period
-                        }
+                        // todo
                     }
                 }
             }
@@ -147,34 +167,37 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
     private fun initCategoriesSpinner() {
         lifecycleScope.launchWhenResumed {
             val categories = viewModel.categories.single()
+            if (categories.isEmpty()) {
+                binding.spinnerCategories.visibility = View.GONE
+                cancel()
+                return@launchWhenResumed
+            }
             val categoriesTitleArray =
-                categories.map { category -> category.title }.toMutableList()
-                    .apply {
+                categories.map { category -> category.title }.toMutableList().apply {
                         add(0, getString(com.noteapp.ui.R.string.spinner_no_category))
                     }.toTypedArray()
-            binding.spinnerCategories.initClickListeners(
-                categoriesTitleArray
-            )
-            binding.spinnerCategories.onItemSelectedListener = object : OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    p1: View?,
-                    pos: Int,
-                    id: Long
-                ) {
-                    (parent?.getItemAtPosition(pos) as? String)?.let { categoryTitle ->
-                        if (categoryTitle == getString(R.string.spinner_no_category)) return
-                        categories.forEach { category ->
-                            if (category.title == categoryTitle) {
-                                viewModel.onEvent(AddTodoDialogEvent.UpdateCategory(category))
+
+            with(binding.spinnerCategories) {
+                initValues(
+                    categoriesTitleArray
+                )
+                onItemSelectedListener = object : OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?, p1: View?, pos: Int, id: Long
+                    ) {
+                        (parent?.getItemAtPosition(pos) as? String)?.let { categoryTitle ->
+                            if (categoryTitle == getString(R.string.spinner_no_category)) return
+                            categories.forEach { category ->
+                                if (category.title == categoryTitle) {
+                                    viewModel.onEvent(AddTodoDialogEvent.UpdateCategory(category))
+                                }
                             }
                         }
                     }
+
+                    override fun onNothingSelected(p0: AdapterView<*>?) = Unit
                 }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) = Unit
             }
-
         }
     }
 

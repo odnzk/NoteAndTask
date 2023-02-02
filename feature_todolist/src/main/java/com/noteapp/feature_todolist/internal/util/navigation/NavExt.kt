@@ -1,4 +1,4 @@
-package com.noteapp.feature_todolist.internal.navigation
+package com.noteapp.feature_todolist.internal.util.navigation
 
 import android.net.Uri
 import androidx.navigation.NavController

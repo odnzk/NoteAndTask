@@ -9,8 +9,8 @@ enum class TodoFilterAdditionalConditions {
 }
 
 data class TodoFilters(
-    val selectedCategoriesId: Set<Long> = emptySet(),
-    val todoFilterPeriod: TodoPeriod = TodoPeriod.NO_PERIOD,
-    val additionalConditions: Set<TodoFilterAdditionalConditions> = emptySet()
+    val selectedCategoriesId: Set<Long>,
+    val todoFilterPeriod: TodoPeriod,
+    val additionalConditions: Set<TodoFilterAdditionalConditions>
 )
 

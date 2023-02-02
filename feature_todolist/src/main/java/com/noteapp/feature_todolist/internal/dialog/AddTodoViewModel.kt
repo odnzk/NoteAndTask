@@ -1,5 +1,6 @@
 package com.noteapp.feature_todolist.internal.dialog
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.category.CategoryUseCases
@@ -46,10 +47,10 @@ class AddTodoViewModel @Inject constructor(
             is AddTodoDialogEvent.UpdateReminderInfo -> _currentTodo.value =
                 CompletableState.InProgress(
                     data = currentTodo.value.data.copy(
-                        notificationCalendar = event.calendar
+                        reminderCalendar = event.calendar
                     )
-                )
-            is AddTodoDialogEvent.UpdatePeriodInfo -> TODO()
+                ) // todo
+            is AddTodoDialogEvent.UpdatePeriodInfo -> {}
         }
     }
 

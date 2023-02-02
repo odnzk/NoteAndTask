@@ -19,9 +19,9 @@ import com.noteapp.feature_todolist.R
 import com.noteapp.feature_todolist.databinding.FragmentTodosListBinding
 import com.noteapp.feature_todolist.internal.list.ListTodoEvent
 import com.noteapp.feature_todolist.internal.list.ListTodoViewModel
-import com.noteapp.feature_todolist.internal.navigation.toAddTodoBottomSheetDialog
-import com.noteapp.feature_todolist.internal.navigation.toDetailedTodo
-import com.noteapp.feature_todolist.internal.navigation.toTodoFiltersDialog
+import com.noteapp.feature_todolist.internal.util.navigation.toAddTodoBottomSheetDialog
+import com.noteapp.feature_todolist.internal.util.navigation.toDetailedTodo
+import com.noteapp.feature_todolist.internal.util.navigation.toTodoFiltersDialog
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
 import com.noteapp.ui.recycler.todo.TodoAdapter
@@ -77,7 +77,6 @@ class TodosListFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.todos.collectLatest { state ->
-                    Log.d("hello", "$state")
                     state.handleState(
                         onLoadingAction = stateLoadingBinding::loadingStarted,
                         onSuccessAction = ::showTodos,
@@ -126,4 +125,10 @@ class TodosListFragment : Fragment() {
         _stateLoadingBinding = null
         _binding = null
     }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.onEvent(ListTodoEvent.SaveTodoFilters)
+    }
+
 }

@@ -1,8 +1,8 @@
 package com.noteapp.repository
 
 import com.noteapp.dao.CategoryDao
-import com.example.data.mapper.toCategory
-import com.example.data.mapper.toEntity
+import com.noteapp.util.mapper.toCategory
+import com.noteapp.util.mapper.toEntity
 import com.example.domain.repository.CategoryRepository
 import com.example.domain.model.Category
 import kotlinx.coroutines.flow.Flow

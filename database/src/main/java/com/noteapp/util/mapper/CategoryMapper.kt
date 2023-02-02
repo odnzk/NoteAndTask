@@ -1,4 +1,4 @@
-package com.example.data.mapper
+package com.noteapp.util.mapper
 
 import com.example.data.entity.CategoryEntity
 import com.example.domain.model.Category

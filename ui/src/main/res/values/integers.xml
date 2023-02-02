@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="note_title_max_length">40</integer>
+    <integer name="todo_title_max_length">40</integer>
+    <integer name="category_title_max_length">20</integer>
+</resources>

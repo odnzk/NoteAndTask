@@ -2,7 +2,6 @@ package com.noteapp.feature_detailedscreens.internal.dialog
 
 import android.content.res.Resources.NotFoundException
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +13,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.noteapp.core.model.CategoryOwnerType
 import com.noteapp.feature_detailedscreens.databinding.DialogChangeCategoryBinding
-import com.noteapp.feature_detailedscreens.internal.ext.toChipGroup
 import com.noteapp.ui.R
+import com.noteapp.ui.ext.toChipGroup
+import com.noteapp.ui.model.UiCategory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

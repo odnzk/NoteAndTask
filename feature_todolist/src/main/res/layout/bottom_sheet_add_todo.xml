@@ -31,6 +31,7 @@
             android:inputType="none"
             android:hint="@string/hint_task_title"
             android:maxLines="1"
+            android:maxLength="@integer/todo_title_max_length"
             android:textSize="11sp"
             android:importantForAutofill="no"
             tools:text="Do homework" />
@@ -70,30 +71,35 @@
                 android:id="@+id/spinner_deadline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:entries="@array/todo_deadline_spinner_variants" />
+                android:layout_gravity="center_vertical" />
 
-            <com.google.android.material.button.MaterialButtonToggleGroup
-                android:layout_width="match_parent"
+            <Spinner
+                android:id="@+id/spinner_reminder"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center">
+                android:layout_gravity="center_vertical" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_set_reminder"
-                    style="@style/MaterialButtonWithIcon.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/btn_set_reminder"
-                    app:icon="@drawable/ic_baseline_notifications_none_24" />
+            <!--            <com.google.android.material.button.MaterialButtonToggleGroup-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:gravity="center">-->
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_set_repeating"
-                    style="@style/MaterialButtonWithIcon.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/btn_set_period"
-                    app:icon="@drawable/ic_baseline_repeat_24" />
-            </com.google.android.material.button.MaterialButtonToggleGroup>
+            <!--                <com.google.android.material.button.MaterialButton-->
+            <!--                    android:id="@+id/btn_set_reminder"-->
+            <!--                    style="@style/MaterialButtonWithIcon.Small"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:text="@string/btn_set_reminder"-->
+            <!--                    app:icon="@drawable/ic_baseline_notifications_none_24" />-->
+
+            <!--                <com.google.android.material.button.MaterialButton-->
+            <!--                    android:id="@+id/btn_set_repeating"-->
+            <!--                    style="@style/MaterialButtonWithIcon.Small"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:text="@string/btn_set_period"-->
+            <!--                    app:icon="@drawable/ic_baseline_repeat_24" />-->
+            <!--            </com.google.android.material.button.MaterialButtonToggleGroup>-->
         </LinearLayout>
     </HorizontalScrollView>
 

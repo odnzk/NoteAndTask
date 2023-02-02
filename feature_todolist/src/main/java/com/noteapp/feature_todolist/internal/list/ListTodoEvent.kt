@@ -17,4 +17,5 @@ internal sealed interface ListTodoEvent {
 
     object TryAgain : ListTodoEvent
     object RestoreItem : ListTodoEvent
+    object SaveTodoFilters : ListTodoEvent
 }
