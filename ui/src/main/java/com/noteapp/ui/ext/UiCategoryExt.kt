@@ -7,33 +7,54 @@ import android.util.TypedValue
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.domain.model.Category
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.noteapp.ui.R
-import com.noteapp.ui.mappers.toCategory
-import com.noteapp.ui.model.UiCategory
+import kotlin.math.roundToInt
 
 
 private const val WHITE_COLOR = "#FFFFFF"
 private const val CATEGORY_FONT_SIZE = 20f
 
 // todo @ColorInt annotation everywhere
-fun Category.toChipCategory(context: Context, onCategoryChipClick: (() -> Unit)? = null): Chip =
+fun Category.toChipCategory(
+    context: Context,
+    isCheckedStyleEnabled: Boolean,
+    onCategoryChipClick: (() -> Unit)? = null
+): Chip =
     Chip(ContextThemeWrapper(context, R.style.ChipCategoryStyle), null, 0).apply {
         id = View.generateViewId()
-
+        //
         isCheckable = true
         setCheckedIconResource(R.drawable.ic_baseline_check_24)
         isCheckedIconVisible = true
         checkedIconTint = ColorStateList.valueOf(Color.parseColor(WHITE_COLOR))
-
+        //
         text = title
+//        val colorStateList = ColorStateList(
+//            arrayOf(
+//                intArrayOf(-android.R.attr.state_checked),
+//                intArrayOf(android.R.attr.state_checked)
+//            ), intArrayOf(
+//                color, // unchecked
+//                makeDarkerColor(color) // checked
+//            )
+//        )
+//        chipBackgroundColor = colorStateList
         chipBackgroundColor = ColorStateList.valueOf(color)
         setOnClickListener {
             onCategoryChipClick?.invoke()
+        }
+
+        if (isCheckedStyleEnabled) {
+            isCheckable = true
+            setCheckedIconResource(R.drawable.ic_baseline_check_24)
+            isCheckedIconVisible = true
+            checkedIconTint = ColorStateList.valueOf(Color.parseColor(WHITE_COLOR))
         }
     }
 
@@ -53,6 +74,7 @@ fun List<Category>.categoriesToFlowCategories(
 
 fun List<Category>.toChipGroup(
     chipGroup: ChipGroup,
+    isCheckedStyleEnabled: Boolean = true,
     onAddCategoryClick: (() -> Unit)? = null,
     onCategoryChipClick: ((Long) -> Unit)? = null
 ) {
@@ -107,3 +129,5 @@ fun List<UiCategory>.toChipGroup(
         chipGroup.addView(chipCategory)
     }
 }
+
+

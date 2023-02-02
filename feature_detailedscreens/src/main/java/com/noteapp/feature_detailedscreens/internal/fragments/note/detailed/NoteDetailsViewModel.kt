@@ -26,7 +26,10 @@ internal class NoteDetailsViewModel @Inject constructor(
     private var _note: MutableStateFlow<UiState<Note>> = MutableStateFlow(UiState.Loading())
     val note = _note.asStateFlow()
 
-    private var isNewNote: Boolean = false
+    val isNewNote: Boolean = noteId == Constants.CREATE_NOTE_LONG
+
+    private var _isNoteSavedSuccessfully: MutableSharedFlow<Boolean> = MutableSharedFlow()
+    val isNoteSavedSuccessfully = _isNoteSavedSuccessfully.asSharedFlow()
 
     init {
         loadData()
@@ -36,7 +39,6 @@ internal class NoteDetailsViewModel @Inject constructor(
         _note.value = UiState.Loading()
         viewModelScope.launch {
             if (noteId == Constants.CREATE_NOTE_LONG) {
-                isNewNote = true
                 _note.value = UiState.Success(Note.defaultInstance())
             } else {
                 noteUseCases.getNoteFlowById(noteId).distinctUntilChanged().collectLatest { note ->
@@ -46,19 +48,10 @@ internal class NoteDetailsViewModel @Inject constructor(
                         )
                     }
                 }
-//                noteUseCases.getNoteById(noteId).fold(
-//                    onSuccess = { note ->
-//                        _note.value = UiState.Success(note)
-//                    },
-//                    onFailure = { error ->
-//                        _note.value = UiState.Error(error)
-//                    }
-//                )
             }
         }
     }
 
-    // todo Dispatchers
     fun onEvent(event: NoteDetailedEvent) = viewModelScope.launch(Dispatchers.Default) {
         when (event) {
             is NoteDetailedEvent.UpdateNote -> {
@@ -66,10 +59,15 @@ internal class NoteDetailsViewModel @Inject constructor(
                     noteUseCases.addNote(event.note).also { result ->
                         result.exceptionOrNull()?.let { _note.value = UiState.Error(it) }
                     }
-                    isNewNote = false
+//                    isNewNote = false
                 } else {
                     noteUseCases.updateNote(event.note).also { result ->
-                        result.exceptionOrNull()?.let { _note.value = UiState.Error(it) }
+                        result.fold(onSuccess = {
+                            _isNoteSavedSuccessfully.emit(true)
+                        }, onFailure = {
+                            _isNoteSavedSuccessfully.emit(false)
+                            result.exceptionOrNull()?.let { _note.value = UiState.Error(it) }
+                        })
                     }
                 }
             }

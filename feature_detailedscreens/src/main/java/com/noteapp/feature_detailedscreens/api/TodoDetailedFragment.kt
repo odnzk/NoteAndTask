@@ -106,9 +106,13 @@ class TodoDetailedFragment : Fragment() {
 
                 chipgroupCategory.removeAllViews()
                 category?.let {
-                    chipgroupCategory.addView(it.toChipCategory(requireContext()) {
-                        findNavController().fromTodoToChooseCategoryDialog(viewModel.todoId)
-                    })
+                    chipgroupCategory.addView(
+                        it.toChipCategory(
+                            requireContext(),
+                            isCheckedStyleEnabled = false
+                        ) {
+                            findNavController().fromTodoToChooseCategoryDialog(viewModel.todoId)
+                        })
                 } ?: run {
                     chipgroupCategory.addView(Chip(context).setBtnAddCategoryStyle {
                         findNavController().fromTodoToChooseCategoryDialog(viewModel.todoId)
