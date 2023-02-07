@@ -15,13 +15,13 @@ import com.example.domain.validation.Field
 import com.example.domain.validation.NoteValidator
 import com.example.noteapp.ui.util.exceptions.InvalidNoteException
 import com.noteapp.core.state.handleState
-import com.noteapp.feature_detailedscreens.databinding.FragmentDetailedNoteBinding
 import com.noteapp.feature_detailedscreens.internal.fragments.note.detailed.NoteDetailedEvent
 import com.noteapp.feature_detailedscreens.internal.fragments.note.detailed.NoteDetailsViewModel
 import com.noteapp.feature_detailedscreens.internal.navigation.fromNoteToChooseCategoryDialog
 import com.noteapp.ui.R
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
+import com.study.feature_detailed_screen.databinding.FragmentDetailedNoteBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

@@ -3,7 +3,7 @@ package com.example.domain.repository
 import com.example.domain.model.Todo
 import kotlinx.coroutines.flow.Flow
 
-interface TodoRepository : BasicRepository<Todo> {
+interface TodoRepository : BaseRepository<Todo> {
 
     fun getTodoFlowById(todoId: Long): Flow<Todo?>
 

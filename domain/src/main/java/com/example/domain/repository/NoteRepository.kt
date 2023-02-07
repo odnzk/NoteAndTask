@@ -4,7 +4,7 @@ import com.example.domain.model.Note
 import kotlinx.coroutines.flow.Flow
 
 
-interface NoteRepository : BasicRepository<Note> {
+interface NoteRepository : BaseRepository<Note> {
 
     fun getNoteFlowById(noteId: Long): Flow<Note?>
 

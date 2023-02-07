@@ -2,11 +2,10 @@ package com.noteapp.dao
 
 import androidx.room.Delete
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Update
 
 interface BaseDao<T> {
-    @Insert(onConflict = REPLACE)
+    @Insert
     suspend fun insert(item: T): Long
 
     @Update

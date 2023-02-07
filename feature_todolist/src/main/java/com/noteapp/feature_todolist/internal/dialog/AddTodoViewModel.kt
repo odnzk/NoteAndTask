@@ -1,15 +1,18 @@
 package com.noteapp.feature_todolist.internal.dialog
 
-import android.util.Log
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.category.CategoryUseCases
 import com.example.domain.application.usecase.todo.TodoUseCases
-import com.noteapp.core.state.CompletableState
 import com.example.domain.model.Category
 import com.example.domain.model.Todo
+import com.noteapp.core.state.CompletableState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,9 +26,8 @@ class AddTodoViewModel @Inject constructor(
         MutableStateFlow(CompletableState.InProgress(Todo.defaultInstance()))
     val currentTodo = _currentTodo.asStateFlow()
 
-    val categories: Flow<List<Category>> = flow {
-        emit(categoryUseCases.getAllCategories().first())
-    }
+    val categories: Flow<List<Category>> = categoryUseCases.getAllCategories()
+
 
     fun onEvent(event: AddTodoDialogEvent) = viewModelScope.launch {
         when (event) {
@@ -34,23 +36,34 @@ class AddTodoViewModel @Inject constructor(
                     // todo add notification worker is it needs
                     _currentTodo.value = CompletableState.Completed(data = currentTodo.value.data)
                 }, onFailure = { error ->
+                    // todo
                     _currentTodo.value =
                         CompletableState.Error(data = currentTodo.value.data, error = error)
                 })
             }
-            is AddTodoDialogEvent.UpdateCategory -> _currentTodo.value =
-                CompletableState.InProgress(data = currentTodo.value.data.copy(category = event.category))
-            is AddTodoDialogEvent.UpdateDeadlineDate -> _currentTodo.value =
-                CompletableState.InProgress(data = currentTodo.value.data.copy(deadlineDate = event.date))
-            is AddTodoDialogEvent.UpdateTitle -> _currentTodo.value =
-                CompletableState.InProgress(data = currentTodo.value.data.copy(title = event.title))
-            is AddTodoDialogEvent.UpdateReminderInfo -> _currentTodo.value =
-                CompletableState.InProgress(
-                    data = currentTodo.value.data.copy(
-                        reminderCalendar = event.calendar
+            is AddTodoDialogEvent.UpdateCategory -> {
+                _currentTodo.update {
+                    CompletableState.InProgress(data = it.data.copy(category = event.category))
+                }
+            }
+            is AddTodoDialogEvent.UpdateDeadlineDate -> {
+                _currentTodo.update {
+                    CompletableState.InProgress(data = it.data.copy(deadlineDate = event.date))
+                }
+            }
+            is AddTodoDialogEvent.UpdateTitle -> {
+                _currentTodo.update {
+                    CompletableState.InProgress(data = it.data.copy(title = event.title))
+                }
+            }
+            is AddTodoDialogEvent.UpdateReminderInfo -> {
+                _currentTodo.update {
+                    CompletableState.InProgress(
+                        data = it.data.copy(reminderCalendar = event.calendar)
                     )
-                ) // todo
-            is AddTodoDialogEvent.UpdatePeriodInfo -> {}
+                }
+            }
+            is AddTodoDialogEvent.UpdatePeriodInfo -> {} // todo
         }
     }
 

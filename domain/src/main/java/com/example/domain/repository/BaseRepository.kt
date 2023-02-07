@@ -2,7 +2,7 @@ package com.example.domain.repository
 
 import kotlinx.coroutines.flow.Flow
 
-interface BasicRepository<T> {
+interface BaseRepository<T> {
     fun getAll(): Flow<List<T>>
     suspend fun getById(id: Long): T?
     suspend fun add(elem: T): Result<Long>

@@ -17,13 +17,13 @@ import com.example.noteapp.ui.util.exceptions.InvalidNoteException
 import com.example.noteapp.ui.util.ext.showDatePicker
 import com.google.android.material.chip.Chip
 import com.noteapp.core.state.handleState
-import com.noteapp.feature_detailedscreens.databinding.FragmentDetailedTodoBinding
 import com.noteapp.feature_detailedscreens.internal.fragments.todo.detailed.TodoDetailedEvent
 import com.noteapp.feature_detailedscreens.internal.fragments.todo.detailed.TodoDetailsViewModel
 import com.noteapp.feature_detailedscreens.internal.navigation.fromTodoToChooseCategoryDialog
 import com.noteapp.ui.R
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
+import com.study.feature_detailed_screen.databinding.FragmentDetailedTodoBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

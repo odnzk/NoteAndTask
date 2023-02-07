@@ -7,8 +7,8 @@ import com.example.domain.repository.NoteRepository
 import com.example.domain.repository.TodoRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.zip
 
 class GetBothTodosAndNotes
     (
@@ -40,7 +40,7 @@ class GetBothTodosAndNotes
             )
         }
         return when (filterInfo.filter) {
-            Filter.BOTH -> notes.zip(tasks, ::mergeIntoOneList)
+            Filter.BOTH -> notes.combine(tasks, ::mergeIntoOneList)
             Filter.NOTES_ONLY -> notes
             Filter.TODO_ONLY -> tasks
         }.flowOn(dispatcher)

@@ -52,7 +52,7 @@ dependencies {
     implementation project(path: ':database')
     implementation project(path: ':feature_mainlist')
     implementation project(path: ':feature_notelist')
-    implementation project(path: ':feature_detailedscreens')
+    implementation project(path: ':feature_detailed_screen')
     implementation project(path: ':feature_todolist')
     implementation project(path: ':ui')
 

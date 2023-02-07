@@ -8,9 +8,7 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.domain.model.Note
@@ -19,16 +17,15 @@ import com.example.feature_notelist.databinding.FragmentNotesListBinding
 import com.example.feature_notelist.internal.ListNoteEvent
 import com.example.feature_notelist.internal.ListNoteViewModel
 import com.example.feature_notelist.internal.navigation.toDetailedNote
-import com.noteapp.core.state.handleState
+import com.noteapp.ui.UiStateObserver
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
 import com.noteapp.ui.recycler.note.NoteAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class NotesListFragment : Fragment() {
+class NotesListFragment : Fragment(), UiStateObserver {
     private var _binding: FragmentNotesListBinding? = null
     private val binding: FragmentNotesListBinding get() = _binding!!
 
@@ -61,6 +58,7 @@ class NotesListFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
+                    // todo
                     val order: NoteSortOrder = when (position) {
                         1 -> NoteSortOrder.BY_DATE
                         2 -> NoteSortOrder.BY_ALPHABET
@@ -94,15 +92,12 @@ class NotesListFragment : Fragment() {
 
     private fun observeNotes() =
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.notes.collectLatest { state ->
-                    state.handleState(
-                        onLoadingAction = stateLoadingBinding::loadingStarted,
-                        onSuccessAction = ::showNotes,
-                        onErrorAction = ::showError,
-                    )
-                }
-            }
+            viewModel.notes.collectState(
+                lifecycleOwner = viewLifecycleOwner,
+                onSuccess = ::showNotes,
+                onError = ::showError,
+                onLoading = stateLoadingBinding::loadingStarted
+            )
 
         }
 

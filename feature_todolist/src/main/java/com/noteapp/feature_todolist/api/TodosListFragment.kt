@@ -1,20 +1,16 @@
 package com.noteapp.feature_todolist.api
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.domain.model.Todo
-import com.noteapp.core.state.handleState
 import com.noteapp.feature_todolist.R
 import com.noteapp.feature_todolist.databinding.FragmentTodosListBinding
 import com.noteapp.feature_todolist.internal.list.ListTodoEvent
@@ -22,15 +18,16 @@ import com.noteapp.feature_todolist.internal.list.ListTodoViewModel
 import com.noteapp.feature_todolist.internal.util.navigation.toAddTodoBottomSheetDialog
 import com.noteapp.feature_todolist.internal.util.navigation.toDetailedTodo
 import com.noteapp.feature_todolist.internal.util.navigation.toTodoFiltersDialog
+import com.noteapp.ui.UiStateObserver
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
+import com.noteapp.ui.recycler.SwipeCallback
 import com.noteapp.ui.recycler.todo.TodoAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class TodosListFragment : Fragment() {
+class TodosListFragment : Fragment(), UiStateObserver {
     private var _binding: FragmentTodosListBinding? = null
     private val binding: FragmentTodosListBinding get() = _binding!!
 
@@ -63,7 +60,7 @@ class TodosListFragment : Fragment() {
     private fun initRecyclerView() =
         binding.recyclerViewNotes.run {
             val itemTouchHelper =
-                ItemTouchHelper(com.noteapp.ui.recycler.SwipeCallback(todosAdapter) { removedItem ->
+                ItemTouchHelper(SwipeCallback(todosAdapter) { removedItem ->
                     viewModel.onEvent(ListTodoEvent.DeleteItem(removedItem as Todo))
                     // undo listener
                     val listener = OnClickListener { viewModel.onEvent(ListTodoEvent.RestoreItem) }
@@ -73,19 +70,14 @@ class TodosListFragment : Fragment() {
             adapter = todosAdapter
         }
 
-    private fun observeTodos() =
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.todos.collectLatest { state ->
-                    state.handleState(
-                        onLoadingAction = stateLoadingBinding::loadingStarted,
-                        onSuccessAction = ::showTodos,
-                        onErrorAction = ::showError,
-                    )
-                }
-            }
-
-        }
+    private fun observeTodos() = lifecycleScope.launch {
+        viewModel.todos.collectState(
+            lifecycleOwner = viewLifecycleOwner,
+            onSuccess = ::showTodoList,
+            onError = ::showError,
+            onLoading = stateLoadingBinding::loadingStarted
+        )
+    }
 
     private fun showError(throwable: Throwable) {
         stateLoadingBinding.errorOccurred(throwable) {
@@ -93,7 +85,7 @@ class TodosListFragment : Fragment() {
         }
     }
 
-    private fun showTodos(notes: List<Todo>) {
+    private fun showTodoList(notes: List<Todo>) {
         stateLoadingBinding.loadingFinished()
         todosAdapter.submitList(notes)
     }

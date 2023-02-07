@@ -15,22 +15,22 @@ import com.example.domain.validation.TodoValidator
 import com.example.noteapp.ui.util.exceptions.InvalidTodoException
 import com.example.noteapp.ui.util.ext.showDatePicker
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.noteapp.core.state.CompletableState
 import com.noteapp.feature_todolist.databinding.BottomSheetAddTodoBinding
 import com.noteapp.feature_todolist.internal.TodoDeadline
 import com.noteapp.feature_todolist.internal.TodoPeriodicity
 import com.noteapp.feature_todolist.internal.TodoReminder
+import com.noteapp.ui.CompletableStateObserver
 import com.noteapp.ui.R
 import com.noteapp.ui.ext.initValues
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import java.util.*
 
 
 @AndroidEntryPoint
-class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
+
+class AddTodoBottomSheetDialog : BottomSheetDialogFragment(), CompletableStateObserver {
     private var _binding: BottomSheetAddTodoBinding? = null
     private val binding: BottomSheetAddTodoBinding get() = _binding!!
 
@@ -53,6 +53,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
         initDeadlineSpinner()
         initReminderSpinner()
         initPeriodicitySpinner()
+
 
         initClickListeners()
     }
@@ -108,7 +109,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
                         viewModel.onEvent(AddTodoDialogEvent.UpdateDeadlineDate(Date(it.timeInMillis)))
                     }
                     TodoDeadline.CUSTOM -> {
-                        context?.showDatePicker { datePicker: DatePicker, year: Int, month: Int, day: Int ->
+                        context?.showDatePicker { _: DatePicker, year: Int, month: Int, day: Int ->
                             val date = Calendar.getInstance().apply {
                                 set(Calendar.YEAR, year)
                                 set(Calendar.MONTH, month)
@@ -119,7 +120,6 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
                     }
                 }
             }
-
             override fun onNothingSelected(p0: AdapterView<*>?) = Unit
         }
     }
@@ -129,47 +129,41 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
             btnAdd.setOnClickListener {
                 viewModel.onEvent(AddTodoDialogEvent.AddTodo)
             }
-            tilTitle.editText?.doOnTextChanged { text, start, before, count ->
-                viewModel.onEvent(
-                    AddTodoDialogEvent.UpdateTitle(
-                        text.toString()
-                    )
-                )
+            tilTitle.editText?.doOnTextChanged { text, _, _, _ ->
+                viewModel.onEvent(AddTodoDialogEvent.UpdateTitle(text.toString()))
             }
         }
     }
 
     private fun observeState() {
-        lifecycleScope.launchWhenResumed {
-            viewModel.currentTodo.collectLatest { state ->
-                when (state) {
-                    is CompletableState.Completed -> dismiss()
-                    is CompletableState.Error -> {
-                        state.error?.let { error ->
-                            if (error is InvalidTodoException) {
-                                binding.tilTitle.error =
-                                    getString(
-                                        R.string.error_invalid_todo_title,
-                                        TodoValidator.MIN_LENGTH,
-                                        TodoValidator.MAX_LENGTH
-                                    )
-                            }
-                        }
-                    }
-                    is CompletableState.InProgress -> {
-                        // todo
-                    }
-                }
-            }
+        lifecycleScope.launch {
+            viewModel.currentTodo.collectState(
+                lifecycleOwner = viewLifecycleOwner,
+                onError = ::onError,
+                onComplete = { dismiss() },
+                onProgress = { }
+            )
         }
+    }
+
+    private fun onError(throwable: Throwable) {
+        val message = when (throwable) {
+            is InvalidTodoException -> getString(
+                R.string.error_invalid_todo_title,
+                TodoValidator.MIN_LENGTH,
+                TodoValidator.MAX_LENGTH
+            )
+            else -> getString(R.string.error_todo_with_this_title_already_exist)
+        }
+        binding.tilTitle.error = message
+
     }
 
     private fun initCategoriesSpinner() {
         lifecycleScope.launchWhenResumed {
-            val categories = viewModel.categories.single()
+            val categories = viewModel.categories.first()
             if (categories.isEmpty()) {
                 binding.spinnerCategories.visibility = View.GONE
-                cancel()
                 return@launchWhenResumed
             }
             val categoriesTitleArray =
@@ -178,9 +172,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
                     }.toTypedArray()
 
             with(binding.spinnerCategories) {
-                initValues(
-                    categoriesTitleArray
-                )
+                initValues(categoriesTitleArray)
                 onItemSelectedListener = object : OnItemSelectedListener {
                     override fun onItemSelected(
                         parent: AdapterView<*>?, p1: View?, pos: Int, id: Long

@@ -1,8 +1,7 @@
-package com.noteapp.feature_detailedscreens
+package com.study.feature_detailed_screen
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).

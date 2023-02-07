@@ -40,7 +40,6 @@ dependencies {
     androidTestImplementation Deps.espressoCore
 
     implementation project(path: ':domain')
-    implementation project(path: ':domain')
 
     // room
     implementation Deps.roomRuntime

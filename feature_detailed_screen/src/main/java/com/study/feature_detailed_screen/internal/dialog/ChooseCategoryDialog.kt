@@ -12,10 +12,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.noteapp.core.model.CategoryOwnerType
-import com.noteapp.feature_detailedscreens.databinding.DialogChangeCategoryBinding
 import com.noteapp.ui.R
 import com.noteapp.ui.ext.toChipGroup
 import com.noteapp.ui.model.UiCategory
+import com.study.feature_detailed_screen.databinding.DialogChangeCategoryBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
