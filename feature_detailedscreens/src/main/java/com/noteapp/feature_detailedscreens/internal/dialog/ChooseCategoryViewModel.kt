@@ -34,7 +34,6 @@ internal class ChooseCategoryViewModel @Inject constructor(
         type.let { state.get<Long>(it.key) ?: throw InvalidNavArgumentsException() }
     }
 
-    // noteItem to observe, categoryList
     private var _noteItem: Flow<NoteItem> = when (type) {
         CategoryOwnerType.TODO_TYPE -> todoUseCases.getTodoFlowById(noteItemId).filterNotNull()
         CategoryOwnerType.NOTE_TYPE -> noteUseCases.getNoteFlowById(noteItemId).filterNotNull()
@@ -62,6 +61,7 @@ internal class ChooseCategoryViewModel @Inject constructor(
     ): List<UiCategory> {
         return when (noteItem) {
             is Note -> {
+                
                 val selectedCategories: List<Category> = noteItem.categories
                 val uiCategories: List<UiCategory> = categories.map { category ->
                     category.toUiCategory(category in selectedCategories)

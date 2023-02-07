@@ -10,6 +10,7 @@ import com.noteapp.core.ext.addButIfExistRemove
 import com.noteapp.core.state.UiState
 import com.noteapp.feature_todolist.internal.model.UiTodoFilters
 import com.noteapp.feature_todolist.internal.util.mappers.toTodoFilters
+import com.noteapp.ui.mappers.toUiCategories
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
@@ -18,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class ListTodoViewModel @Inject constructor(
-    categoryUseCases: CategoryUseCases,
+    private val categoryUseCases: CategoryUseCases,
     private val todoUseCases: TodoUseCases,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -33,14 +34,24 @@ internal class ListTodoViewModel @Inject constructor(
     )
     val todoFilters = _todoFilters.asStateFlow()
 
-    val categories = categoryUseCases.getAllCategories()
-
     private var recentlyRemoved: Todo? = null
     private var jobObservingTodoList: Job? = null
 
     init {
+        observeCategories()
         loadData()
     }
+
+    private fun observeCategories() =
+        viewModelScope.launch {
+            categoryUseCases.getAllCategories().distinctUntilChanged()
+                .collectLatest { repoCategories ->
+                    _todoFilters.update { filters ->
+                        filters.copy(categories = repoCategories.toUiCategories(filters.selectedCategoryIds))
+                    }
+                }
+        }
+
 
     private fun loadData() {
         jobObservingTodoList?.cancel()
@@ -66,7 +77,7 @@ internal class ListTodoViewModel @Inject constructor(
             }
             ListTodoEvent.RestoreItem -> recentlyRemoved?.let { todoUseCases.addTodo(it) }
             is ListTodoEvent.UpdateTodoFilterPeriod -> {
-                _todoFilters.update { it.copy(todoFilterPeriod = event.todoPeriod) }
+                _todoFilters.update { it.copy(period = event.todoPeriod) }
                 loadData()
             }
             is ListTodoEvent.UpdateTodoAdditionalFilters -> {
@@ -80,12 +91,10 @@ internal class ListTodoViewModel @Inject constructor(
             }
             is ListTodoEvent.UpdateSelectedCategoriesId -> {
                 _todoFilters.update { filters ->
-//                    filters.copy(
-//                        selectedCategoriesId
-//                        = filters.selectedCategoriesId.addButIfExistRemove(event.newId)
-//                    )
-                    // todo
-                    filters
+                    filters.copy(
+                        selectedCategoryIds
+                        = filters.selectedCategoryIds.addButIfExistRemove(event.newId)
+                    )
                 }
                 loadData()
             }

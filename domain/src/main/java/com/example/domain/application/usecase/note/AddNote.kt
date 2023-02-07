@@ -1,17 +1,20 @@
 package com.example.domain.application.usecase.note
 
+import com.example.domain.model.Note
 import com.example.domain.repository.NoteRepository
 import com.example.domain.validation.NoteValidator
-import com.example.domain.model.Note
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 
 class AddNote(
     private val noteRepository: NoteRepository,
-    private val noteValidator: NoteValidator
+    private val noteValidator: NoteValidator,
+    private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(note: Note): Result<Long> {
+    suspend operator fun invoke(note: Note): Result<Long> = withContext(dispatcher) {
         val result: Result<Boolean> = noteValidator.isValid(note)
-        return result.exceptionOrNull()?.let { Result.failure(it) }
+        result.exceptionOrNull()?.let { Result.failure(it) }
             ?: Result.success(noteRepository.add(note))
     }
 }

@@ -4,4 +4,4 @@ import com.example.domain.model.TodoFilters
 import com.noteapp.feature_todolist.internal.model.UiTodoFilters
 
 internal fun UiTodoFilters.toTodoFilters() =
-    TodoFilters(emptySet(), todoFilterPeriod, additionalConditions)// todo
+    TodoFilters(emptySet(), period = period, additionalConditions = additionalConditions)

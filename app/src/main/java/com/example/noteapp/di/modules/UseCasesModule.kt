@@ -16,6 +16,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
 @Module
@@ -24,54 +26,72 @@ object UseCasesModule {
 
     @Provides
     @Singleton
+    fun providesCoroutineDispatcher() = Dispatchers.Default
+
+    @Provides
+    @Singleton
     fun providesNoteUseCases(
-        noteRepository: NoteRepository, noteValidator: NoteValidator
+        noteRepository: NoteRepository,
+        noteValidator: NoteValidator,
+        dispatcher: CoroutineDispatcher
     ): NoteUseCases = NoteUseCases(
-        addNote = AddNote(noteRepository, noteValidator),
-        deleteNote = DeleteNote(noteRepository),
-        deleteAllNotes = DeleteAllNotes(noteRepository),
-        updateNote = UpdateNote(noteRepository, noteValidator),
-        addNoteCategory = AddNoteCategory(noteRepository),
-        removeNoteCategory = RemoveNoteCategory(noteRepository),
-        getAllNotes = GetAllNotes(noteRepository),
-        getNoteById = GetNoteById(noteRepository),
-        getNoteFlowById = GetNoteFlowById(noteRepository)
+        addNote = AddNote(noteRepository, noteValidator, dispatcher),
+        deleteNote = DeleteNote(noteRepository, dispatcher),
+        deleteAllNotes = DeleteAllNotes(noteRepository, dispatcher),
+        updateNote = UpdateNote(noteRepository, noteValidator, dispatcher),
+        addNoteCategory = AddNoteCategory(noteRepository, dispatcher),
+        removeNoteCategory = RemoveNoteCategory(noteRepository, dispatcher),
+        getAllNotes = GetAllNotes(noteRepository, dispatcher),
+        getNoteById = GetNoteById(noteRepository, dispatcher),
+        getNoteFlowById = GetNoteFlowById(noteRepository, dispatcher)
     )
 
     @Provides
     @Singleton
     fun providesTodoUseCases(
-        todoRepository: TodoRepository, todoValidator: TodoValidator
+        todoRepository: TodoRepository,
+        todoValidator: TodoValidator,
+        dispatcher: CoroutineDispatcher
     ): TodoUseCases = TodoUseCases(
-        addTodo = AddTodo(todoRepository, todoValidator),
-        deleteTodo = DeleteTodo(todoRepository),
-        deleteAllTodo = DeleteAllTodos(todoRepository),
-        updateTodo = UpdateTodo(todoRepository, todoValidator),
-        updateIsCompleted = UpdateIsCompleted(todoRepository),
-        updateTodoCategory = UpdateTodoCategory(todoRepository),
-        removeTodoCategory = RemoveTodoCategory(todoRepository),
-        getAllTodos = GetAllTodos(todoRepository),
-        getTodoById = GetTodoById(todoRepository),
-        getTodoFlowById = GetTodoFlowById(todoRepository)
+        addTodo = AddTodo(todoRepository, todoValidator, dispatcher),
+        deleteTodo = DeleteTodo(todoRepository, dispatcher),
+        deleteAllTodo = DeleteAllTodos(todoRepository, dispatcher),
+        updateTodo = UpdateTodo(todoRepository, todoValidator, dispatcher),
+        updateIsCompleted = UpdateIsCompleted(todoRepository, dispatcher),
+        updateTodoCategory = UpdateTodoCategory(todoRepository, dispatcher),
+        removeTodoCategory = RemoveTodoCategory(todoRepository, dispatcher),
+        getAllTodos = GetAllTodos(todoRepository, dispatcher),
+        getTodoById = GetTodoById(todoRepository, dispatcher),
+        getTodoFlowById = GetTodoFlowById(todoRepository, dispatcher)
     )
 
     @Provides
     @Singleton
     fun providesCategoryUseCases(
-        categoryRepository: CategoryRepository, categoryValidator: CategoryValidator
+        categoryRepository: CategoryRepository,
+        categoryValidator: CategoryValidator,
+        dispatcher: CoroutineDispatcher
     ): CategoryUseCases = CategoryUseCases(
-        addCategory = AddCategory(categoryRepository, categoryValidator),
-        deleteCategory = DeleteCategory(categoryRepository),
-        updateCategory = UpdateCategory(categoryRepository, categoryValidator),
-        getAllCategories = GetAllCategories(categoryRepository)
+        addCategory = AddCategory(categoryRepository, categoryValidator, dispatcher),
+        deleteCategory = DeleteCategory(categoryRepository, dispatcher),
+        updateCategory = UpdateCategory(categoryRepository, categoryValidator, dispatcher),
+        getAllCategories = GetAllCategories(categoryRepository, dispatcher)
     )
 
     @Provides
     @Singleton
-    fun providesUnitedUseCases(noteRepository: NoteRepository, todoRepository: TodoRepository) =
+    fun providesUnitedUseCases(
+        noteRepository: NoteRepository,
+        todoRepository: TodoRepository,
+        dispatcher: CoroutineDispatcher
+    ) =
         UnitedUseCases(
-            deleteAll = DeleteAll(noteRepository = noteRepository, todoRepository = todoRepository),
-            getBothTodosAndNotes = GetBothTodosAndNotes(noteRepository, todoRepository)
+            deleteAll = DeleteAll(
+                noteRepository = noteRepository,
+                todoRepository = todoRepository,
+                dispatcher
+            ),
+            getBothTodosAndNotes = GetBothTodosAndNotes(noteRepository, todoRepository, dispatcher)
         )
 
 

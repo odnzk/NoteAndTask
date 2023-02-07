@@ -1,13 +1,18 @@
 package com.example.domain.application.usecase.note
 
+import com.example.domain.model.Note
 import com.example.domain.repository.NoteRepository
 import com.example.noteapp.ui.util.exceptions.NotFoundException
-import com.example.domain.model.Note
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 
-class GetNoteById(private val noteRepository: NoteRepository) {
+class GetNoteById(
+    private val noteRepository: NoteRepository,
+    private val dispatcher: CoroutineDispatcher
+) {
 
-    suspend operator fun invoke(noteId: Long): Result<Note> {
-        return noteRepository.getById(noteId)?.let { note -> Result.success(note) }
+    suspend operator fun invoke(noteId: Long): Result<Note> = withContext(dispatcher) {
+        noteRepository.getById(noteId)?.let { note -> Result.success(note) }
             ?: Result.failure(NotFoundException())
     }
 

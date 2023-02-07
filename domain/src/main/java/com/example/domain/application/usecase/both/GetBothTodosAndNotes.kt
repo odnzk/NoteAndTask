@@ -5,13 +5,16 @@ import com.example.domain.model.FiltersInfo
 import com.example.domain.model.NoteItem
 import com.example.domain.repository.NoteRepository
 import com.example.domain.repository.TodoRepository
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
 
 class GetBothTodosAndNotes
     (
     private val noteRepository: NoteRepository,
-    private val todoRepository: TodoRepository
+    private val todoRepository: TodoRepository,
+    private val dispatcher: CoroutineDispatcher
 ) {
 
     operator fun invoke(
@@ -33,7 +36,7 @@ class GetBothTodosAndNotes
             Filter.BOTH -> notes.combine(tasks, ::mergeIntoOneList)
             Filter.NOTES_ONLY -> notes
             Filter.TODO_ONLY -> tasks
-        }
+        }.flowOn(dispatcher)
     }
 
     // todo

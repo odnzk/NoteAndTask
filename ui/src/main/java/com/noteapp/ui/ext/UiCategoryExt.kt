@@ -3,11 +3,11 @@ package com.noteapp.ui.ext
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.util.Log
 import android.util.TypedValue
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.helper.widget.Flow
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.domain.model.Category
 import com.google.android.material.chip.Chip

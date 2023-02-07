@@ -1,6 +1,6 @@
 package com.example.domain.model
 
-enum class TodoPeriod {
+enum class TodoFilterPeriod {
     NO_PERIOD, TODAY, TOMORROW, THIS_WEEK
 }
 
@@ -10,7 +10,7 @@ enum class TodoFilterAdditionalConditions {
 
 data class TodoFilters(
     val selectedCategoriesId: Set<Long>,
-    val todoFilterPeriod: TodoPeriod,
+    val period: TodoFilterPeriod,
     val additionalConditions: Set<TodoFilterAdditionalConditions>
 )
 
