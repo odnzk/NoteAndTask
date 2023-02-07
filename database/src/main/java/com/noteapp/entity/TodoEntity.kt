@@ -1,11 +1,15 @@
-package com.example.data.entity
+package com.noteapp.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(tableName = "todos")
+@Entity(
+    tableName = "todos",
+    indices = [Index(value = ["title"], unique = true)]
+)
 data class TodoEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,

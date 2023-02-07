@@ -3,11 +3,13 @@ package com.noteapp
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.data.entity.jtable.NoteCategoryTable
 import com.noteapp.dao.CategoryDao
 import com.noteapp.dao.NoteDao
 import com.noteapp.dao.TodoDao
-import com.example.data.entity.*
-import com.example.data.entity.jtable.NoteCategoryTable
+import com.noteapp.entity.CategoryEntity
+import com.noteapp.entity.NoteEntity
+import com.noteapp.entity.TodoEntity
 import com.noteapp.util.RoomTypeConverter
 
 @Database(

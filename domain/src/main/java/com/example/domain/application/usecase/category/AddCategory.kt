@@ -13,9 +13,8 @@ class AddCategory(
     private val dispatcher: CoroutineDispatcher
 ) {
     suspend operator fun invoke(category: Category): Result<Long> = withContext(dispatcher) {
-        val result = categoryValidator.isValid(category)
-        result.exceptionOrNull()?.let { Result.failure(it) } ?: Result.success(
-            categoryRepository.add(category)
-        )
+        categoryValidator.hasException(category)?.let {
+            Result.failure(it)
+        } ?: categoryRepository.add(category)
     }
 }

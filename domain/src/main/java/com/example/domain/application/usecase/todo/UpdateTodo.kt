@@ -13,7 +13,7 @@ class UpdateTodo(
     private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(todo: Todo): Result<Boolean> = withContext(dispatcher) {
-        todoValidator.isValid(todo).onSuccess { todoRepository.update(todo) }
+    suspend operator fun invoke(todo: Todo): Result<Int> = withContext(dispatcher) {
+        todoValidator.hasException(todo)?.let { Result.failure(it) } ?: todoRepository.update(todo)
     }
 }

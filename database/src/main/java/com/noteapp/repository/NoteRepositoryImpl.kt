@@ -11,16 +11,18 @@ import javax.inject.Inject
 
 class NoteRepositoryImpl @Inject constructor(
     private val dao: NoteDao
-) : NoteRepository {
+) : NoteRepository, BaseRepository() {
 
-    override suspend fun add(elem: Note): Long = dao.insert(elem.toEntity())
+    override suspend fun add(elem: Note): Result<Long> {
+        return doRequest { dao.insert(elem.toEntity()) }
+    }
 
     override suspend fun delete(id: Long) {
         dao.deleteById(id)
     }
 
-    override suspend fun update(elem: Note) {
-        dao.update(elem.toEntity())
+    override suspend fun update(elem: Note): Result<Int> {
+        return doRequest { dao.update(elem.toEntity()) }
     }
 
     override suspend fun getById(id: Long): Note? =
@@ -52,3 +54,4 @@ class NoteRepositoryImpl @Inject constructor(
         return dao.getByCategoryId(categoryIds, noteTitle).map { list -> list.map { it.toNote() } }
     }
 }
+

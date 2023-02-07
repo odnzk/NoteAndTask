@@ -2,8 +2,8 @@ package com.example.data.tuples
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.example.data.entity.CategoryEntity
-import com.example.data.entity.TodoEntity
+import com.noteapp.entity.CategoryEntity
+import com.noteapp.entity.TodoEntity
 
 data class TodoWithCategoryTuple(
     @Embedded val todo: TodoEntity,

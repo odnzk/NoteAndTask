@@ -5,10 +5,10 @@ import com.example.noteapp.ui.util.exceptions.InvalidTodoException
 
 class TodoValidator {
 
-    fun isValid(todo: Todo): Result<Boolean> =
+    fun hasException(todo: Todo): Exception? =
         if (todo.title.isBlank() || todo.title.length !in MIN_LENGTH..MAX_LENGTH) {
-            Result.failure(InvalidTodoException(Field.TITLE))
-        } else Result.success(true)
+            InvalidTodoException(Field.TITLE)
+        } else null
 
 
     companion object {

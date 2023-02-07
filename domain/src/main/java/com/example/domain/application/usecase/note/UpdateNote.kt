@@ -12,8 +12,8 @@ class UpdateNote(
     private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(note: Note): Result<Boolean> = withContext(dispatcher) {
-        noteValidator.isValid(note).onSuccess { noteRepository.update(note) }
+    suspend operator fun invoke(note: Note): Result<Int> = withContext(dispatcher) {
+        noteValidator.hasException(note)?.let { Result.failure(it) } ?: noteRepository.update(note)
     }
 
 }

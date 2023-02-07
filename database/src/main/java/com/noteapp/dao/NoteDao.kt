@@ -3,8 +3,8 @@ package com.noteapp.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import com.example.data.entity.NoteEntity
 import com.example.data.tuples.NoteWithCategoriesTuple
+import com.noteapp.entity.NoteEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

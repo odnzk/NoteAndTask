@@ -5,10 +5,10 @@ import com.example.noteapp.ui.util.exceptions.InvalidCategoryException
 
 class CategoryValidator {
 
-    fun isValid(category: Category): Result<Boolean> {
+    fun hasException(category: Category): Exception? {
         return if (category.title.isBlank() || category.title.length !in MIN_LENGTH..MAX_LENGTH) {
-            Result.failure(InvalidCategoryException(Field.TITLE))
-        } else Result.success(true)
+            InvalidCategoryException(Field.TITLE)
+        } else null
     }
 
     companion object {

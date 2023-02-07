@@ -13,8 +13,6 @@ class AddTodo(
 ) {
 
     suspend operator fun invoke(todo: Todo): Result<Long> = withContext(dispatcher) {
-        val result = todoValidator.isValid(todo)
-        result.exceptionOrNull()?.let { Result.failure(it) }
-            ?: Result.success(todoRepository.add(todo))
+        todoValidator.hasException(todo)?.let { Result.failure(it) } ?: todoRepository.add(todo)
     }
 }

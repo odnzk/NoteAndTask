@@ -1,8 +1,8 @@
 package com.example.data.mapper
 
-import com.example.data.entity.TodoEntity
 import com.example.data.tuples.TodoWithCategoryTuple
 import com.example.domain.model.Todo
+import com.noteapp.entity.TodoEntity
 import com.noteapp.util.mapper.toCategory
 
 internal fun Todo.toEntity() = TodoEntity(

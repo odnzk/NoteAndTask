@@ -77,3 +77,15 @@ object Deps {
     const val safeArgs = "androidx.navigation.safeargs"
     const val hiltPlugin = "com.google.dagger.hilt.android"
 }
+
+object Plugins {
+    const val androidApplication = "com.android.application"
+    const val kotlinAndroid = "org.jetbrains.kotlin.android"
+    const val kotlinKapt = "kotlin-kapt"
+    const val hiltAndroid = "com.google.dagger.hilt.android"
+    const val NavigationSafeArgs = "androidx.navigation.safeargs.kotlin"
+
+
+    const val javaLibrary = "java-library"
+    const val kotlinJvm = "org.jetbrains.kotlin.jvm"
+}
