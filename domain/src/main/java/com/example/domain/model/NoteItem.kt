@@ -24,7 +24,7 @@ data class Todo(
     val category: Category?,
     var deadlineDate: Date? = null,
     val reminderCalendar: Calendar? = null, // todo
-    val periodDuration: Duration? = null // todo
+    val periodicity: Duration? = null // todo
 ) : NoteItem(id) {
     companion object {
         fun defaultInstance() = Todo(0, "", false, null, null)

@@ -7,8 +7,8 @@ import com.example.domain.repository.NoteRepository
 import com.example.domain.repository.TodoRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.zip
 
 class GetBothTodosAndNotes
     (
@@ -17,30 +17,34 @@ class GetBothTodosAndNotes
     private val dispatcher: CoroutineDispatcher
 ) {
 
+    private fun mergeIntoOneList(notes: List<NoteItem>, tasks: List<NoteItem>): List<NoteItem> =
+        tasks.toMutableList().apply { addAll(notes) }
+
+
     operator fun invoke(
         filterInfo: FiltersInfo
     ): Flow<List<NoteItem>> {
-        // selected category
-        val isCategoryEmpty = filterInfo.selectedCategoriesId.isEmpty()
-        val notes = if (isCategoryEmpty) noteRepository.getByTitle(filterInfo.searchQuery)
-        else noteRepository.getByCategoryId(
-            categoryIds = filterInfo.selectedCategoriesId, noteTitle = filterInfo.searchQuery
-        )
-        val tasks = if (isCategoryEmpty) todoRepository.getByTitle(filterInfo.searchQuery)
-        else todoRepository.getByCategoriesId(
-            categoryIds = filterInfo.selectedCategoriesId, todoTitle = filterInfo.searchQuery
-        )
+        val isSelectedCategoryEmpty = filterInfo.selectedCategoriesId.isEmpty()
+        val notes: Flow<List<NoteItem>>
+        val tasks: Flow<List<NoteItem>>
+        if (isSelectedCategoryEmpty) {
+            notes = noteRepository.getByTitle(filterInfo.searchQuery)
+            tasks = todoRepository.getByTitle(filterInfo.searchQuery)
+        } else {
+            notes = noteRepository.getByCategoryId(
+                filterInfo.selectedCategoriesId,
+                filterInfo.searchQuery
+            )
+            tasks = todoRepository.getByCategoriesId(
+                categoryIds = filterInfo.selectedCategoriesId, todoTitle = filterInfo.searchQuery
+            )
+        }
         return when (filterInfo.filter) {
-            // combine because we are waiting for both notes and task
-//            Filter.BOTH -> notes.combine(tasks, ::mergeIntoOneList)
-            Filter.BOTH -> notes.combine(tasks, ::mergeIntoOneList)
+            Filter.BOTH -> notes.zip(tasks, ::mergeIntoOneList)
             Filter.NOTES_ONLY -> notes
             Filter.TODO_ONLY -> tasks
         }.flowOn(dispatcher)
     }
 
-    // todo
-    private fun mergeIntoOneList(notes: List<NoteItem>, tasks: List<NoteItem>): List<NoteItem> =
-        tasks.toMutableList().apply { addAll(notes) }
 
 }
