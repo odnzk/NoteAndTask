@@ -2,7 +2,7 @@ package com.noteapp.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.example.data.entity.CategoryEntity
+import com.noteapp.entity.CategoryEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

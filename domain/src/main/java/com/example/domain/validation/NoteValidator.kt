@@ -5,14 +5,12 @@ import com.example.noteapp.ui.util.exceptions.InvalidNoteException
 
 class NoteValidator {
 
-    fun isValid(note: Note): Result<Boolean> {
+    fun hasException(note: Note): Exception? {
         return if (note.title.isBlank() || note.title.length !in MIN_LENGTH..MAX_LENGTH) {
-            Result.failure(InvalidNoteException(Field.TITLE))
+            InvalidNoteException(Field.TITLE)
         } else if (note.content.isBlank()) {
-            Result.failure(InvalidNoteException(Field.CONTENT))
-        } else {
-            Result.success(true)
-        }
+            InvalidNoteException(Field.CONTENT)
+        } else null
     }
 
     companion object {

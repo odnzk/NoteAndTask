@@ -10,7 +10,7 @@ interface BaseDao<T> {
     suspend fun insert(item: T): Long
 
     @Update
-    suspend fun update(item: T)
+    suspend fun update(item: T): Long
 
     @Delete
     suspend fun delete(item: T)

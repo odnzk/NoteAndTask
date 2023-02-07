@@ -12,11 +12,8 @@ class UpdateCategory(
     private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(category: Category): Result<Boolean> = withContext(dispatcher) {
-        val result: Result<Boolean> = categoryValidator.isValid(category)
-        if (result.isSuccess) {
-            categoryRepository.update(category)
-            Result.success(true)
-        } else result
+    suspend operator fun invoke(category: Category): Result<Long> = withContext(dispatcher) {
+        categoryValidator.hasException(category)?.let { Result.failure(it) }
+            ?: categoryRepository.update(category)
     }
 }

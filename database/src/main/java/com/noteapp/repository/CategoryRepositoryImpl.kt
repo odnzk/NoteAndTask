@@ -1,28 +1,28 @@
 package com.noteapp.repository
 
+import com.example.domain.model.Category
+import com.example.domain.repository.CategoryRepository
 import com.noteapp.dao.CategoryDao
 import com.noteapp.util.mapper.toCategory
 import com.noteapp.util.mapper.toEntity
-import com.example.domain.repository.CategoryRepository
-import com.example.domain.model.Category
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class CategoryRepositoryImpl @Inject constructor(
     private val dao: CategoryDao
-) : CategoryRepository {
+) : CategoryRepository, BaseRepository() {
 
-    override suspend fun add(elem: Category): Long {
-        return dao.insert(elem.toEntity())
+    override suspend fun add(elem: Category): Result<Long> {
+        return doRequest { dao.insert(elem.toEntity()) }
     }
 
     override suspend fun delete(id: Long) {
         dao.deleteById(id)
     }
 
-    override suspend fun update(elem: Category) {
-        dao.update(elem.toEntity())
+    override suspend fun update(elem: Category): Result<Long> {
+        return doRequest { dao.update(elem.toEntity()) }
     }
 
     override suspend fun getById(id: Long): Category? {

@@ -13,8 +13,6 @@ class AddNote(
 ) {
 
     suspend operator fun invoke(note: Note): Result<Long> = withContext(dispatcher) {
-        val result: Result<Boolean> = noteValidator.isValid(note)
-        result.exceptionOrNull()?.let { Result.failure(it) }
-            ?: Result.success(noteRepository.add(note))
+        noteValidator.hasException(note)?.let { Result.failure(it) } ?: noteRepository.add(note)
     }
 }
