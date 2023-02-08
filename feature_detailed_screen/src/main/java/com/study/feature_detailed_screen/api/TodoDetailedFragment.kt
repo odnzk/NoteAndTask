@@ -8,16 +8,14 @@ import android.widget.DatePicker
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.domain.model.Todo
-import com.example.noteapp.ui.util.exceptions.InvalidNoteException
+import com.example.domain.util.exceptions.InvalidNoteException
 import com.example.noteapp.ui.util.ext.showDatePicker
 import com.google.android.material.chip.Chip
-import com.noteapp.core.state.handleState
 import com.noteapp.ui.R
+import com.noteapp.ui.collectAsUiState
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
 import com.study.feature_detailed_screen.databinding.FragmentDetailedTodoBinding
@@ -25,7 +23,6 @@ import com.study.feature_detailed_screen.internal.fragments.todo.detailed.TodoDe
 import com.study.feature_detailed_screen.internal.fragments.todo.detailed.TodoDetailsViewModel
 import com.study.feature_detailed_screen.internal.navigation.fromTodoToChooseCategoryDialog
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -71,23 +68,20 @@ class TodoDetailedFragment : Fragment() {
 
     private fun initTodo() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.todo.collectLatest { state ->
-                    state.handleState(
-                        onLoadingAction = stateLoadingBinding::loadingStarted,
-                        onSuccessAction = ::showTodo,
-                        onErrorAction = ::errorOccurred
-                    )
-                }
-            }
+            viewModel.todo.collectAsUiState(
+                context,
+                viewLifecycleOwner,
+                onSuccess = ::showTodo, onLoading = stateLoadingBinding::loadingStarted,
+                onError = ::onError
+            )
         }
     }
 
-    private fun errorOccurred(error: Throwable) {
-        if (error is InvalidNoteException) {
-            binding.etTitle.error = getString(R.string.error_invalid_todo_title)
+    private fun onError(handlerError: HandledError) {
+        if (handlerError.error is InvalidNoteException) {
+            binding.etTitle.error = handlerError.message
         } else {
-            stateLoadingBinding.errorOccurred(error)
+            stateLoadingBinding.onError(handlerError.message)
             { viewModel.onEvent(TodoDetailedEvent.Reload) }
         }
     }

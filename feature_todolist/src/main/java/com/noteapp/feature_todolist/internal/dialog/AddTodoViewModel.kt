@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddTodoViewModel @Inject constructor(
-    private val categoryUseCases: CategoryUseCases,
+    categoryUseCases: CategoryUseCases,
     private val todoUseCases: TodoUseCases
 ) : ViewModel() {
 
@@ -28,7 +28,6 @@ class AddTodoViewModel @Inject constructor(
 
     val categories: Flow<List<Category>> = categoryUseCases.getAllCategories()
 
-
     fun onEvent(event: AddTodoDialogEvent) = viewModelScope.launch {
         when (event) {
             AddTodoDialogEvent.AddTodo -> {
@@ -36,7 +35,6 @@ class AddTodoViewModel @Inject constructor(
                     // todo add notification worker is it needs
                     _currentTodo.value = CompletableState.Completed(data = currentTodo.value.data)
                 }, onFailure = { error ->
-                    // todo
                     _currentTodo.value =
                         CompletableState.Error(data = currentTodo.value.data, error = error)
                 })
@@ -58,9 +56,7 @@ class AddTodoViewModel @Inject constructor(
             }
             is AddTodoDialogEvent.UpdateReminder -> {
                 _currentTodo.update {
-                    CompletableState.InProgress(
-                        data = it.data.copy(reminderCalendar = event.calendar)
-                    )
+                    CompletableState.InProgress(data = it.data.copy(reminderCalendar = event.calendar))
                 }
             }
             is AddTodoDialogEvent.UpdatePeriodicity -> {} // todo

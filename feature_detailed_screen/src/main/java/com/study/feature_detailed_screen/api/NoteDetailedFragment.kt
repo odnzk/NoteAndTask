@@ -9,9 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.domain.model.Note
-import com.example.domain.validation.Field
-import com.example.domain.validation.NoteValidator
-import com.example.noteapp.ui.util.exceptions.InvalidNoteException
 import com.noteapp.ui.R
 import com.noteapp.ui.collectAsUiState
 import com.noteapp.ui.databinding.StateLoadingBinding
@@ -78,26 +75,19 @@ class NoteDetailedFragment : Fragment() {
 
     private fun observeState() = lifecycleScope.launch {
         viewModel.note.collectAsUiState(
+            context,
             viewLifecycleOwner,
             onSuccess = ::showNote,
-            onError = ::showError,
+            onError = this@NoteDetailedFragment::onError,
             onLoading = stateLoadingBinding::loadingStarted
         )
     }
 
-    private fun showError(error: Throwable) =
-        if (error is InvalidNoteException) {
-            when (error.field) {
-                Field.TITLE -> binding.etTitle.error = getString(
-                    R.string.error_invalid_note_tile,
-                    NoteValidator.MIN_LENGTH,
-                    NoteValidator.MAX_LENGTH
-                )
-                else -> binding.etContent.error = getString(R.string.error_invalid_note_content)
-            }
-        } else stateLoadingBinding.errorOccurred(error) {
+    private fun onError(handledError: HandledError) =
+        stateLoadingBinding.onError(handledError.message) {
             viewModel.onEvent(NoteDetailedEvent.Reload)
         }
+
 
     private fun showNote(note: Note) {
         stateLoadingBinding.loadingFinished()

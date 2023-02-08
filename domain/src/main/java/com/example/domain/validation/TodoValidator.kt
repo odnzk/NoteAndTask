@@ -1,7 +1,8 @@
 package com.example.domain.validation
 
 import com.example.domain.model.Todo
-import com.example.noteapp.ui.util.exceptions.InvalidTodoException
+import com.example.domain.util.exceptions.Field
+import com.example.domain.util.exceptions.InvalidTodoException
 
 class TodoValidator {
 

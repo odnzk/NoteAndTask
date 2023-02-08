@@ -93,16 +93,17 @@ class NotesListFragment : Fragment() {
     private fun observeNotes() =
         lifecycleScope.launch {
             viewModel.notes.collectAsUiState(
+                context,
                 lifecycleOwner = viewLifecycleOwner,
                 onSuccess = ::showNotes,
-                onError = ::showError,
+                onError = ::onError,
                 onLoading = stateLoadingBinding::loadingStarted
             )
 
         }
 
-    private fun showError(throwable: Throwable) =
-        stateLoadingBinding.errorOccurred(throwable) {
+    private fun onError(handledError: HandledError) =
+        stateLoadingBinding.onError(handledError.message) {
             viewModel.onEvent(ListNoteEvent.Reload)
         }
 

@@ -72,15 +72,16 @@ class TodosListFragment : Fragment() {
 
     private fun observeTodos() = lifecycleScope.launch {
         viewModel.todos.collectAsUiState(
+            context,
             lifecycleOwner = viewLifecycleOwner,
             onSuccess = ::showTodoList,
-            onError = ::showError,
+            onError = ::onError,
             onLoading = stateLoadingBinding::loadingStarted
         )
     }
 
-    private fun showError(throwable: Throwable) {
-        stateLoadingBinding.errorOccurred(throwable) {
+    private fun onError(handledError: HandledError) {
+        stateLoadingBinding.onError(handledError.message) {
             viewModel.onEvent(ListTodoEvent.Reload)
         }
     }

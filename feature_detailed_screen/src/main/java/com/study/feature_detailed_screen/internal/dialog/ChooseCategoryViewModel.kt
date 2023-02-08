@@ -10,7 +10,7 @@ import com.example.domain.model.Category
 import com.example.domain.model.Note
 import com.example.domain.model.NoteItem
 import com.example.domain.model.Todo
-import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
+import com.example.domain.util.exceptions.InvalidNavArgumentsException
 import com.noteapp.core.model.CategoryOwnerType
 import com.noteapp.ui.mappers.toUiCategory
 import com.noteapp.ui.model.UiCategory

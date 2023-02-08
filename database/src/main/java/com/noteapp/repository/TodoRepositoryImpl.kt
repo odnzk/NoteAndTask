@@ -4,6 +4,7 @@ import com.example.data.mapper.toEntity
 import com.example.data.mapper.toTodo
 import com.example.domain.model.Todo
 import com.example.domain.repository.TodoRepository
+import com.example.domain.util.exceptions.UniqueConstraints
 import com.noteapp.dao.TodoDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -13,7 +14,7 @@ class TodoRepositoryImpl @Inject constructor(
     private val dao: TodoDao
 ) : TodoRepository, BaseRepository() {
     override suspend fun add(elem: Todo): Result<Long> {
-        return doRequest { dao.insert(elem.toEntity()) }
+        return doRequest((UniqueConstraints.TODO_TITLE)) { dao.insert(elem.toEntity()) }
     }
 
     override suspend fun delete(id: Long) {
@@ -21,7 +22,7 @@ class TodoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun update(elem: Todo): Result<Int> {
-        return doRequest { dao.update(elem.toEntity()) }
+        return doRequest(UniqueConstraints.TODO_TITLE) { dao.update(elem.toEntity()) }
     }
 
     override fun getAll(): Flow<List<Todo>> =

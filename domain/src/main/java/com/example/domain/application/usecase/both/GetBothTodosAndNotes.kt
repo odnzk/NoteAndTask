@@ -5,10 +5,12 @@ import com.example.domain.model.NoteItem
 import com.example.domain.model.NoteItemFilter
 import com.example.domain.repository.NoteRepository
 import com.example.domain.repository.TodoRepository
+import com.example.domain.util.sorting.DefaultSorter
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 class GetBothTodosAndNotes
     (
@@ -17,16 +19,12 @@ class GetBothTodosAndNotes
     private val dispatcher: CoroutineDispatcher
 ) {
 
-    private fun mergeIntoOneList(notes: List<NoteItem>, tasks: List<NoteItem>): List<NoteItem> =
-        tasks.toMutableList().apply { addAll(notes) }
-
-
     operator fun invoke(
         filterInfo: FiltersInfo
     ): Flow<List<NoteItem>> {
         val isSelectedCategoryEmpty = filterInfo.selectedCategoriesId.isEmpty()
         val notes: Flow<List<NoteItem>>
-        val tasks: Flow<List<NoteItem>>
+        var tasks: Flow<List<NoteItem>>
         if (isSelectedCategoryEmpty) {
             notes = noteRepository.getByTitle(filterInfo.searchQuery)
             tasks = todoRepository.getByTitle(filterInfo.searchQuery)
@@ -39,6 +37,7 @@ class GetBothTodosAndNotes
                 categoryIds = filterInfo.selectedCategoriesId, todoTitle = filterInfo.searchQuery
             )
         }
+        tasks = tasks.map { DefaultSorter.sort(it) }
         return when (filterInfo.filter) {
             NoteItemFilter.BOTH -> notes.combine(tasks, ::mergeIntoOneList)
             NoteItemFilter.NOTES_ONLY -> notes
@@ -46,5 +45,7 @@ class GetBothTodosAndNotes
         }.flowOn(dispatcher)
     }
 
+    private fun mergeIntoOneList(notes: List<NoteItem>, tasks: List<NoteItem>): List<NoteItem> =
+        tasks.toMutableList().apply { addAll(notes) }
 
 }

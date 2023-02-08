@@ -4,6 +4,7 @@ import com.example.data.mapper.toEntity
 import com.example.data.mapper.toNote
 import com.example.domain.model.Note
 import com.example.domain.repository.NoteRepository
+import com.example.domain.util.exceptions.UniqueConstraints
 import com.noteapp.dao.NoteDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -14,7 +15,7 @@ class NoteRepositoryImpl @Inject constructor(
 ) : NoteRepository, BaseRepository() {
 
     override suspend fun add(elem: Note): Result<Long> {
-        return doRequest { dao.insert(elem.toEntity()) }
+        return doRequest(UniqueConstraints.NOTE_TITLE) { dao.insert(elem.toEntity()) }
     }
 
     override suspend fun delete(id: Long) {
@@ -22,7 +23,7 @@ class NoteRepositoryImpl @Inject constructor(
     }
 
     override suspend fun update(elem: Note): Result<Int> {
-        return doRequest { dao.update(elem.toEntity()) }
+        return doRequest(UniqueConstraints.NOTE_TITLE) { dao.update(elem.toEntity()) }
     }
 
     override suspend fun getById(id: Long): Note? =

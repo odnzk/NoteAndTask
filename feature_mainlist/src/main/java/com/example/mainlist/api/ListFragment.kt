@@ -145,14 +145,15 @@ class ListFragment : Fragment() {
 
     private fun observeState() = lifecycleScope.launch {
         viewModel.list.collectAsUiState(
+            context,
             viewLifecycleOwner,
             onSuccess = ::showList,
-            onError = ::showError, onLoading = stateLoadingBinding::loadingStarted
+            onError = ::onError, onLoading = stateLoadingBinding::loadingStarted
         )
     }
 
-    private fun showError(error: Throwable) =
-        stateLoadingBinding.errorOccurred(error) {
+    private fun onError(handledError: HandledError) =
+        stateLoadingBinding.onError(handledError.message) {
             viewModel.onEvent(ListFragmentEvent.Reload)
         }
 

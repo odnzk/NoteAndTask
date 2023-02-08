@@ -1,6 +1,4 @@
-package com.example.noteapp.ui.util.exceptions
-
-import com.example.domain.validation.Field
+package com.example.domain.util.exceptions
 
 open class AppException : RuntimeException()
 
@@ -15,3 +13,14 @@ class InvalidNavArgumentsException : AppException()
 class InvalidCategoryException(val field: Field) : AppException()
 class InvalidNoteException(val field: Field) : AppException()
 class InvalidTodoException(val field: Field) : AppException()
+
+class NotUniqueFieldException(val constraint: UniqueConstraints) : AppException()
+
+enum class UniqueConstraints {
+    CATEGORY_TITLE, NOTE_TITLE, TODO_TITLE
+}
+
+enum class Field {
+    TITLE,
+    CONTENT
+}

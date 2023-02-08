@@ -17,13 +17,9 @@ sealed interface TodoSorter {
 
 object DefaultSorter : TodoSorter {
     override fun sort(items: List<Todo>): List<Todo> {
-        // without deadline will be last
-        return items.sortedWith { t1, t2 ->
-            if (t1.deadlineDate == null && t2.deadlineDate == null) return@sortedWith 0
-            if (t1.deadlineDate == null) return@sortedWith 1
-            if (t2.deadlineDate == null) return@sortedWith -1
-            (t1.deadlineDate!!.time - t2.deadlineDate!!.time).toInt()
-        }
+        val todoComparator: Comparator<Todo> =
+            compareBy<Todo> { it.isCompleted }.thenBy { it.deadlineDate }
+        return items.sortedWith(todoComparator)
     }
 }
 

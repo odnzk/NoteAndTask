@@ -1,7 +1,8 @@
 package com.example.domain.validation
 
 import com.example.domain.model.Note
-import com.example.noteapp.ui.util.exceptions.InvalidNoteException
+import com.example.domain.util.exceptions.Field
+import com.example.domain.util.exceptions.InvalidNoteException
 
 class NoteValidator {
 

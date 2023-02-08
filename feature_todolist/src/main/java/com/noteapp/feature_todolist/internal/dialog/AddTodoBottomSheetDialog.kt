@@ -11,8 +11,6 @@ import android.widget.DatePicker
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.domain.validation.TodoValidator
-import com.example.noteapp.ui.util.exceptions.InvalidTodoException
 import com.example.noteapp.ui.util.ext.showDatePicker
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.noteapp.feature_todolist.databinding.BottomSheetAddTodoBinding
@@ -21,6 +19,7 @@ import com.noteapp.feature_todolist.internal.TodoPeriodicity
 import com.noteapp.feature_todolist.internal.TodoReminder
 import com.noteapp.ui.R
 import com.noteapp.ui.collectAsUiState
+import com.noteapp.ui.ext.HandledError
 import com.noteapp.ui.ext.initValues
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
@@ -138,6 +137,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
     private fun observeState() {
         lifecycleScope.launch {
             viewModel.currentTodo.collectAsUiState(
+                context,
                 lifecycleOwner = viewLifecycleOwner,
                 onError = ::onError,
                 onComplete = { dismiss() },
@@ -146,17 +146,8 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private fun onError(throwable: Throwable) {
-        val message = when (throwable) {
-            is InvalidTodoException -> getString(
-                R.string.error_invalid_todo_title,
-                TodoValidator.MIN_LENGTH,
-                TodoValidator.MAX_LENGTH
-            )
-            else -> getString(R.string.error_todo_with_this_title_already_exist)
-        }
-        binding.tilTitle.error = message
-
+    private fun onError(handledError: HandledError) {
+        binding.tilTitle.error = handledError.message
     }
 
     private fun initCategoriesSpinner() {

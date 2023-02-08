@@ -2,7 +2,7 @@ package com.example.domain.application.usecase.note
 
 import com.example.domain.model.Note
 import com.example.domain.repository.NoteRepository
-import com.example.noteapp.ui.util.exceptions.NotFoundException
+import com.example.domain.util.exceptions.NotFoundException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 

@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.application.usecase.note.NoteUseCases
 import com.example.domain.model.Note
-import com.example.noteapp.ui.util.exceptions.InvalidNavArgumentsException
-import com.example.noteapp.ui.util.exceptions.NotFoundException
+import com.example.domain.util.exceptions.InvalidNavArgumentsException
+import com.example.domain.util.exceptions.NotFoundException
 import com.noteapp.core.constants.Constants
 import com.noteapp.core.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
