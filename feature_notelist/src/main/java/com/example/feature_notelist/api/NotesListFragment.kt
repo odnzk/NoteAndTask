@@ -17,7 +17,7 @@ import com.example.feature_notelist.databinding.FragmentNotesListBinding
 import com.example.feature_notelist.internal.ListNoteEvent
 import com.example.feature_notelist.internal.ListNoteViewModel
 import com.example.feature_notelist.internal.navigation.toDetailedNote
-import com.noteapp.ui.UiStateObserver
+import com.noteapp.ui.collectAsUiState
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
 import com.noteapp.ui.recycler.note.NoteAdapter
@@ -25,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class NotesListFragment : Fragment(), UiStateObserver {
+class NotesListFragment : Fragment() {
     private var _binding: FragmentNotesListBinding? = null
     private val binding: FragmentNotesListBinding get() = _binding!!
 
@@ -49,7 +49,7 @@ class NotesListFragment : Fragment(), UiStateObserver {
                 findNavController().toDetailedNote()
             }
             btnClearAll.setOnClickListener {
-                viewModel.onEvent(ListNoteEvent.ClearAll)
+                viewModel.onEvent(ListNoteEvent.DeleteAllNotes)
             }
             spinnerSort.onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(
@@ -58,7 +58,7 @@ class NotesListFragment : Fragment(), UiStateObserver {
                     position: Int,
                     id: Long
                 ) {
-                    // todo
+                    // todo dynamic id?
                     val order: NoteSortOrder = when (position) {
                         1 -> NoteSortOrder.BY_DATE
                         2 -> NoteSortOrder.BY_ALPHABET
@@ -80,10 +80,10 @@ class NotesListFragment : Fragment(), UiStateObserver {
         binding.recyclerViewNotes.run {
             val itemTouchHelper =
                 ItemTouchHelper(com.noteapp.ui.recycler.SwipeCallback(notesAdapter) { removedItem ->
-                    viewModel.onEvent(ListNoteEvent.DeleteItem(removedItem as Note))
+                    viewModel.onEvent(ListNoteEvent.DeleteNote(removedItem as Note))
                     // undo listener
                     val listener =
-                        View.OnClickListener { viewModel.onEvent(ListNoteEvent.RestoreItem) }
+                        View.OnClickListener { viewModel.onEvent(ListNoteEvent.RestoreNote) }
                     showSnackbar(com.noteapp.ui.R.string.success_delete, listener)
                 })
             initStandardVerticalRecyclerView(itemTouchHelper)
@@ -92,7 +92,7 @@ class NotesListFragment : Fragment(), UiStateObserver {
 
     private fun observeNotes() =
         lifecycleScope.launch {
-            viewModel.notes.collectState(
+            viewModel.notes.collectAsUiState(
                 lifecycleOwner = viewLifecycleOwner,
                 onSuccess = ::showNotes,
                 onError = ::showError,
@@ -103,7 +103,7 @@ class NotesListFragment : Fragment(), UiStateObserver {
 
     private fun showError(throwable: Throwable) =
         stateLoadingBinding.errorOccurred(throwable) {
-            viewModel.onEvent(ListNoteEvent.TryAgain)
+            viewModel.onEvent(ListNoteEvent.Reload)
         }
 
     private fun showNotes(notes: List<Note>) {

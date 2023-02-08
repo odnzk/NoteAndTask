@@ -46,7 +46,7 @@ class AddTodoViewModel @Inject constructor(
                     CompletableState.InProgress(data = it.data.copy(category = event.category))
                 }
             }
-            is AddTodoDialogEvent.UpdateDeadlineDate -> {
+            is AddTodoDialogEvent.UpdateDeadline -> {
                 _currentTodo.update {
                     CompletableState.InProgress(data = it.data.copy(deadlineDate = event.date))
                 }
@@ -56,14 +56,14 @@ class AddTodoViewModel @Inject constructor(
                     CompletableState.InProgress(data = it.data.copy(title = event.title))
                 }
             }
-            is AddTodoDialogEvent.UpdateReminderInfo -> {
+            is AddTodoDialogEvent.UpdateReminder -> {
                 _currentTodo.update {
                     CompletableState.InProgress(
                         data = it.data.copy(reminderCalendar = event.calendar)
                     )
                 }
             }
-            is AddTodoDialogEvent.UpdatePeriodInfo -> {} // todo
+            is AddTodoDialogEvent.UpdatePeriodicity -> {} // todo
         }
     }
 

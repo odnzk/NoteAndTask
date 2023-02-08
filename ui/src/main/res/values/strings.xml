@@ -4,12 +4,6 @@
     <!--    task style-->
     <string name="deadline_today">Today</string>
 
-    <!--    error messages-->
-    <string name="error_not_found">Nothing was found for this query</string>
-    <string name="error_navigation_exception">Navigation exception occurred</string>
-    <string name="error_unknown">Unknown error</string>
-    <string name="error_failed_loading_from_database">Loading data from database was failed</string>
-
     <!--    state messages-->
     <string name="try_again">Try again</string>
 
@@ -17,12 +11,19 @@
     <string name="repeat">Repeat</string>
     <string name="delete_todo">Delete todo</string>
 
+    <!--    error messages-->
+    <string name="error_not_found">Nothing was found for this query</string>
+    <string name="error_navigation_exception">Navigation exception occurred</string>
+    <string name="error_unknown">Unknown error:  %1$s </string>
+    <string name="error_failed_loading_from_database">Loading data from database was failed</string>
     <string name="error_empty_or_blanc_category_title">Cannot be empty or blanc</string>
     <string name="error_invalid_note_tile">Note title cannot be blank or contain less than %1$d or more than %2$d characters</string>
     <string name="error_invalid_todo_title">Task title cannot be blank or contain less than %1$d or more than %2$d characters</string>
     <string name="error_invalid_category_title">Category title cannot be blank or contain less than %1$d or more than %2$d characters</string>
     <string name="error_invalid_note_content">Note content cannot be blank</string>
     <string name="error_todo_with_this_title_already_exist">Task with this title already exists</string>
+    <string name="error_note_with_this_title_already_exist">Note with this title already exists</string>
+    <string name="error_category_with_this_title_already_exist">Category with this title already exists</string>
 
     <string name="success_delete">Successfully deleted</string>
     <string name="success_save">Successfully saved</string>

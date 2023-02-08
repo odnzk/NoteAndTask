@@ -19,8 +19,8 @@ import com.noteapp.feature_todolist.databinding.BottomSheetAddTodoBinding
 import com.noteapp.feature_todolist.internal.TodoDeadline
 import com.noteapp.feature_todolist.internal.TodoPeriodicity
 import com.noteapp.feature_todolist.internal.TodoReminder
-import com.noteapp.ui.CompletableStateObserver
 import com.noteapp.ui.R
+import com.noteapp.ui.collectAsUiState
 import com.noteapp.ui.ext.initValues
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
@@ -30,7 +30,7 @@ import java.util.*
 
 @AndroidEntryPoint
 
-class AddTodoBottomSheetDialog : BottomSheetDialogFragment(), CompletableStateObserver {
+class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
     private var _binding: BottomSheetAddTodoBinding? = null
     private val binding: BottomSheetAddTodoBinding get() = _binding!!
 
@@ -66,7 +66,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment(), CompletableStateOb
             override fun onItemSelected(
                 parent: AdapterView<*>?, p1: View?, pos: Int, id: Long
             ) {
-                viewModel.onEvent(AddTodoDialogEvent.UpdatePeriodInfo(TodoPeriodicity.values()[pos]))
+                viewModel.onEvent(AddTodoDialogEvent.UpdatePeriodicity(TodoPeriodicity.values()[pos]))
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) = Unit
@@ -100,13 +100,13 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment(), CompletableStateOb
                 when (TodoDeadline.values()[pos]) {
                     TodoDeadline.NO_DEADLINE -> {}
                     TodoDeadline.TODAY -> viewModel.onEvent(
-                        AddTodoDialogEvent.UpdateDeadlineDate(
+                        AddTodoDialogEvent.UpdateDeadline(
                             Date()
                         )
                     )
                     TodoDeadline.TOMORROW -> Calendar.getInstance().also {
                         it.add(Calendar.DAY_OF_MONTH, 1)
-                        viewModel.onEvent(AddTodoDialogEvent.UpdateDeadlineDate(Date(it.timeInMillis)))
+                        viewModel.onEvent(AddTodoDialogEvent.UpdateDeadline(Date(it.timeInMillis)))
                     }
                     TodoDeadline.CUSTOM -> {
                         context?.showDatePicker { _: DatePicker, year: Int, month: Int, day: Int ->
@@ -115,7 +115,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment(), CompletableStateOb
                                 set(Calendar.MONTH, month)
                                 set(Calendar.DAY_OF_MONTH, day)
                             }
-                            viewModel.onEvent(AddTodoDialogEvent.UpdateDeadlineDate(Date(date.timeInMillis)))
+                            viewModel.onEvent(AddTodoDialogEvent.UpdateDeadline(Date(date.timeInMillis)))
                         }
                     }
                 }
@@ -137,7 +137,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment(), CompletableStateOb
 
     private fun observeState() {
         lifecycleScope.launch {
-            viewModel.currentTodo.collectState(
+            viewModel.currentTodo.collectAsUiState(
                 lifecycleOwner = viewLifecycleOwner,
                 onError = ::onError,
                 onComplete = { dismiss() },

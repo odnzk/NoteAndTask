@@ -1,4 +1,4 @@
-package com.noteapp.feature_detailedscreens.api
+package com.study.feature_detailed_screen.api
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,24 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.domain.model.Note
 import com.example.domain.validation.Field
 import com.example.domain.validation.NoteValidator
 import com.example.noteapp.ui.util.exceptions.InvalidNoteException
-import com.noteapp.core.state.handleState
-import com.noteapp.feature_detailedscreens.internal.fragments.note.detailed.NoteDetailedEvent
-import com.noteapp.feature_detailedscreens.internal.fragments.note.detailed.NoteDetailsViewModel
-import com.noteapp.feature_detailedscreens.internal.navigation.fromNoteToChooseCategoryDialog
 import com.noteapp.ui.R
+import com.noteapp.ui.collectAsUiState
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
+import com.noteapp.ui.observeWithLifecycle
 import com.study.feature_detailed_screen.databinding.FragmentDetailedNoteBinding
+import com.study.feature_detailed_screen.internal.fragments.note.detailed.NoteDetailedEvent
+import com.study.feature_detailed_screen.internal.fragments.note.detailed.NoteDetailsViewModel
+import com.study.feature_detailed_screen.internal.navigation.fromNoteToChooseCategoryDialog
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -44,17 +42,16 @@ class NoteDetailedFragment : Fragment() {
         initClickListeners()
     }
 
-    private fun observeIsNoteSaved() {
+    private fun observeIsNoteSaved() =
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.isNoteSavedSuccessfully.collectLatest { isSaved ->
-                    if (isSaved) {
-                        binding.root.showSnackbar(getString(R.string.success_save))
-                    }
+            viewModel.isNoteSavedSuccessfully.observeWithLifecycle(viewLifecycleOwner) { isSaved ->
+                if (isSaved) {
+                    binding.root.showSnackbar(getString(R.string.success_save))
                 }
+
             }
         }
-    }
+
 
     private fun initClickListeners() {
         with(binding) {
@@ -79,19 +76,16 @@ class NoteDetailedFragment : Fragment() {
         }
     }
 
-    private fun observeState() = viewLifecycleOwner.lifecycleScope.launch {
-        repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.note.collectLatest { state ->
-                state.handleState(
-                    onLoadingAction = stateLoadingBinding::loadingStarted,
-                    onSuccessAction = ::showNote,
-                    onErrorAction = ::onErrorAction
-                )
-            }
-        }
+    private fun observeState() = lifecycleScope.launch {
+        viewModel.note.collectAsUiState(
+            viewLifecycleOwner,
+            onSuccess = ::showNote,
+            onError = ::showError,
+            onLoading = stateLoadingBinding::loadingStarted
+        )
     }
 
-    private fun onErrorAction(error: Throwable) =
+    private fun showError(error: Throwable) =
         if (error is InvalidNoteException) {
             when (error.field) {
                 Field.TITLE -> binding.etTitle.error = getString(
@@ -102,7 +96,7 @@ class NoteDetailedFragment : Fragment() {
                 else -> binding.etContent.error = getString(R.string.error_invalid_note_content)
             }
         } else stateLoadingBinding.errorOccurred(error) {
-            viewModel.onEvent(NoteDetailedEvent.TryLoadingNoteAgain)
+            viewModel.onEvent(NoteDetailedEvent.Reload)
         }
 
     private fun showNote(note: Note) {

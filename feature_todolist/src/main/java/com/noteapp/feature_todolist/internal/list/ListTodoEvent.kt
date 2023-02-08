@@ -5,7 +5,7 @@ import com.example.domain.model.TodoFilterAdditionalConditions
 import com.example.domain.model.TodoFilterPeriod
 
 internal sealed interface ListTodoEvent {
-    data class DeleteItem(val todo: Todo) : ListTodoEvent
+    data class DeleteTodo(val todo: Todo) : ListTodoEvent
     data class UpdateTodoCompletedStatus(val todoId: Long, val isCompleted: Boolean) : ListTodoEvent
 
     // filters
@@ -15,7 +15,7 @@ internal sealed interface ListTodoEvent {
         ListTodoEvent
 
 
-    object TryAgain : ListTodoEvent
-    object RestoreItem : ListTodoEvent
+    object Reload : ListTodoEvent
+    object RestoreTodo : ListTodoEvent
     object SaveTodoFilters : ListTodoEvent
 }

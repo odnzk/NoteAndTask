@@ -67,15 +67,15 @@ internal class ListTodoViewModel @Inject constructor(
 
     fun onEvent(event: ListTodoEvent) = viewModelScope.launch {
         when (event) {
-            is ListTodoEvent.TryAgain -> loadData()
+            is ListTodoEvent.Reload -> loadData()
             is ListTodoEvent.UpdateTodoCompletedStatus -> todoUseCases.updateIsCompleted(
                 event.todoId, event.isCompleted
             )
-            is ListTodoEvent.DeleteItem -> {
+            is ListTodoEvent.DeleteTodo -> {
                 recentlyRemoved = event.todo
                 todoUseCases.deleteTodo(event.todo.id)
             }
-            ListTodoEvent.RestoreItem -> recentlyRemoved?.let { todoUseCases.addTodo(it) }
+            ListTodoEvent.RestoreTodo -> recentlyRemoved?.let { todoUseCases.addTodo(it) }
             is ListTodoEvent.UpdateTodoFilterPeriod -> {
                 _todoFilters.update { it.copy(period = event.todoPeriod) }
                 loadData()

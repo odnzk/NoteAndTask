@@ -1,9 +1,9 @@
-package com.noteapp.feature_detailedscreens.internal.navigation
+package com.study.feature_detailed_screen.internal.navigation
 
 import androidx.navigation.NavController
 import com.noteapp.core.model.CategoryOwnerType
-import com.noteapp.feature_detailedscreens.api.NoteDetailedFragmentDirections
-import com.noteapp.feature_detailedscreens.api.TodoDetailedFragmentDirections
+import com.study.feature_detailed_screen.api.NoteDetailedFragmentDirections
+import com.study.feature_detailed_screen.api.TodoDetailedFragmentDirections
 
 internal fun NavController.fromNoteToChooseCategoryDialog(noteId: Long) =
     NoteDetailedFragmentDirections

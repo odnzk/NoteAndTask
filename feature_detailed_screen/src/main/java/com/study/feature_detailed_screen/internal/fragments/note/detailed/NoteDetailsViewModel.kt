@@ -1,4 +1,4 @@
-package com.noteapp.feature_detailedscreens.internal.fragments.note.detailed
+package com.study.feature_detailed_screen.internal.fragments.note.detailed
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -28,6 +28,7 @@ internal class NoteDetailsViewModel @Inject constructor(
 
     val isNewNote: Boolean = noteId == Constants.CREATE_NOTE_LONG
 
+    // todo does not show(((
     private var _isNoteSavedSuccessfully: MutableSharedFlow<Boolean> = MutableSharedFlow()
     val isNoteSavedSuccessfully = _isNoteSavedSuccessfully.asSharedFlow()
 
@@ -59,7 +60,6 @@ internal class NoteDetailsViewModel @Inject constructor(
                     noteUseCases.addNote(event.note).also { result ->
                         result.exceptionOrNull()?.let { _note.value = UiState.Error(it) }
                     }
-//                    isNewNote = false
                 } else {
                     noteUseCases.updateNote(event.note).also { result ->
                         result.fold(onSuccess = {
@@ -75,7 +75,7 @@ internal class NoteDetailsViewModel @Inject constructor(
                 // if UiState.Loading or UiState.Error do nothing
                 note.value.data?.let { noteUseCases.deleteNote(it.id) }
             }
-            NoteDetailedEvent.TryLoadingNoteAgain -> loadData()
+            NoteDetailedEvent.Reload -> loadData()
         }
     }
 

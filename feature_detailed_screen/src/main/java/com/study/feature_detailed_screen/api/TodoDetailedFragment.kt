@@ -1,4 +1,4 @@
-package com.noteapp.feature_detailedscreens.api
+package com.study.feature_detailed_screen.api
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,13 +17,13 @@ import com.example.noteapp.ui.util.exceptions.InvalidNoteException
 import com.example.noteapp.ui.util.ext.showDatePicker
 import com.google.android.material.chip.Chip
 import com.noteapp.core.state.handleState
-import com.noteapp.feature_detailedscreens.internal.fragments.todo.detailed.TodoDetailedEvent
-import com.noteapp.feature_detailedscreens.internal.fragments.todo.detailed.TodoDetailsViewModel
-import com.noteapp.feature_detailedscreens.internal.navigation.fromTodoToChooseCategoryDialog
 import com.noteapp.ui.R
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
 import com.study.feature_detailed_screen.databinding.FragmentDetailedTodoBinding
+import com.study.feature_detailed_screen.internal.fragments.todo.detailed.TodoDetailedEvent
+import com.study.feature_detailed_screen.internal.fragments.todo.detailed.TodoDetailsViewModel
+import com.study.feature_detailed_screen.internal.navigation.fromTodoToChooseCategoryDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -88,7 +88,7 @@ class TodoDetailedFragment : Fragment() {
             binding.etTitle.error = getString(R.string.error_invalid_todo_title)
         } else {
             stateLoadingBinding.errorOccurred(error)
-            { viewModel.onEvent(TodoDetailedEvent.TryLoadingTodoAgain) }
+            { viewModel.onEvent(TodoDetailedEvent.Reload) }
         }
     }
 

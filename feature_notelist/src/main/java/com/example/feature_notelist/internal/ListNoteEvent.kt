@@ -4,10 +4,10 @@ import com.example.domain.model.Note
 import com.example.domain.model.NoteSortOrder
 
 internal sealed interface ListNoteEvent {
-    data class DeleteItem(val note: Note) : ListNoteEvent
-    data class UpdateSortOrder(val noteSortOrder: NoteSortOrder) : ListNoteEvent
+    data class DeleteNote(val note: Note) : ListNoteEvent
+    object RestoreNote : ListNoteEvent
 
-    object ClearAll : ListNoteEvent
-    object TryAgain : ListNoteEvent
-    object RestoreItem : ListNoteEvent
+    data class UpdateSortOrder(val noteSortOrder: NoteSortOrder) : ListNoteEvent
+    object DeleteAllNotes : ListNoteEvent
+    object Reload : ListNoteEvent
 }

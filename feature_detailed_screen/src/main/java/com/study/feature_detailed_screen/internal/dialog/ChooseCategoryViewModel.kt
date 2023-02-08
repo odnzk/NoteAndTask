@@ -1,4 +1,4 @@
-package com.noteapp.feature_detailedscreens.internal.dialog
+package com.study.feature_detailed_screen.internal.dialog
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -61,7 +61,7 @@ internal class ChooseCategoryViewModel @Inject constructor(
     ): List<UiCategory> {
         return when (noteItem) {
             is Note -> {
-                
+
                 val selectedCategories: List<Category> = noteItem.categories
                 val uiCategories: List<UiCategory> = categories.map { category ->
                     category.toUiCategory(category in selectedCategories)

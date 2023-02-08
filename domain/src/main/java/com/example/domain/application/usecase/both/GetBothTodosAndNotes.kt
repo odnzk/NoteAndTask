@@ -1,8 +1,8 @@
 package com.example.domain.application.usecase.both
 
-import com.example.domain.model.Filter
 import com.example.domain.model.FiltersInfo
 import com.example.domain.model.NoteItem
+import com.example.domain.model.NoteItemFilter
 import com.example.domain.repository.NoteRepository
 import com.example.domain.repository.TodoRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -40,9 +40,9 @@ class GetBothTodosAndNotes
             )
         }
         return when (filterInfo.filter) {
-            Filter.BOTH -> notes.combine(tasks, ::mergeIntoOneList)
-            Filter.NOTES_ONLY -> notes
-            Filter.TODO_ONLY -> tasks
+            NoteItemFilter.BOTH -> notes.combine(tasks, ::mergeIntoOneList)
+            NoteItemFilter.NOTES_ONLY -> notes
+            NoteItemFilter.TODO_ONLY -> tasks
         }.flowOn(dispatcher)
     }
 

@@ -41,15 +41,13 @@ internal class ListNoteViewModel @Inject constructor(
     fun onEvent(event: ListNoteEvent) =
         viewModelScope.launch {
             when (event) {
-                is ListNoteEvent.ClearAll -> noteUseCases.deleteAllNotes()
-                is ListNoteEvent.TryAgain -> loadData()
-                is ListNoteEvent.DeleteItem -> {
+                is ListNoteEvent.DeleteAllNotes -> noteUseCases.deleteAllNotes()
+                is ListNoteEvent.Reload -> loadData()
+                is ListNoteEvent.DeleteNote -> {
                     noteUseCases.deleteNote(event.note.id)
                     recentlyRemoved = event.note
                 }
-                ListNoteEvent.RestoreItem -> recentlyRemoved?.let {
-                    noteUseCases.addNote(it)
-                }
+                ListNoteEvent.RestoreNote -> recentlyRemoved?.let { noteUseCases.addNote(it) }
                 is ListNoteEvent.UpdateSortOrder -> {
                     if (noteSortOrder != event.noteSortOrder) {
                         noteSortOrder = event.noteSortOrder

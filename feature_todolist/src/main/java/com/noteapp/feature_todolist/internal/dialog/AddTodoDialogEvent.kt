@@ -7,11 +7,11 @@ import java.util.*
 sealed interface AddTodoDialogEvent {
     object AddTodo : AddTodoDialogEvent
     data class UpdateTitle(val title: String) : AddTodoDialogEvent
-//    data class UpdateDeadlineDate(val date: Date) : AddTodoDialogEvent
-    data class UpdateDeadlineDate(val date: Date) : AddTodoDialogEvent
+
+    data class UpdateDeadline(val date: Date) : AddTodoDialogEvent
     data class UpdateCategory(val category: Category) : AddTodoDialogEvent
 
-    data class UpdateReminderInfo(val calendar: Calendar) : AddTodoDialogEvent
-    data class UpdatePeriodInfo(val todoPeriodicity: TodoPeriodicity) : AddTodoDialogEvent // todo
+    data class UpdateReminder(val calendar: Calendar) : AddTodoDialogEvent
+    data class UpdatePeriodicity(val todoPeriodicity: TodoPeriodicity) : AddTodoDialogEvent // todo
 
 }

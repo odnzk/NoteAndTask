@@ -1,4 +1,4 @@
-package com.noteapp.feature_detailedscreens.internal.dialog
+package com.study.feature_detailed_screen.internal.dialog
 
 import android.content.res.Resources.NotFoundException
 import android.os.Bundle

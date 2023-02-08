@@ -18,7 +18,7 @@ import com.noteapp.feature_todolist.internal.list.ListTodoViewModel
 import com.noteapp.feature_todolist.internal.util.navigation.toAddTodoBottomSheetDialog
 import com.noteapp.feature_todolist.internal.util.navigation.toDetailedTodo
 import com.noteapp.feature_todolist.internal.util.navigation.toTodoFiltersDialog
-import com.noteapp.ui.UiStateObserver
+import com.noteapp.ui.collectAsUiState
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
 import com.noteapp.ui.recycler.SwipeCallback
@@ -27,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class TodosListFragment : Fragment(), UiStateObserver {
+class TodosListFragment : Fragment() {
     private var _binding: FragmentTodosListBinding? = null
     private val binding: FragmentTodosListBinding get() = _binding!!
 
@@ -61,9 +61,9 @@ class TodosListFragment : Fragment(), UiStateObserver {
         binding.recyclerViewNotes.run {
             val itemTouchHelper =
                 ItemTouchHelper(SwipeCallback(todosAdapter) { removedItem ->
-                    viewModel.onEvent(ListTodoEvent.DeleteItem(removedItem as Todo))
+                    viewModel.onEvent(ListTodoEvent.DeleteTodo(removedItem as Todo))
                     // undo listener
-                    val listener = OnClickListener { viewModel.onEvent(ListTodoEvent.RestoreItem) }
+                    val listener = OnClickListener { viewModel.onEvent(ListTodoEvent.RestoreTodo) }
                     showSnackbar(R.string.success_delete, listener)
                 })
             initStandardVerticalRecyclerView(itemTouchHelper)
@@ -71,7 +71,7 @@ class TodosListFragment : Fragment(), UiStateObserver {
         }
 
     private fun observeTodos() = lifecycleScope.launch {
-        viewModel.todos.collectState(
+        viewModel.todos.collectAsUiState(
             lifecycleOwner = viewLifecycleOwner,
             onSuccess = ::showTodoList,
             onError = ::showError,
@@ -81,7 +81,7 @@ class TodosListFragment : Fragment(), UiStateObserver {
 
     private fun showError(throwable: Throwable) {
         stateLoadingBinding.errorOccurred(throwable) {
-            viewModel.onEvent(ListTodoEvent.TryAgain)
+            viewModel.onEvent(ListTodoEvent.Reload)
         }
     }
 

@@ -26,12 +26,12 @@ internal class AddCategoryDialogViewModel @Inject constructor(
             is AddCategoryDialogEvent.AddCategory -> categoryUseCases.addCategory(event.category)
                 .fold(
                     onSuccess = {
-                        _category.update { CompletableState.Completed(_category.value.data) }
+                        _category.update { CompletableState.Completed(it.data) }
                     },
                     onFailure = { error ->
                         _category.update {
                             CompletableState.Error(
-                                data = _category.value.data, error = error
+                                data = it.data, error = error
                             )
                         }
                     }

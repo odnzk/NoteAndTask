@@ -1,10 +1,9 @@
-package com.noteapp.feature_detailedscreens.internal.fragments.todo.detailed
+package com.study.feature_detailed_screen.internal.fragments.todo.detailed
 
 import com.example.domain.model.Todo
 
 internal sealed interface TodoDetailedEvent {
     data class UpdateTodo(val todo: Todo) : TodoDetailedEvent
-
-    object TryLoadingTodoAgain : TodoDetailedEvent
+    object Reload : TodoDetailedEvent
     object DeleteTodo : TodoDetailedEvent
 }

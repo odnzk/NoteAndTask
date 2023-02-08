@@ -17,7 +17,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class ListViewModel @Inject constructor(
-//    private val preferenceStorage: PreferenceStorage, // saved state handler todo
     private val noteUseCases: NoteUseCases,
     private val todoUseCases: TodoUseCases,
     categoryUseCases: CategoryUseCases,
@@ -56,7 +55,6 @@ internal class ListViewModel @Inject constructor(
                     }
                 }
                 is ListFragmentEvent.UpdateFilter -> {
-                    // both, only notes, only todos
                     filterInfo.value = filterInfo.value.copy(filter = event.filter)
                     updateNoteItemList(filterInfo.value)
                 }
@@ -68,7 +66,7 @@ internal class ListViewModel @Inject constructor(
                     filterInfo.value = filterInfo.value.copy(searchQuery = event.query)
                     updateNoteItemList(filterInfo.value)
                 }
-                ListFragmentEvent.ReloadData -> updateNoteItemList(filterInfo.value)
+                ListFragmentEvent.Reload -> updateNoteItemList(filterInfo.value)
                 is ListFragmentEvent.UpdateSelectedCategoriesId -> {
                     filterInfo.update {
                         it.copy(

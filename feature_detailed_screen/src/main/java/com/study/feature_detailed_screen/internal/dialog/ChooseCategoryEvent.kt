@@ -1,4 +1,4 @@
-package com.noteapp.feature_detailedscreens.internal.dialog
+package com.study.feature_detailed_screen.internal.dialog
 
 import com.example.domain.model.Category
 

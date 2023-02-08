@@ -9,13 +9,11 @@ import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
-import com.example.domain.model.Filter
 import com.example.domain.model.NoteItem
+import com.example.domain.model.NoteItemFilter
 import com.example.feature_mainlist.databinding.FragmentListBinding
 import com.example.mainlist.api.noteitem.NoteItemAdapter
 import com.example.mainlist.internal.ListFragmentEvent
@@ -23,11 +21,11 @@ import com.example.mainlist.internal.ListViewModel
 import com.example.mainlist.internal.navigation.toAddCategoryDialog
 import com.example.mainlist.internal.navigation.toDetailedNote
 import com.example.mainlist.internal.navigation.toDetailedTodo
-import com.noteapp.core.state.handleState
+import com.noteapp.ui.collectAsUiState
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
+import com.noteapp.ui.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -64,17 +62,13 @@ class ListFragment : Fragment() {
 
     private fun observeCategories() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.categories.collectLatest { categories ->
-                    categories.toChipGroup(binding.chipgroupCategories,
-                        isCheckedStyleEnabled = true,
-                        onAddCategoryClick = { findNavController().toAddCategoryDialog() }) { categoryId ->
-                        viewModel.onEvent(
-                            ListFragmentEvent.UpdateSelectedCategoriesId(
-                                categoryId
-                            )
-                        )
-                    }
+            viewModel.categories.observeWithLifecycle(viewLifecycleOwner) { categories ->
+                categories.toChipGroup(binding.chipgroupCategories,
+                    isCheckedStyleEnabled = true,
+                    onAddCategoryClick = { findNavController().toAddCategoryDialog() }) { categoryId ->
+                    viewModel.onEvent(
+                        ListFragmentEvent.UpdateSelectedCategoriesId(categoryId)
+                    )
                 }
             }
         }
@@ -91,7 +85,7 @@ class ListFragment : Fragment() {
                 ) {
                     (adapter?.getItemAtPosition(position) as? String).also { selectedString ->
                         selectedString?.let {
-                            Filter.values().iterator().forEach { filter ->
+                            NoteItemFilter.values().iterator().forEach { filter ->
                                 if (selectedString.lowercase() == filter.key) {
                                     viewModel.onEvent(
                                         ListFragmentEvent.UpdateFilter(
@@ -150,36 +144,28 @@ class ListFragment : Fragment() {
     }
 
     private fun observeState() = lifecycleScope.launch {
-        repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.list.collectLatest { listState ->
-                listState.handleState(
-                    onErrorAction = ::onErrorAction,
-                    onLoadingAction = { stateLoadingBinding.loadingStarted() },
-                    onSuccessAction = ::onSuccessAction
-                )
-            }
-        }
+        viewModel.list.collectAsUiState(
+            viewLifecycleOwner,
+            onSuccess = ::showList,
+            onError = ::showError, onLoading = stateLoadingBinding::loadingStarted
+        )
     }
 
-    private fun onErrorAction(error: Throwable) =
+    private fun showError(error: Throwable) =
         stateLoadingBinding.errorOccurred(error) {
-            viewModel.onEvent(ListFragmentEvent.ReloadData)
+            viewModel.onEvent(ListFragmentEvent.Reload)
         }
 
 
-    private fun onSuccessAction(data: List<NoteItem>) {
+    private fun showList(data: List<NoteItem>) {
         stateLoadingBinding.loadingFinished()
         listAdapter.submitList(data)
     }
 
     private fun initAdapter() {
         listAdapter.run {
-            onNoteClick = { noteId ->
-                findNavController().toDetailedNote(noteId)
-            }
-            onTodoClick = { todoId ->
-                findNavController().toDetailedTodo(todoId)
-            }
+            onNoteClick = { noteId -> findNavController().toDetailedNote(noteId) }
+            onTodoClick = { todoId -> findNavController().toDetailedTodo(todoId) }
             onTodoCheckboxClick = { id, isCompleted ->
                 viewModel.onEvent(ListFragmentEvent.UpdateTodoCompletedStatus(id, isCompleted))
             }

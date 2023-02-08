@@ -1,4 +1,4 @@
-package com.noteapp.feature_detailedscreens.internal.fragments.todo.detailed
+package com.study.feature_detailed_screen.internal.fragments.todo.detailed
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -52,7 +52,7 @@ internal class TodoDetailsViewModel @Inject constructor(
                     todoUseCases.deleteTodo(it.id)
                 }
             }
-            is TodoDetailedEvent.TryLoadingTodoAgain -> loadData()
+            is TodoDetailedEvent.Reload -> loadData()
         }
     }
 
