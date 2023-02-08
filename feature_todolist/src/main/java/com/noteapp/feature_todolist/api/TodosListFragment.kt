@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -18,6 +17,7 @@ import com.noteapp.feature_todolist.internal.list.ListTodoViewModel
 import com.noteapp.feature_todolist.internal.util.navigation.toAddTodoBottomSheetDialog
 import com.noteapp.feature_todolist.internal.util.navigation.toDetailedTodo
 import com.noteapp.feature_todolist.internal.util.navigation.toTodoFiltersDialog
+import com.noteapp.ui.BaseFragment
 import com.noteapp.ui.collectAsUiState
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
@@ -27,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class TodosListFragment : Fragment() {
+class TodosListFragment : BaseFragment() {
     private var _binding: FragmentTodosListBinding? = null
     private val binding: FragmentTodosListBinding get() = _binding!!
 
@@ -37,47 +37,34 @@ class TodosListFragment : Fragment() {
     private val viewModel by activityViewModels<ListTodoViewModel>()
     private val todosAdapter = TodoAdapter()
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentTodosListBinding.inflate(inflater, container, false)
+        _stateLoadingBinding = StateLoadingBinding.bind(binding.root)
+        initAdapter()
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        observeTodos()
-        initRecyclerView()
-        initClickListeners()
-
+        observeState()
+        initUI()
+        setupListeners()
     }
 
-    private fun initClickListeners() {
-        with(binding) {
-            btnAdd.setOnClickListener {
-                findNavController().toAddTodoBottomSheetDialog()
-            }
-            btnFilters.setOnClickListener {
-                findNavController().toTodoFiltersDialog()
-            }
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _stateLoadingBinding = null
+        _binding = null
     }
 
-    private fun initRecyclerView() =
-        binding.recyclerViewNotes.run {
-            val itemTouchHelper =
-                ItemTouchHelper(SwipeCallback(todosAdapter) { removedItem ->
-                    viewModel.onEvent(ListTodoEvent.DeleteTodo(removedItem as Todo))
-                    // undo listener
-                    val listener = OnClickListener { viewModel.onEvent(ListTodoEvent.RestoreTodo) }
-                    showSnackbar(R.string.success_delete, listener)
-                })
-            initStandardVerticalRecyclerView(itemTouchHelper)
-            adapter = todosAdapter
-        }
-
-    private fun observeTodos() = lifecycleScope.launch {
-        viewModel.todos.collectAsUiState(
-            context,
-            lifecycleOwner = viewLifecycleOwner,
-            onSuccess = ::onSuccess,
-            onError = ::onError,
-            onLoading = stateLoadingBinding::loadingStarted
-        )
+    override fun onStop() {
+        super.onStop()
+        // todo
+        viewModel.onEvent(ListTodoEvent.SaveTodoFilters)
     }
 
     private fun onError(handledError: HandledError) {
@@ -91,15 +78,37 @@ class TodosListFragment : Fragment() {
         todosAdapter.submitList(notes)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentTodosListBinding.inflate(inflater, container, false)
-        _stateLoadingBinding = StateLoadingBinding.bind(binding.root)
-        initAdapter()
-        return binding.root
+    override fun initUI() {
+        binding.recyclerViewNotes.run {
+            val itemTouchHelper =
+                ItemTouchHelper(SwipeCallback(todosAdapter) { removedItem ->
+                    viewModel.onEvent(ListTodoEvent.DeleteTodo(removedItem as Todo))
+                    // undo listener
+                    val listener = OnClickListener { viewModel.onEvent(ListTodoEvent.RestoreTodo) }
+                    showSnackbar(R.string.success_delete, listener)
+                })
+            initStandardVerticalRecyclerView(itemTouchHelper)
+            adapter = todosAdapter
+        }
+    }
+
+    override fun setupListeners() {
+        with(binding) {
+            btnAdd.setOnClickListener { findNavController().toAddTodoBottomSheetDialog() }
+            btnFilters.setOnClickListener { findNavController().toTodoFiltersDialog() }
+        }
+    }
+
+    override fun observeState() {
+        lifecycleScope.launch {
+            viewModel.todos.collectAsUiState(
+                context,
+                lifecycleOwner = viewLifecycleOwner,
+                onSuccess = ::onSuccess,
+                onError = ::onError,
+                onLoading = stateLoadingBinding::loadingStarted
+            )
+        }
     }
 
     private fun initAdapter() =
@@ -112,16 +121,5 @@ class TodosListFragment : Fragment() {
             }
             submitList(emptyList())
         }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _stateLoadingBinding = null
-        _binding = null
-    }
-
-    override fun onStop() {
-        super.onStop()
-        viewModel.onEvent(ListTodoEvent.SaveTodoFilters)
-    }
 
 }

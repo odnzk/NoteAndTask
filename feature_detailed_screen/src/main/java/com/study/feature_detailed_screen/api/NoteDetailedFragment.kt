@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.domain.model.Note
+import com.noteapp.ui.BaseFragment
 import com.noteapp.ui.R
 import com.noteapp.ui.collectAsUiState
 import com.noteapp.ui.databinding.StateLoadingBinding
@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class NoteDetailedFragment : Fragment() {
+class NoteDetailedFragment : BaseFragment() {
     private var _binding: FragmentDetailedNoteBinding? = null
     private val binding get() = _binding!!
 
@@ -31,26 +31,32 @@ class NoteDetailedFragment : Fragment() {
 
     private val viewModel: NoteDetailsViewModel by viewModels()
 
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentDetailedNoteBinding.inflate(inflater, container, false)
+        _stateLoadingBinding = StateLoadingBinding.bind(binding.root)
+        return binding.root
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         observeState()
-        observeIsNoteSaved()
-        initClickListeners()
+        setupListeners()
     }
 
-    private fun observeIsNoteSaved() =
-        lifecycleScope.launch {
-            viewModel.isNoteSavedSuccessfully.observeWithLifecycle(viewLifecycleOwner) { isSaved ->
-                if (isSaved) {
-                    binding.root.showSnackbar(getString(R.string.success_save))
-                }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _stateLoadingBinding = null
+        _binding = null
+    }
 
-            }
-        }
+    override fun initUI() = Unit
 
-
-    private fun initClickListeners() {
+    override fun setupListeners() {
         with(binding) {
             btnDelete.setOnClickListener {
                 viewModel.onEvent(NoteDetailedEvent.DeleteNote)
@@ -61,26 +67,30 @@ class NoteDetailedFragment : Fragment() {
                 val content = etContent.text.toString()
                 val title = etTitle.text.toString()
                 viewModel.note.value.data?.let { note ->
-                    viewModel.onEvent(
-                        NoteDetailedEvent.UpdateNote(
-                            note.copy(
-                                title = title, content = content
-                            )
-                        )
-                    )
+                    val updatedNote = note.copy(title = title, content = content)
+                    viewModel.onEvent(NoteDetailedEvent.UpdateNote(updatedNote))
                 }
             }
         }
     }
 
-    private fun observeState() = lifecycleScope.launch {
-        viewModel.note.collectAsUiState(
-            context,
-            viewLifecycleOwner,
-            onSuccess = ::onSuccess,
-            onError = ::onError,
-            onLoading = stateLoadingBinding::loadingStarted
-        )
+    override fun observeState() {
+        lifecycleScope.launch {
+            viewModel.note.collectAsUiState(
+                context,
+                viewLifecycleOwner,
+                onSuccess = ::onSuccess,
+                onError = ::onError,
+                onLoading = stateLoadingBinding::loadingStarted
+            )
+        }
+        lifecycleScope.launch {
+            viewModel.isNoteSavedSuccessfully.observeWithLifecycle(viewLifecycleOwner) { isSaved ->
+                if (isSaved) {
+                    binding.root.showSnackbar(getString(R.string.success_save))
+                }
+            }
+        }
     }
 
     private fun onError(handledError: HandledError) =
@@ -97,9 +107,7 @@ class NoteDetailedFragment : Fragment() {
             note.run {
                 etTitle.setText(title)
                 etContent.setText(content)
-                date?.let {
-                    tvDate.text = it.formatToNoteDate()
-                }
+                date?.let { tvDate.text = it.formatToNoteDate() }
                 if (!viewModel.isNewNote){
                     categories.toChipGroup(
                         chipgroupCategories,
@@ -112,18 +120,4 @@ class NoteDetailedFragment : Fragment() {
         stateLoadingBinding.loadingFinished()
     }
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentDetailedNoteBinding.inflate(inflater, container, false)
-        _stateLoadingBinding = StateLoadingBinding.bind(binding.root)
-        return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _stateLoadingBinding = null
-        _binding = null
-    }
 }

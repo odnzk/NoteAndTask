@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -21,6 +20,7 @@ import com.example.mainlist.internal.ListViewModel
 import com.example.mainlist.internal.navigation.toAddCategoryDialog
 import com.example.mainlist.internal.navigation.toDetailedNote
 import com.example.mainlist.internal.navigation.toDetailedTodo
+import com.noteapp.ui.BaseFragment
 import com.noteapp.ui.collectAsUiState
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class ListFragment : Fragment() {
+class ListFragment : BaseFragment() {
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
 
@@ -47,80 +47,22 @@ class ListFragment : Fragment() {
         _stateLoadingBinding = StateLoadingBinding.bind(binding.root)
 
         initAdapter()
-        observeState()
-        observeCategories()
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initRecyclerView()
-        initClickListeners()
+        initUI()
+        setupListeners()
+        observeState()
     }
 
-    private fun observeCategories() {
-        lifecycleScope.launch {
-            viewModel.categories.observeWithLifecycle(viewLifecycleOwner) { categories ->
-                categories.toChipGroup(binding.chipgroupCategories,
-                    isCheckedStyleEnabled = true,
-                    onAddCategoryClick = { findNavController().toAddCategoryDialog() }) { categoryId ->
-                    viewModel.onEvent(
-                        ListFragmentEvent.UpdateSelectedCategoriesId(categoryId)
-                    )
-                }
-            }
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _stateLoadingBinding = null
+        _binding = null
     }
 
-    private fun initClickListeners() {
-        with(binding) {
-            spinnerFilter.onItemSelectedListener = object : OnItemSelectedListener {
-                override fun onItemSelected(
-                    adapter: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    (adapter?.getItemAtPosition(position) as? String).also { selectedString ->
-                        selectedString?.let {
-                            NoteItemFilter.values().iterator().forEach { filter ->
-                                if (selectedString.lowercase() == filter.key) {
-                                    viewModel.onEvent(
-                                        ListFragmentEvent.UpdateFilter(
-                                            filter
-                                        )
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-                override fun onNothingSelected(adapter: AdapterView<*>?) = Unit
-            }
-
-            svFindByTitle.setOnQueryTextListener(object : OnQueryTextListener {
-                override fun onQueryTextSubmit(p0: String?): Boolean {
-                    return false
-                }
-
-                override fun onQueryTextChange(p0: String?): Boolean {
-                    p0?.let {
-                        viewModel.onEvent(
-                            ListFragmentEvent.UpdateSearchQuery(
-                                it
-                            )
-                        )
-                    }
-                    return false
-                }
-            })
-            btnClearAll.setOnClickListener {
-                viewModel.onEvent(ListFragmentEvent.ClearAll)
-            }
-        }
-    }
 
     private fun initRecyclerView() {
         with(binding) {
@@ -143,26 +85,6 @@ class ListFragment : Fragment() {
         }
     }
 
-    private fun observeState() = lifecycleScope.launch {
-        viewModel.list.collectAsUiState(
-            context,
-            viewLifecycleOwner,
-            onSuccess = ::onError,
-            onError = ::onError, onLoading = stateLoadingBinding::loadingStarted
-        )
-    }
-
-    private fun onError(handledError: HandledError) =
-        stateLoadingBinding.onError(handledError.message) {
-            viewModel.onEvent(ListFragmentEvent.Reload)
-        }
-
-
-    private fun onError(data: List<NoteItem>) {
-        stateLoadingBinding.loadingFinished()
-        listAdapter.submitList(data)
-    }
-
     private fun initAdapter() {
         listAdapter.run {
             onNoteClick = { noteId -> findNavController().toDetailedNote(noteId) }
@@ -174,9 +96,79 @@ class ListFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _stateLoadingBinding = null
-        _binding = null
+    override fun initUI() {
+        initRecyclerView()
     }
+
+    override fun setupListeners() {
+        binding.spinnerFilter.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                adapter: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                var spinnerItem = adapter?.getItemAtPosition(position)
+                if (spinnerItem is String) {
+                    spinnerItem = spinnerItem.lowercase()
+                    NoteItemFilter.values().iterator().forEach { filter ->
+                        if (spinnerItem == filter.key) {
+                            viewModel.onEvent(ListFragmentEvent.UpdateFilter(filter))
+                        }
+                    }
+                }
+            }
+
+            override fun onNothingSelected(adapter: AdapterView<*>?) = Unit
+        }
+
+        binding.svFindByTitle.setOnQueryTextListener(object : OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?) = false
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                p0?.let { viewModel.onEvent(ListFragmentEvent.UpdateSearchQuery(it)) }
+                return false
+            }
+        })
+
+        binding.btnClearAll.setOnClickListener {
+            viewModel.onEvent(ListFragmentEvent.ClearAll)
+        }
+
+    }
+
+    override fun observeState() {
+        lifecycleScope.launch {
+            viewModel.list.collectAsUiState(
+                context,
+                viewLifecycleOwner,
+                onSuccess = ::onSuccess,
+                onError = ::onError,
+                onLoading = stateLoadingBinding::loadingStarted
+            )
+        }
+        lifecycleScope.launch {
+            viewModel.categories.observeWithLifecycle(viewLifecycleOwner) { categories ->
+                categories.toChipGroup(binding.chipgroupCategories,
+                    isCheckedStyleEnabled = true,
+                    onAddCategoryClick = { findNavController().toAddCategoryDialog() }) { categoryId ->
+                    viewModel.onEvent(
+                        ListFragmentEvent.UpdateSelectedCategoriesId(categoryId)
+                    )
+                }
+            }
+        }
+    }
+
+    private fun onError(handledError: HandledError) =
+        stateLoadingBinding.onError(handledError.message) {
+            viewModel.onEvent(ListFragmentEvent.Reload)
+        }
+
+
+    private fun onSuccess(data: List<NoteItem>) {
+        stateLoadingBinding.loadingFinished()
+        listAdapter.submitList(data)
+    }
+
 }

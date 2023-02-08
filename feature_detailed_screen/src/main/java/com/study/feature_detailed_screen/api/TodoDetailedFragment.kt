@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -14,6 +13,7 @@ import com.example.domain.model.Todo
 import com.example.domain.util.exceptions.InvalidNoteException
 import com.example.noteapp.ui.util.ext.showDatePicker
 import com.google.android.material.chip.Chip
+import com.noteapp.ui.BaseFragment
 import com.noteapp.ui.R
 import com.noteapp.ui.collectAsUiState
 import com.noteapp.ui.databinding.StateLoadingBinding
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 @AndroidEntryPoint
-class TodoDetailedFragment : Fragment() {
+class TodoDetailedFragment : BaseFragment() {
     private var _binding: FragmentDetailedTodoBinding? = null
     private val binding get() = _binding!!
 
@@ -36,37 +36,46 @@ class TodoDetailedFragment : Fragment() {
 
     private val viewModel: TodoDetailsViewModel by viewModels()
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentDetailedTodoBinding.inflate(inflater, container, false)
+        _stateLoadingBinding = StateLoadingBinding.bind(binding.root)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         observeState()
-        initClickListeners()
+        setupListeners()
     }
 
-    private fun initClickListeners() {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _stateLoadingBinding = null
+        _binding = null
+    }
+
+    override fun initUI() = Unit
+
+    override fun setupListeners() {
         with(binding) {
-            // init listeners only if loading finished successfully
             btnDelete.setOnClickListener {
                 viewModel.onEvent(TodoDetailedEvent.DeleteTodo)
                 binding.root.showSnackbar(getString(R.string.success_delete))
             }
             etTitle.doAfterTextChanged {
                 viewModel.todo.value.data?.let { todo ->
-                    viewModel.onEvent(
-                        TodoDetailedEvent.UpdateTodo(
-                            todo.copy(title = etTitle.text.toString())
-                        )
-                    )
+                    val updatedTodo = todo.copy(title = etTitle.text.toString())
+                    viewModel.onEvent(TodoDetailedEvent.UpdateTodo(updatedTodo))
                 }
             }
-            btnChangeDeadlineDate.setOnClickListener {
-                context?.showDatePicker(::setDeadlineDate)
-            }
+            btnChangeDeadlineDate.setOnClickListener { context?.showDatePicker(::setDeadlineDate) }
         }
     }
 
-    private fun observeState() {
+    override fun observeState() {
         lifecycleScope.launch {
             viewModel.todo.collectAsUiState(
                 context,
@@ -133,20 +142,4 @@ class TodoDetailedFragment : Fragment() {
         binding.btnChangeDeadlineDate.text = Date(date.timeInMillis).formatToTodoDate()
     }
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentDetailedTodoBinding.inflate(inflater, container, false)
-        _stateLoadingBinding = StateLoadingBinding.bind(binding.root)
-        return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _stateLoadingBinding = null
-        _binding = null
-    }
 }
