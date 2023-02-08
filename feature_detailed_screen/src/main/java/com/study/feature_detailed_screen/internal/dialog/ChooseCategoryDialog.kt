@@ -1,6 +1,5 @@
 package com.study.feature_detailed_screen.internal.dialog
 
-import android.content.res.Resources.NotFoundException
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,16 +7,15 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.noteapp.core.model.CategoryOwnerType
 import com.noteapp.ui.R
+import com.noteapp.ui.ext.HandledError
 import com.noteapp.ui.ext.toChipGroup
 import com.noteapp.ui.model.UiCategory
+import com.noteapp.ui.observeWithLifecycle
 import com.study.feature_detailed_screen.databinding.DialogChangeCategoryBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -34,28 +32,23 @@ internal class ChooseCategoryDialog : DialogFragment() {
 
     private fun observeNoteItem() =
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiCategoryList.collectLatest { uiCategories ->
-                    uiCategories.fold(
-                        onSuccess = ::init,
-                        onFailure = ::showError
-                    )
-                }
-            }
+            viewModel.uiCategoryList.observeWithLifecycle(
+                context,
+                viewLifecycleOwner,
+                onSuccess = ::onSuccess,
+                onError = ::onError
+            )
         }
 
-    private fun showError(error: Throwable) {
+
+    private fun onError(handledError: HandledError) {
         with(binding.tvError) {
-            val resString = when (error) {
-                is NotFoundException -> R.string.error_not_found
-                else -> R.string.error_unknown
-            }
-            text = getString(resString)
+            text = handledError.message
             isVisible = true
         }
     }
 
-    private fun init(categoryList: List<UiCategory>) {
+    private fun onSuccess(categoryList: List<UiCategory>) {
         with(binding) {
             if (categoryList.isEmpty()) {
                 tvError.text = getString(R.string.state_categories_is_empty)

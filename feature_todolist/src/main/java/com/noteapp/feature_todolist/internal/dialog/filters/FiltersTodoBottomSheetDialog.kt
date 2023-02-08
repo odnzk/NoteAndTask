@@ -5,9 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.example.domain.model.TodoFilterAdditionalConditions
 import com.example.domain.model.TodoFilterPeriod
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -15,9 +13,10 @@ import com.noteapp.feature_todolist.R
 import com.noteapp.feature_todolist.databinding.BottomSheetTodoFiltersBinding
 import com.noteapp.feature_todolist.internal.list.ListTodoEvent
 import com.noteapp.feature_todolist.internal.list.ListTodoViewModel
+import com.noteapp.feature_todolist.internal.model.UiTodoFilters
 import com.noteapp.ui.ext.toChipGroup
+import com.noteapp.ui.observeWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -30,7 +29,7 @@ class FiltersTodoBottomSheetDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        observeFilters()
+        observeState()
         initClickListeners()
 
     }
@@ -66,42 +65,44 @@ class FiltersTodoBottomSheetDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private fun observeFilters() {
+    private fun observeState() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.todoFilters.collectLatest { filters ->
-                    with(filters) {
-                        categories.toChipGroup(
-                            binding.chipgroupCategories
-                        ) { selectedCategoryId ->
-                            viewModel.onEvent(
-                                ListTodoEvent.UpdateSelectedCategoriesId(
-                                    selectedCategoryId
-                                )
-                            )
-                        }
+            viewModel.todoFilters.observeWithLifecycle(viewLifecycleOwner) { filters ->
+                displayFilters(filters)
+            }
+        }
+    }
 
-                        with(binding) {
-                            when (period) {
-                                TodoFilterPeriod.NO_PERIOD -> {}
-                                TodoFilterPeriod.TODAY -> btnFilterToday.isChecked = true
-                                TodoFilterPeriod.TOMORROW -> btnFilterTomorrow.isChecked = true
-                                TodoFilterPeriod.THIS_WEEK -> btnFilterWeek.isChecked = true
-                            }
-                            additionalConditions.forEach { condition ->
-                                when (condition) {
-                                    TodoFilterAdditionalConditions.HIDE_COMPLETED -> cbHideCompleted.isChecked =
-                                        true
-                                    TodoFilterAdditionalConditions.HIDE_WITHOUT_DEADLINE ->
-                                        cbHideWithoutDeadline.isChecked =
-                                            true
-                                }
-                            }
-                        }
+    private fun displayFilters(filters: UiTodoFilters) {
+        with(filters) {
+            categories.toChipGroup(
+                binding.chipgroupCategories
+            ) { selectedCategoryId ->
+                viewModel.onEvent(
+                    ListTodoEvent.UpdateSelectedCategoriesId(
+                        selectedCategoryId
+                    )
+                )
+            }
 
+            with(binding) {
+                when (period) {
+                    TodoFilterPeriod.NO_PERIOD -> {}
+                    TodoFilterPeriod.TODAY -> btnFilterToday.isChecked = true
+                    TodoFilterPeriod.TOMORROW -> btnFilterTomorrow.isChecked = true
+                    TodoFilterPeriod.THIS_WEEK -> btnFilterWeek.isChecked = true
+                }
+                additionalConditions.forEach { condition ->
+                    when (condition) {
+                        TodoFilterAdditionalConditions.HIDE_COMPLETED -> cbHideCompleted.isChecked =
+                            true
+                        TodoFilterAdditionalConditions.HIDE_WITHOUT_DEADLINE ->
+                            cbHideWithoutDeadline.isChecked =
+                                true
                     }
                 }
             }
+
         }
     }
 

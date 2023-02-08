@@ -27,4 +27,6 @@ fun Context.handleException(throwable: Throwable): HandledError {
 }
 
 
-data class HandledError(val error: Throwable, val message: String)
+data class HandledError(val error: Throwable, val message: String) {
+    constructor(error: Throwable) : this(error, error.message.orEmpty())
+}

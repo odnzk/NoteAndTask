@@ -40,7 +40,7 @@ class TodoDetailedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initTodo()
+        observeState()
         initClickListeners()
     }
 
@@ -66,12 +66,13 @@ class TodoDetailedFragment : Fragment() {
         }
     }
 
-    private fun initTodo() {
+    private fun observeState() {
         lifecycleScope.launch {
             viewModel.todo.collectAsUiState(
                 context,
                 viewLifecycleOwner,
-                onSuccess = ::showTodo, onLoading = stateLoadingBinding::loadingStarted,
+                onSuccess = ::onSuccess,
+                onLoading = stateLoadingBinding::loadingStarted,
                 onError = ::onError
             )
         }
@@ -86,7 +87,7 @@ class TodoDetailedFragment : Fragment() {
         }
     }
 
-    private fun showTodo(todo: Todo) {
+    private fun onSuccess(todo: Todo) {
         stateLoadingBinding.loadingFinished()
         with(binding) {
             todo.run {

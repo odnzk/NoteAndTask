@@ -38,7 +38,7 @@ class NotesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        observeNotes()
+        observeState()
         initRecyclerView()
         initClickListeners()
     }
@@ -90,12 +90,12 @@ class NotesListFragment : Fragment() {
             adapter = notesAdapter
         }
 
-    private fun observeNotes() =
+    private fun observeState() =
         lifecycleScope.launch {
             viewModel.notes.collectAsUiState(
                 context,
                 lifecycleOwner = viewLifecycleOwner,
-                onSuccess = ::showNotes,
+                onSuccess = ::onSuccess,
                 onError = ::onError,
                 onLoading = stateLoadingBinding::loadingStarted
             )
@@ -107,7 +107,7 @@ class NotesListFragment : Fragment() {
             viewModel.onEvent(ListNoteEvent.Reload)
         }
 
-    private fun showNotes(notes: List<Note>) {
+    private fun onSuccess(notes: List<Note>) {
         stateLoadingBinding.loadingFinished()
         notesAdapter.submitList(notes)
     }

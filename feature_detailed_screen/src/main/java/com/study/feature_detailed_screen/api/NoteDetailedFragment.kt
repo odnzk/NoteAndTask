@@ -77,8 +77,8 @@ class NoteDetailedFragment : Fragment() {
         viewModel.note.collectAsUiState(
             context,
             viewLifecycleOwner,
-            onSuccess = ::showNote,
-            onError = this@NoteDetailedFragment::onError,
+            onSuccess = ::onSuccess,
+            onError = ::onError,
             onLoading = stateLoadingBinding::loadingStarted
         )
     }
@@ -89,7 +89,7 @@ class NoteDetailedFragment : Fragment() {
         }
 
 
-    private fun showNote(note: Note) {
+    private fun onSuccess(note: Note) {
         stateLoadingBinding.loadingFinished()
         with(binding) {
             etTitle.hint = getString(R.string.hint_note_title)

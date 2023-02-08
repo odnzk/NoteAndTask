@@ -26,11 +26,7 @@ suspend fun <T> StateFlow<CompletableState<T>>.collectAsUiState(
                 is CompletableState.Error ->
                     it.error?.let { throwable ->
                         onError(
-                            context?.handleException(throwable)
-                                ?: HandledError(
-                                    error = throwable,
-                                    message = throwable.message ?: ""
-                                )
+                            context?.handleException(throwable) ?: HandledError(error = throwable)
                         )
                     }
             }

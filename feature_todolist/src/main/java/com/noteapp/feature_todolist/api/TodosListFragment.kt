@@ -74,7 +74,7 @@ class TodosListFragment : Fragment() {
         viewModel.todos.collectAsUiState(
             context,
             lifecycleOwner = viewLifecycleOwner,
-            onSuccess = ::showTodoList,
+            onSuccess = ::onSuccess,
             onError = ::onError,
             onLoading = stateLoadingBinding::loadingStarted
         )
@@ -86,7 +86,7 @@ class TodosListFragment : Fragment() {
         }
     }
 
-    private fun showTodoList(notes: List<Todo>) {
+    private fun onSuccess(notes: List<Todo>) {
         stateLoadingBinding.loadingFinished()
         todosAdapter.submitList(notes)
     }

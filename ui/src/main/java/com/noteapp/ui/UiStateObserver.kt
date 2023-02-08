@@ -25,7 +25,7 @@ suspend fun <T> StateFlow<UiState<T>>.collectAsUiState(
             is UiState.Error -> it.error?.let { throwable ->
                 onError(
                     context?.handleException(throwable)
-                        ?: HandledError(error = throwable, message = throwable.message ?: "")
+                        ?: HandledError(error = throwable)
                 )
             }
         }

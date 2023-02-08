@@ -147,7 +147,7 @@ class ListFragment : Fragment() {
         viewModel.list.collectAsUiState(
             context,
             viewLifecycleOwner,
-            onSuccess = ::showList,
+            onSuccess = ::onError,
             onError = ::onError, onLoading = stateLoadingBinding::loadingStarted
         )
     }
@@ -158,7 +158,7 @@ class ListFragment : Fragment() {
         }
 
 
-    private fun showList(data: List<NoteItem>) {
+    private fun onError(data: List<NoteItem>) {
         stateLoadingBinding.loadingFinished()
         listAdapter.submitList(data)
     }
