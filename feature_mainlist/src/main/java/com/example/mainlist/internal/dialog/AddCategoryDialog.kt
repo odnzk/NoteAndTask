@@ -23,11 +23,24 @@ internal class AddCategoryDialog : DialogFragment() {
 
     private val viewModel: AddCategoryDialogViewModel by viewModels()
 
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = DialogAddCategoryBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initClickListeners()
+        setupClickListeners()
         observeState()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun observeState() =
@@ -45,7 +58,7 @@ internal class AddCategoryDialog : DialogFragment() {
         binding.etCategoryTitle.error = handledError.message
     }
 
-    private fun initClickListeners() {
+    private fun setupClickListeners() {
         with(binding) {
             btnAddNewCategory.setOnClickListener {
                 val selectedId = rgColors.checkedRadioButtonId
@@ -65,17 +78,5 @@ internal class AddCategoryDialog : DialogFragment() {
                     }
             }
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = DialogAddCategoryBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

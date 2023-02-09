@@ -39,9 +39,6 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = BottomSheetAddTodoBinding.inflate(inflater, container, false)
-
-        observeState()
-
         return binding.root
     }
 
@@ -53,9 +50,16 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
         initReminderSpinner()
         initPeriodicitySpinner()
 
-
-        initClickListeners()
+        observeState()
+        setupClickListeners()
     }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 
     private fun initPeriodicitySpinner() {
         val periodicityTitles: Array<String> =
@@ -123,7 +127,7 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private fun initClickListeners() {
+    private fun setupClickListeners() {
         with(binding) {
             btnAdd.setOnClickListener {
                 viewModel.onEvent(AddTodoDialogEvent.AddTodo)
@@ -183,10 +187,4 @@ class AddTodoBottomSheetDialog : BottomSheetDialogFragment() {
             }
         }
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
 }

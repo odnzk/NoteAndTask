@@ -26,15 +26,30 @@ class FiltersTodoBottomSheetDialog : BottomSheetDialogFragment() {
 
     private val viewModel by activityViewModels<ListTodoViewModel>()
 
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = BottomSheetTodoFiltersBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         observeState()
-        initClickListeners()
+        setupClickListeners()
 
     }
 
-    private fun initClickListeners() {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setupClickListeners() {
         with(binding) {
             tgTaskFilterPeriod.addOnButtonCheckedListener { group, checkedId, _ ->
                 val newPeriod = if (group.checkedButtonId != -1) {
@@ -104,19 +119,5 @@ class FiltersTodoBottomSheetDialog : BottomSheetDialogFragment() {
             }
 
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = BottomSheetTodoFiltersBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
