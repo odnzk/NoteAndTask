@@ -23,10 +23,7 @@ suspend fun <T> StateFlow<UiState<T>>.collectAsUiState(
             is UiState.Loading -> onLoading()
             is UiState.Success -> it.data?.let { onSuccess(it) }
             is UiState.Error -> it.error?.let { throwable ->
-                onError(
-                    context?.handleException(throwable)
-                        ?: HandledError(error = throwable)
-                )
+                onError(context?.handleException(throwable) ?: HandledError(error = throwable))
             }
         }
     }

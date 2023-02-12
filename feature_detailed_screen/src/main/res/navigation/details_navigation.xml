@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/noteDetailedFragment"
-        android:name="com.study.feature_detailed_screen.api.NoteDetailedFragment"
+        android:name="com.study.feature_detailed_screen.fragments.note.detailed.NoteDetailedFragment"
         android:label="NoteDetailedFragment"
         tools:layout="@layout/fragment_detailed_note">
         <deepLink app:uri="@string/deeplink_detailed_note" />
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/todoDetailedFragment"
-        android:name="com.study.feature_detailed_screen.api.TodoDetailedFragment"
+        android:name="com.study.feature_detailed_screen.fragments.todo.detailed.TodoDetailedFragment"
         android:label="TodoDetailedFragment"
         tools:layout="@layout/fragment_detailed_todo">
 
@@ -37,7 +37,7 @@
     </fragment>
     <dialog
         android:id="@+id/chooseCategoryDialog"
-        android:name="com.study.feature_detailed_screen.internal.dialog.ChooseCategoryDialog"
+        android:name="com.study.feature_detailed_screen.dialog.ChooseCategoryDialog"
         android:label="ChooseCategoryDialog"
         tools:layout="@layout/dialog_change_category">
         <argument

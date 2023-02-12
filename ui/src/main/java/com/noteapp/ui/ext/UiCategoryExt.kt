@@ -3,7 +3,6 @@ package com.noteapp.ui.ext
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.util.Log
 import android.util.TypedValue
 import android.view.ContextThemeWrapper
 import android.view.View
@@ -23,16 +22,17 @@ private const val CATEGORY_FONT_SIZE = 20f
 fun Category.toChipCategory(
     context: Context,
     isCheckedStyleEnabled: Boolean,
-    onCategoryChipClick: (() -> Unit)? = null
+    onLongClickListener: ((Long) -> Boolean)? = null,
+    onCategoryChipClick: ((Long) -> Unit)? = null
 ): Chip =
     Chip(ContextThemeWrapper(context, R.style.ChipCategoryStyle), null, 0).apply {
         id = View.generateViewId()
         text = title
         chipBackgroundColor = ColorStateList.valueOf(color)
 
-        setOnClickListener {
-            onCategoryChipClick?.invoke()
-        }
+
+        onCategoryChipClick?.let { setOnClickListener { it(this@toChipCategory.id) } }
+        onLongClickListener?.let { setOnLongClickListener { onLongClickListener(this@toChipCategory.id) } }
 
         if (isCheckedStyleEnabled) {
             isCheckable = true
@@ -45,14 +45,18 @@ fun Category.toChipCategory(
 fun List<Category>.toChipGroup(
     chipGroup: ChipGroup,
     isCheckedStyleEnabled: Boolean = false,
+    onLongClickListener: ((Long) -> Boolean)? = null,
     onAddCategoryClick: (() -> Unit)? = null,
     onCategoryChipClick: ((Long) -> Unit)? = null
 ) {
     chipGroup.removeAllViews()
     forEach { category ->
-        val categoryChip = category.toChipCategory(chipGroup.context, isCheckedStyleEnabled) {
-            onCategoryChipClick?.invoke(category.id)
-        }
+        val categoryChip = category.toChipCategory(
+            context = chipGroup.context,
+            onLongClickListener = onLongClickListener,
+            isCheckedStyleEnabled = isCheckedStyleEnabled,
+            onCategoryChipClick = onCategoryChipClick
+        )
         chipGroup.addView(categoryChip)
     }
     onAddCategoryClick?.let {

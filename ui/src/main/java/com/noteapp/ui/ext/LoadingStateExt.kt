@@ -17,9 +17,7 @@ fun StateLoadingBinding.loadingStarted() {
 
 fun StateLoadingBinding.onError(errorMessage: String, tryAgainAction: () -> Unit) {
     tvErrorLoading.text = errorMessage
-    btnTryLoadingAgain.setOnClickListener {
-        tryAgainAction()
-    }
+    btnTryLoadingAgain.setOnClickListener { tryAgainAction() }
     pbLoading.hide()
     tvErrorLoading.isVisible = true
     btnTryLoadingAgain.isVisible = true

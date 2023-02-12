@@ -19,7 +19,13 @@ class NoteViewHolder(
                 tvTitle.text = title
                 tvContent.text = content
                 date?.let { tvDate.text = it.formatToNoteDate() }
-                categories.toChipGroup(chipgroupCategories, isCheckedStyleEnabled = false)
+                categories.toChipGroup(
+                    chipGroup = chipgroupCategories,
+                    isCheckedStyleEnabled = false,
+                    onLongClickListener = null,
+                    onAddCategoryClick = null,
+                    onCategoryChipClick = null
+                )
             }
             root.setOnClickListener {
                 onNoteClick?.invoke(note.id)

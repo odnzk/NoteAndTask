@@ -16,7 +16,6 @@
         <item name="fontFamily">@font/inter_medium</item>
     </style>
 
-    <!--    main list -->
     <style name="ContentText_small" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">12sp</item>
         <item name="fontFamily">@font/inter_regular</item>
@@ -116,15 +115,6 @@
         <item name="buttonTint">@color/black</item>
     </style>
 
-<!--    <style name="PrimaryToggleButton" parent="ThemeOverlay.Material3.Button">-->
-<!--        <item name="android:layout_height">wrap_content</item>-->
-<!--        <item name="android:layout_width">wrap_content</item>-->
-<!--        <item name="android:textSize">10sp</item>-->
-<!--        <item name="android:textColor">@color/black</item>-->
-<!--        <item name="textAllCaps">true</item>-->
-<!--    </style>-->
-
-    <!--    todo replace with this style all checkbox-->
     <style name="PrimaryCheckbox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:textSize">11sp</item>
         <item name="android:buttonTint">@color/black</item>

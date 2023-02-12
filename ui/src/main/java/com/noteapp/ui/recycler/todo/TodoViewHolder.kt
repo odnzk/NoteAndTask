@@ -22,7 +22,7 @@ class TodoViewHolder(
                 tvTitle.text = title
                 tvTitle.setTodoIsCompletedStyle(isCompleted)
                 deadlineDate?.let {
-                    tvDeadlineDate.setTodoDateStyle(it, ivDeadlineDateIcon)
+                    tvDeadlineDate.setTodoDateStyle(todo, ivDeadlineDateIcon)
                 }
                 ivDeadlineDateIcon.isVisible = deadlineDate != null
                 cbCompleted.isChecked = isCompleted

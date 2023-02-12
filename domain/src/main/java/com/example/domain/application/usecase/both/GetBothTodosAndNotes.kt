@@ -34,7 +34,8 @@ class GetBothTodosAndNotes
                 filterInfo.searchQuery
             )
             tasks = todoRepository.getByCategoriesId(
-                categoryIds = filterInfo.selectedCategoriesId, todoTitle = filterInfo.searchQuery
+                filterInfo.selectedCategoriesId,
+                filterInfo.searchQuery
             )
         }
         tasks = tasks.map { DefaultSorter.sort(it) }
