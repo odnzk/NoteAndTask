@@ -1,17 +1,25 @@
-# NoteApp: app for storing notes and managing tasks
+# NoteApp [in progress]
+### App for storing notes and managing tasks
+<br>
 
-<p align="center" height="100px">
-<img src=".github/images/screenshots_1.png">
-</p>
-
-## Features
+<table>
+  <tr>
+    <td><p align="center" height="100px">
+<img height="400px" src=".github/images/screenshots_1.png">
+</p></td>
+    <td>
+      <b>Features:</b>
 
 - [X] Create, update, delete tasks, notes and categories
 - [X] Link task and note to categories to filter and sort them
 - [X] Filter ans sort tasks and notes by categories and etc
 - [X] Search tasks and notes
 - [-] Set reminder, periodicity and deadline date for task
-- [-] Customize settings
+- [-] Customize settings</td>
+  </tr>
+</table>
+
+<br>
 
 ## Tech stack
 
@@ -34,10 +42,18 @@
 
 ## Screenshots
 
-<p align="center">
+<table>
+  <tr>
+    <td>
+      <p align="">
 <img height="300px" src=".github/images/screenshots_2.png">
 </p>
-<p align="center">
-<img height="300px src=".github/images/screenshots_3.png">
+      </td>
+    <td>
+      <p align="">
+<img height="300px" src=".github/images/screenshots_3.png">
 </p>
+    </td>
+</table>
+
 
