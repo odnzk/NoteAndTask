@@ -1,16 +1,16 @@
-# NoteApp 
+# Note&Task
 App for storing notes and managing tasks
 
-## Architecture
-
-
-## Features
+## :spiral_notepad: Features
 - [X] Create, update, delete tasks, notes and categories
 - [X] Link task and note to categories to filter and sort them
 - [X] Filter ans sort tasks and notes by categories and etc
 - [X] Search tasks and notes
 
-## Tech stack
+## :paperclip: Architecture
+![Acrhitecture](.github/images/noteapp_acrhitecture.png)
+
+## :hammer_and_pick: Tech stack
 - Kotlin
 - XML + ViewBinding
 - Kotlin Coroutines + Flow
@@ -20,7 +20,8 @@ App for storing notes and managing tasks
 - DataStore
 - WorkManager
 
-
+## :sparkles: Screenshots
+![Screenshots](.github/images/noteapp_screenshots.png)
 
 
 
