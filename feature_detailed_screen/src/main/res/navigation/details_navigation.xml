@@ -37,7 +37,7 @@
     </fragment>
     <dialog
         android:id="@+id/chooseCategoryDialog"
-        android:name="com.study.feature_detailed_screen.dialog.ChooseCategoryDialog"
+        android:name="com.study.feature_detailed_screen.dialog.ChooseCategoryDialogFragment"
         android:label="ChooseCategoryDialog"
         tools:layout="@layout/dialog_change_category">
         <argument

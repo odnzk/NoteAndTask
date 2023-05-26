@@ -27,14 +27,10 @@ internal class NoteDetailsViewModel @Inject constructor(
     val note = _note.asStateFlow()
 
     val isNewNote: Boolean = noteId == Constants.CREATE_NOTE_LONG
-
-    // todo does not show(((
     private var _isNoteSavedSuccessfully: MutableSharedFlow<Boolean> = MutableSharedFlow()
     val isNoteSavedSuccessfully = _isNoteSavedSuccessfully.asSharedFlow()
 
-    init {
-        loadData()
-    }
+    init { loadData() }
 
     private fun loadData() {
         _note.value = UiState.Loading()
@@ -72,7 +68,6 @@ internal class NoteDetailsViewModel @Inject constructor(
                 }
             }
             is NoteDetailedEvent.DeleteNote -> {
-                // if UiState.Loading or UiState.Error do nothing
                 note.value.data?.let { noteUseCases.deleteNote(it.id) }
             }
             NoteDetailedEvent.Reload -> loadData()

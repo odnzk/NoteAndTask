@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.example.domain.model.Note
 import com.example.domain.util.exceptions.Field
 import com.example.domain.util.exceptions.InvalidNoteException
@@ -15,10 +14,16 @@ import com.noteapp.ui.BaseFragment
 import com.noteapp.ui.R
 import com.noteapp.ui.collectAsUiState
 import com.noteapp.ui.databinding.StateLoadingBinding
-import com.noteapp.ui.ext.*
+import com.noteapp.ui.ext.HandledError
+import com.noteapp.ui.ext.formatToNoteDate
+import com.noteapp.ui.ext.loadingFinished
+import com.noteapp.ui.ext.loadingStarted
+import com.noteapp.ui.ext.onError
+import com.noteapp.ui.ext.showSnackbar
+import com.noteapp.ui.ext.toChipGroup
 import com.noteapp.ui.observeWithLifecycle
 import com.study.feature_detailed_screen.databinding.FragmentDetailedNoteBinding
-import com.study.feature_detailed_screen.navigation.fromNoteToChooseCategoryDialog
+import com.study.feature_detailed_screen.navigation.navigateToChooseCategoryDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -26,10 +31,8 @@ import kotlinx.coroutines.launch
 class NoteDetailedFragment : BaseFragment() {
     private var _binding: FragmentDetailedNoteBinding? = null
     private val binding get() = _binding!!
-
     private var _stateLoadingBinding: StateLoadingBinding? = null
     private val stateLoadingBinding: StateLoadingBinding get() = _stateLoadingBinding!!
-
     private val viewModel: NoteDetailsViewModel by viewModels()
 
 
@@ -44,7 +47,6 @@ class NoteDetailedFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         observeState()
         setupListeners()
     }
@@ -57,23 +59,21 @@ class NoteDetailedFragment : BaseFragment() {
 
     override fun initUI() = Unit
 
-    override fun setupListeners() {
-        with(binding) {
-            btnDelete.setOnClickListener {
-                viewModel.onEvent(NoteDetailedEvent.DeleteNote)
-                root.showSnackbar(getString(R.string.success_delete))
-            }
-
-            btnSaveNote.setOnClickListener {
-                val content = etContent.text.toString()
-                val title = etTitle.text.toString()
-                viewModel.note.value.data?.let { note ->
-                    val updatedNote = note.copy(title = title, content = content)
-                    viewModel.onEvent(NoteDetailedEvent.UpdateNote(updatedNote))
-                }
+    override fun setupListeners() = with(binding) {
+        btnDelete.setOnClickListener {
+            viewModel.onEvent(NoteDetailedEvent.DeleteNote)
+            root.showSnackbar(getString(R.string.success_delete))
+        }
+        btnSaveNote.setOnClickListener {
+            val content = etContent.text.toString()
+            val title = etTitle.text.toString()
+            viewModel.note.value.data?.let { note ->
+                val updatedNote = note.copy(title = title, content = content)
+                viewModel.onEvent(NoteDetailedEvent.UpdateNote(updatedNote))
             }
         }
     }
+
 
     override fun observeState() {
         lifecycleScope.launch {
@@ -87,28 +87,21 @@ class NoteDetailedFragment : BaseFragment() {
         }
         lifecycleScope.launch {
             viewModel.isNoteSavedSuccessfully.observeWithLifecycle(viewLifecycleOwner) { isSaved ->
-                if (isSaved) {
-                    binding.root.showSnackbar(getString(R.string.success_save))
-                }
+                if (isSaved) binding.root.showSnackbar(getString(R.string.success_save))
             }
         }
     }
 
-    private fun onError(handledError: HandledError) {
-        when (val error = handledError.error) {
-            is InvalidNoteException -> when (error.field) {
-                Field.TITLE -> binding.etTitle.error = handledError.message
-                Field.CONTENT -> binding.etContent.error = handledError.message
-            }
-            is NotUniqueFieldException -> binding.etTitle.error = handledError.message
-            else ->
-                stateLoadingBinding.onError(handledError.message) {
-                    viewModel.onEvent(NoteDetailedEvent.Reload)
-                }
-
+    private fun onError(handledError: HandledError) = when (val error = handledError.error) {
+        is InvalidNoteException -> when (error.field) {
+            Field.TITLE -> binding.etTitle.error = handledError.message
+            Field.CONTENT -> binding.etContent.error = handledError.message
+        }
+        is NotUniqueFieldException -> binding.etTitle.error = handledError.message
+        else -> stateLoadingBinding.onError(handledError.message) {
+            viewModel.onEvent(NoteDetailedEvent.Reload)
         }
     }
-
 
     private fun onSuccess(note: Note) {
         stateLoadingBinding.loadingFinished()
@@ -123,8 +116,8 @@ class NoteDetailedFragment : BaseFragment() {
                     categories.toChipGroup(
                         chipgroupCategories,
                         isCheckedStyleEnabled = false,
-                        onAddCategoryClick = { findNavController().fromNoteToChooseCategoryDialog(note.id) },
-                        onCategoryChipClick = { findNavController().fromNoteToChooseCategoryDialog(note.id) })
+                        onAddCategoryClick = { navigateToChooseCategoryDialog(note.id) },
+                        onCategoryChipClick = { navigateToChooseCategoryDialog(note.id) })
                 }
             }
         }

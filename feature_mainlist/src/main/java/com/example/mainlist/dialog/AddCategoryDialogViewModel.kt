@@ -16,7 +16,6 @@ import javax.inject.Inject
 internal class AddCategoryDialogViewModel @Inject constructor(
     private val categoryUseCases: CategoryUseCases
 ) : ViewModel() {
-
     private var _category: MutableStateFlow<CompletableState<Category>> =
         MutableStateFlow(CompletableState.InProgress(Category.defaultInstance()))
     val category = _category.asStateFlow()
@@ -25,14 +24,10 @@ internal class AddCategoryDialogViewModel @Inject constructor(
         when (event) {
             is AddCategoryDialogEvent.AddCategory -> categoryUseCases.addCategory(event.category)
                 .fold(
-                    onSuccess = {
-                        _category.update { CompletableState.Completed(it.data) }
-                    },
+                    onSuccess = { _category.update { CompletableState.Completed(it.data) } },
                     onFailure = { error ->
                         _category.update {
-                            CompletableState.Error(
-                                data = it.data, error = error
-                            )
+                            CompletableState.Error(data = it.data, error = error)
                         }
                     }
                 )

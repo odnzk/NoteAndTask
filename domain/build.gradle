@@ -11,6 +11,5 @@ java {
 dependencies {
     implementation project(path: ':core')
 
-    // coroutines
     implementation Deps.coroutinesCore
 }

@@ -42,9 +42,8 @@ dependencies {
     androidTestImplementation Deps.junit
     androidTestImplementation Deps.espressoCore
 
-
-    implementation Deps.fragment
-
     implementation project(path: ':domain')
     implementation project(path: ':core')
+
+    implementation Deps.fragment
 }

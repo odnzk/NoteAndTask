@@ -48,16 +48,10 @@ dependencies {
     implementation project(path: ':ui')
     implementation project(path: ':domain')
 
-    // view model
     implementation Deps.lifecycleViewmodel
-    // to use by viewModels()
     implementation Deps.fragment
-
-    // hilt
     implementation Deps.hilt
     kapt Deps.hiltCompiler
-
-    // jetpack navigation
     implementation Deps.navigationRuntime
     implementation Deps.navigationFragment
     implementation Deps.navigationUi

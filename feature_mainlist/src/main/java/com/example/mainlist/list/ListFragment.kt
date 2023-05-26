@@ -9,20 +9,27 @@ import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.domain.model.NoteItem
 import com.example.domain.model.NoteItemFilter
 import com.example.feature_mainlist.databinding.FragmentListBinding
-import com.example.mainlist.utils.navigation.toAddCategoryDialog
-import com.example.mainlist.utils.navigation.toDetailedNote
-import com.example.mainlist.utils.navigation.toDetailedTodo
+import com.example.mainlist.utils.navigateToAddCategoryDialog
+import com.example.mainlist.utils.navigateToDetailedNote
+import com.example.mainlist.utils.navigateToDetailedTodo
 import com.example.mainlist.utils.recyler.NoteItemAdapter
 import com.noteapp.ui.BaseFragment
+import com.noteapp.ui.R
 import com.noteapp.ui.collectAsUiState
 import com.noteapp.ui.databinding.StateLoadingBinding
-import com.noteapp.ui.ext.*
+import com.noteapp.ui.ext.HandledError
+import com.noteapp.ui.ext.initStandardVerticalRecyclerView
+import com.noteapp.ui.ext.loadingFinished
+import com.noteapp.ui.ext.loadingStarted
+import com.noteapp.ui.ext.onError
+import com.noteapp.ui.ext.showSnackbar
+import com.noteapp.ui.ext.toChipGroup
 import com.noteapp.ui.observeWithLifecycle
+import com.noteapp.ui.recycler.SwipeCallback
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -31,10 +38,8 @@ import kotlinx.coroutines.launch
 class ListFragment : BaseFragment() {
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
-
     private var _stateLoadingBinding: StateLoadingBinding? = null
     private val stateLoadingBinding: StateLoadingBinding get() = _stateLoadingBinding!!
-
     private val listAdapter = NoteItemAdapter()
     private val viewModel by viewModels<ListViewModel>()
 
@@ -43,7 +48,6 @@ class ListFragment : BaseFragment() {
     ): View {
         _binding = FragmentListBinding.inflate(inflater, container, false)
         _stateLoadingBinding = StateLoadingBinding.bind(binding.root)
-
         initAdapter()
         return binding.root
     }
@@ -62,36 +66,24 @@ class ListFragment : BaseFragment() {
     }
 
 
-    private fun initRecyclerView() {
-        with(binding) {
-            recyclerView.run {
-                val itemTouchHelper =
-                    ItemTouchHelper(com.noteapp.ui.recycler.SwipeCallback(listAdapter) { removedItem ->
-                        viewModel.onEvent(
-                            ListFragmentEvent.DeleteItem(
-                                removedItem as NoteItem
-                            )
-                        )
-                        // undo listener
-                        val listener =
-                            View.OnClickListener { viewModel.onEvent(ListFragmentEvent.RestoreItem) }
-                        showSnackbar(com.noteapp.ui.R.string.success_delete, listener)
-                    })
-                initStandardVerticalRecyclerView(itemTouchHelper)
-                adapter = listAdapter
+    private fun initRecyclerView() = with(binding.recyclerView) {
+        val itemTouchHelper = ItemTouchHelper(SwipeCallback(listAdapter) { removedItem ->
+            viewModel.onEvent(ListFragmentEvent.DeleteItem(removedItem as NoteItem))
+            showSnackbar(R.string.success_delete) {
+                viewModel.onEvent(ListFragmentEvent.RestoreItem)
             }
-        }
+        })
+        initStandardVerticalRecyclerView(itemTouchHelper)
+        adapter = listAdapter
     }
 
-    private fun initAdapter() {
-        listAdapter.run {
-            onNoteClick = { noteId -> findNavController().toDetailedNote(noteId) }
-            onTodoClick = { todoId -> findNavController().toDetailedTodo(todoId) }
-            onTodoCheckboxClick = { id, isCompleted ->
-                viewModel.onEvent(ListFragmentEvent.UpdateTodoCompletedStatus(id, isCompleted))
-            }
-            submitList(emptyList())
+    private fun initAdapter() = listAdapter.run {
+        onNoteClick = { noteId -> navigateToDetailedNote(noteId) }
+        onTodoClick = { todoId -> navigateToDetailedTodo(todoId) }
+        onTodoCheckboxClick = { id, isCompleted ->
+            viewModel.onEvent(ListFragmentEvent.UpdateTodoCompletedStatus(id, isCompleted))
         }
+        submitList(emptyList())
     }
 
     override fun initUI() {
@@ -99,27 +91,7 @@ class ListFragment : BaseFragment() {
     }
 
     override fun setupListeners() {
-        binding.spinnerFilter.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(
-                adapter: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                var spinnerItem = adapter?.getItemAtPosition(position)
-                if (spinnerItem is String) {
-                    spinnerItem = spinnerItem.lowercase()
-                    NoteItemFilter.values().iterator().forEach { filter ->
-                        if (spinnerItem == filter.key) {
-                            viewModel.onEvent(ListFragmentEvent.UpdateFilter(filter))
-                        }
-                    }
-                }
-            }
-
-            override fun onNothingSelected(adapter: AdapterView<*>?) = Unit
-        }
-
+        binding.spinnerFilter.onItemSelectedListener = createOnItemSelectedListener()
         binding.svFindByTitle.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?) = false
 
@@ -128,11 +100,7 @@ class ListFragment : BaseFragment() {
                 return false
             }
         })
-
-        binding.btnClearAll.setOnClickListener {
-            viewModel.onEvent(ListFragmentEvent.ClearAll)
-        }
-
+        binding.btnClearAll.setOnClickListener { viewModel.onEvent(ListFragmentEvent.ClearAll) }
     }
 
     override fun observeState() {
@@ -153,10 +121,8 @@ class ListFragment : BaseFragment() {
                         viewModel.onEvent(ListFragmentEvent.DeleteCategory(categoryId))
                         true
                     },
-                    onAddCategoryClick = { findNavController().toAddCategoryDialog() }) { categoryId ->
-                    viewModel.onEvent(
-                        ListFragmentEvent.UpdateSelectedCategoriesId(categoryId)
-                    )
+                    onAddCategoryClick = { navigateToAddCategoryDialog() }) { categoryId ->
+                    viewModel.onEvent(ListFragmentEvent.UpdateSelectedCategoriesId(categoryId))
                 }
             }
         }
@@ -171,6 +137,27 @@ class ListFragment : BaseFragment() {
     private fun onSuccess(data: List<NoteItem>) {
         stateLoadingBinding.loadingFinished()
         listAdapter.submitList(data)
+    }
+
+    private fun createOnItemSelectedListener() = object : OnItemSelectedListener {
+        override fun onItemSelected(
+            adapter: AdapterView<*>?,
+            view: View?,
+            position: Int,
+            id: Long
+        ) {
+            var spinnerItem = adapter?.getItemAtPosition(position)
+            if (spinnerItem is String) {
+                spinnerItem = spinnerItem.lowercase()
+                NoteItemFilter.values().iterator().forEach { filter ->
+                    if (spinnerItem == filter.key) {
+                        viewModel.onEvent(ListFragmentEvent.UpdateFilter(filter))
+                    }
+                }
+            }
+        }
+
+        override fun onNothingSelected(adapter: AdapterView<*>?) = Unit
     }
 
 }

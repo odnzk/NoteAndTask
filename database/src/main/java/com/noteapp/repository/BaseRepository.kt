@@ -5,7 +5,6 @@ import com.example.domain.util.exceptions.NotUniqueFieldException
 import com.example.domain.util.exceptions.UniqueConstraints
 
 abstract class BaseRepository {
-
     protected suspend fun <T> doRequest(
         constraints: UniqueConstraints? = null,
         request: suspend () -> T

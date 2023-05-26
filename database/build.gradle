@@ -41,15 +41,10 @@ dependencies {
 
     implementation project(path: ':domain')
 
-    // room
     implementation Deps.roomRuntime
     implementation Deps.room
     kapt Deps.roomCompiler
-
-    // coroutines
     implementation Deps.coroutinesAndroid
-
-    // hilt
     implementation Deps.hilt
     kapt Deps.hiltCompiler
 }

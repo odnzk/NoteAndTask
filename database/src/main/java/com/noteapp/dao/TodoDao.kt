@@ -3,13 +3,12 @@ package com.noteapp.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import com.example.data.tuples.TodoWithCategoryTuple
+import com.noteapp.entity.tuples.TodoWithCategoryTuple
 import com.noteapp.entity.TodoEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TodoDao : BaseDao<TodoEntity> {
-
     @Query("DELETE FROM todos WHERE id = :todoId")
     suspend fun deleteById(todoId: Long)
 

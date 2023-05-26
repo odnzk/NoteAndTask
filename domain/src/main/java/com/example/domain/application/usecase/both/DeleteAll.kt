@@ -10,7 +10,6 @@ class DeleteAll(
     private val todoRepository: TodoRepository,
     private val dispatcher: CoroutineDispatcher
 ) {
-
     suspend operator fun invoke() = withContext(dispatcher) {
         noteRepository.deleteAll()
         todoRepository.deleteAll()

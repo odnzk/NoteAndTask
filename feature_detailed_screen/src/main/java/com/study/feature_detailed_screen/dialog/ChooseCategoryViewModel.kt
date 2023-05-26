@@ -15,7 +15,13 @@ import com.noteapp.core.model.CategoryOwnerType
 import com.noteapp.ui.mappers.toUiCategory
 import com.noteapp.ui.model.UiCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,7 +39,6 @@ internal class ChooseCategoryViewModel @Inject constructor(
     private val noteItemId: Long by lazy {
         type.let { state.get<Long>(it.key) ?: throw InvalidNavArgumentsException() }
     }
-
     private var _noteItem: Flow<NoteItem> = when (type) {
         CategoryOwnerType.TODO_TYPE -> todoUseCases.getTodoFlowById(noteItemId).filterNotNull()
         CategoryOwnerType.NOTE_TYPE -> noteUseCases.getNoteFlowById(noteItemId).filterNotNull()
@@ -60,24 +65,14 @@ internal class ChooseCategoryViewModel @Inject constructor(
         categories: List<Category>
     ): List<UiCategory> {
         return when (noteItem) {
-            is Note -> {
-
-                val selectedCategories: List<Category> = noteItem.categories
-                val uiCategories: List<UiCategory> = categories.map { category ->
-                    category.toUiCategory(category in selectedCategories)
-                }
-                uiCategories
-            }
-            is Todo -> {
-                val uiCategories = noteItem.category?.id?.let { noteCategoryId ->
+            is Note -> categories
+                .map { category -> category.toUiCategory(category in noteItem.categories) }
+            is Todo -> noteItem.category?.id
+                ?.let { noteCategoryId ->
                     categories.map { category ->
                         category.toUiCategory(category.id == noteCategoryId)
                     }
-                } ?: run {
-                    categories.map { it.toUiCategory() }
-                }
-                uiCategories
-            }
+                } ?: run { categories.map { it.toUiCategory() } }
         }
     }
 
@@ -85,19 +80,18 @@ internal class ChooseCategoryViewModel @Inject constructor(
         when (event) {
             is ChooseCategoryEvent.UpdateCategory -> categoryUseCases.updateCategory(event.category)
             is ChooseCategoryEvent.DeleteNoteItemCategory -> when (type) {
-                CategoryOwnerType.NOTE_TYPE -> noteUseCases.removeNoteCategory(
-                    noteItemId, event.categoryId
-                )
-                CategoryOwnerType.TODO_TYPE -> todoUseCases.removeTodoCategory(
-                    noteItemId
-                )
+                CategoryOwnerType.NOTE_TYPE ->
+                    noteUseCases.removeNoteCategory(noteItemId, event.categoryId)
+                CategoryOwnerType.TODO_TYPE ->
+                    todoUseCases.removeTodoCategory(noteItemId)
             }
             is ChooseCategoryEvent.AddNoteItemCategory -> {
                 when (type) {
-                    CategoryOwnerType.NOTE_TYPE -> noteUseCases.addNoteCategory(
-                        noteId = noteItemId,
-                        categoryId = event.categoryId
-                    )
+                    CategoryOwnerType.NOTE_TYPE ->
+                        noteUseCases.addNoteCategory(
+                            noteId = noteItemId,
+                            categoryId = event.categoryId
+                        )
                     CategoryOwnerType.TODO_TYPE -> todoUseCases.updateTodoCategory(
                         todoId = noteItemId,
                         newCategoryId = event.categoryId

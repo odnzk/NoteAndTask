@@ -1,8 +1,6 @@
 package com.example.domain.util.sorting
 
 import com.example.domain.model.Todo
-
-//HIDE_COMPLETED, HIDE_WITHOUT_DEADLINE
 interface TodoSorterByAdditionalConditions {
     fun filter(items: List<Todo>): List<Todo>
 }

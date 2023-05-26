@@ -6,8 +6,6 @@ sealed class UiState<T>(val data: T? = null, val error: Throwable? = null) {
     class Success<T>(data: T) : UiState<T>(data)
     class Error<T>(error: Throwable) : UiState<T>(error = error)
 }
-
-// separated because ListState can be modified, so here will be "implementation" of work with him
 fun <T> UiState<T>.handleState(
     onLoadingAction: () -> Unit,
     onErrorAction: (Throwable) -> Unit,

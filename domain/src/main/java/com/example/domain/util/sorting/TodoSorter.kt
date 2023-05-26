@@ -9,8 +9,6 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.time.temporal.TemporalAdjusters
 import java.util.*
-
-//  NO_PERIOD, TODAY, TOMORROW, THIS_WEEK
 sealed interface TodoSorter {
     fun sort(items: List<Todo>): List<Todo>
 }

@@ -1,4 +1,4 @@
-package com.example.data.entity.jtable
+package com.noteapp.entity.jtable
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

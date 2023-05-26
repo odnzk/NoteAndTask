@@ -1,6 +1,6 @@
-package com.example.data.mapper
+package com.noteapp.util.mapper
 
-import com.example.data.tuples.TodoWithCategoryTuple
+import com.noteapp.entity.tuples.TodoWithCategoryTuple
 import com.example.domain.model.Todo
 import com.noteapp.entity.TodoEntity
 import com.noteapp.util.mapper.toCategory

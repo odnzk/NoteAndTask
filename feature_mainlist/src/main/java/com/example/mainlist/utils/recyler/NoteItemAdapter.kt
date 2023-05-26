@@ -10,10 +10,10 @@ import com.noteapp.ui.R
 import com.noteapp.ui.recycler.note.NoteViewHolder
 import com.noteapp.ui.recycler.todo.TodoViewHolder
 
-class NoteItemAdapter : ListAdapter<NoteItem, RecyclerView.ViewHolder>(NoteItemDiffUtilCallback()) {
-    var onNoteClick: ((Long) -> Unit)? = null // (noteId: Long) -> Unit
-    var onTodoClick: ((Long) -> Unit)? = null // (todoId: Long) -> Unit
-    var onTodoCheckboxClick: ((Long, Boolean) -> Unit)? = null // (todoId: Long) -> Unit
+internal class NoteItemAdapter : ListAdapter<NoteItem, RecyclerView.ViewHolder>(NoteItemDiffUtilCallback()) {
+    var onNoteClick: ((Long) -> Unit)? = null
+    var onTodoClick: ((Long) -> Unit)? = null
+    var onTodoCheckboxClick: ((Long, Boolean) -> Unit)? = null
 
 
     override fun getItemViewType(position: Int): Int {

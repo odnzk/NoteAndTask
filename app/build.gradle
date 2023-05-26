@@ -58,27 +58,17 @@ dependencies {
 
     implementation Deps.hilt
     kapt Deps.hiltCompiler
-
     implementation Deps.roomRuntime
     annotationProcessor Deps.roomCompiler
     kapt Deps.roomCompiler
-
     implementation Deps.datastore
-
-    // view model
     implementation Deps.lifecycleViewmodel
     kapt Deps.lifecycleCompiler
-    // to use by viewModels()
     implementation Deps.activity
     implementation Deps.fragment
-
-    // jetpack navigation
     implementation Deps.navigationFragment
     implementation Deps.navigationUi
-
-    // work manager
     implementation Deps.workmanagerRuntime
-
 }
 
 

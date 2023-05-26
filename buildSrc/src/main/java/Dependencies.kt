@@ -85,7 +85,6 @@ object Plugins {
     const val hiltAndroid = "com.google.dagger.hilt.android"
     const val NavigationSafeArgs = "androidx.navigation.safeargs.kotlin"
 
-
     const val javaLibrary = "java-library"
     const val kotlinJvm = "org.jetbrains.kotlin.jvm"
 }

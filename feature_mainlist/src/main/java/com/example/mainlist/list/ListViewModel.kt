@@ -6,12 +6,21 @@ import com.example.domain.application.usecase.both.UnitedUseCases
 import com.example.domain.application.usecase.category.CategoryUseCases
 import com.example.domain.application.usecase.note.NoteUseCases
 import com.example.domain.application.usecase.todo.TodoUseCases
-import com.example.domain.model.*
+import com.example.domain.model.Category
+import com.example.domain.model.FiltersInfo
+import com.example.domain.model.Note
+import com.example.domain.model.NoteItem
+import com.example.domain.model.Todo
 import com.noteapp.core.ext.addButIfExistRemove
 import com.noteapp.core.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,31 +32,27 @@ internal class ListViewModel @Inject constructor(
     private val unitedUseCases: UnitedUseCases
 ) :
     ViewModel() {
-
     private var _categories: Flow<List<Category>> = categoryUseCases.getAllCategories()
     val categories = _categories
-
     private var _list: MutableStateFlow<UiState<List<NoteItem>>> =
         MutableStateFlow(UiState.Loading())
     val list = _list.asStateFlow()
-
     private var filterInfo: MutableStateFlow<FiltersInfo> = MutableStateFlow(FiltersInfo())
     private var recentlyRemoved: NoteItem? = null
     private var jobObservingNoteItemList: Job? = null
 
 
-    fun onEvent(event: ListFragmentEvent) =
-        viewModelScope.launch {
-            when (event) {
-                is ListFragmentEvent.DeleteItem -> {
-                    when (val noteItem = event.noteItem) {
-                        is Note -> noteUseCases.deleteNote(noteItem.id)
-                        is Todo -> todoUseCases.deleteTodo(noteItem.id)
-                    }
-                    recentlyRemoved = event.noteItem
+    fun onEvent(event: ListFragmentEvent) = viewModelScope.launch {
+        when (event) {
+            is ListFragmentEvent.DeleteItem -> {
+                when (val noteItem = event.noteItem) {
+                    is Note -> noteUseCases.deleteNote(noteItem.id)
+                    is Todo -> todoUseCases.deleteTodo(noteItem.id)
                 }
-                is ListFragmentEvent.RestoreItem -> {
-                    recentlyRemoved?.let { noteItem ->
+                recentlyRemoved = event.noteItem
+            }
+            is ListFragmentEvent.RestoreItem -> {
+                recentlyRemoved?.let { noteItem ->
                         when (noteItem) {
                             is Note -> noteUseCases.addNote(noteItem)
                             is Todo -> todoUseCases.addTodo(noteItem)

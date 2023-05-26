@@ -7,9 +7,6 @@ class LoadingFromDatabaseFailedException : AppException()
 class NotFoundException : AppException()
 
 class InvalidNavArgumentsException : AppException()
-
-//class InvalidColorException : AppException()
-
 class InvalidCategoryException(val field: Field) : AppException()
 class InvalidNoteException(val field: Field) : AppException()
 class InvalidTodoException(val field: Field) : AppException()

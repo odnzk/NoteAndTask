@@ -1,4 +1,4 @@
-package com.example.data.tuples
+package com.noteapp.entity.tuples
 
 import androidx.room.Embedded
 import androidx.room.Relation
@@ -13,4 +13,3 @@ data class TodoWithCategoryTuple(
     )
     val category: CategoryEntity? = null
 )
-// one task - one category

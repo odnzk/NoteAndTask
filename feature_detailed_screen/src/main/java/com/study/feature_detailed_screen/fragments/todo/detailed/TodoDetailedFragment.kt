@@ -8,7 +8,6 @@ import android.widget.DatePicker
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.example.domain.model.Todo
 import com.example.domain.util.exceptions.InvalidNoteException
 import com.example.domain.util.exceptions.NotUniqueFieldException
@@ -20,7 +19,7 @@ import com.noteapp.ui.collectAsUiState
 import com.noteapp.ui.databinding.StateLoadingBinding
 import com.noteapp.ui.ext.*
 import com.study.feature_detailed_screen.databinding.FragmentDetailedTodoBinding
-import com.study.feature_detailed_screen.navigation.fromTodoToChooseCategoryDialog
+import com.study.feature_detailed_screen.navigation.navigateToChooseCategoryDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.*
@@ -90,10 +89,9 @@ class TodoDetailedFragment : BaseFragment() {
         when (handlerError.error) {
             is InvalidNoteException -> binding.etTitle.error = handlerError.message
             is NotUniqueFieldException -> binding.etTitle.error = handlerError.message
-            else ->
-                stateLoadingBinding.onError(handlerError.message)
-                { viewModel.onEvent(TodoDetailedEvent.Reload) }
-
+            else -> stateLoadingBinding.onError(handlerError.message) {
+                viewModel.onEvent(TodoDetailedEvent.Reload)
+            }
         }
     }
 
@@ -112,18 +110,12 @@ class TodoDetailedFragment : BaseFragment() {
                 chipgroupCategory.removeAllViews()
                 category?.let {
                     chipgroupCategory.addView(
-                        it.toChipCategory(
-                            requireContext(),
-                            isCheckedStyleEnabled = false
-                        ) {
-                            findNavController().fromTodoToChooseCategoryDialog(viewModel.todoId)
+                        it.toChipCategory(requireContext(), isCheckedStyleEnabled = false) {
+                           navigateToChooseCategoryDialog(viewModel.todoId)
                         })
-                } ?: run {
-                    chipgroupCategory.addView(Chip(context).setBtnAddCategoryStyle {
-                        findNavController().fromTodoToChooseCategoryDialog(viewModel.todoId)
+                } ?: chipgroupCategory.addView(Chip(context).setBtnAddCategoryStyle {
+                        navigateToChooseCategoryDialog(viewModel.todoId)
                     })
-                }
-
                 reminderCalendar?.let {
                     btnChangeReminderTime.text = it.formatToReminderString()
                 }

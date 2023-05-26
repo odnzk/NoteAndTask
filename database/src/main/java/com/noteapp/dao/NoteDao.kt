@@ -3,21 +3,18 @@ package com.noteapp.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import com.example.data.tuples.NoteWithCategoriesTuple
+import com.noteapp.entity.tuples.NoteWithCategoriesTuple
 import com.noteapp.entity.NoteEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NoteDao : BaseDao<NoteEntity> {
-
     @Transaction
     @Query("SELECT * FROM notes")
     fun getAll(): Flow<List<NoteWithCategoriesTuple>>
-
     @Transaction
     @Query("SELECT * FROM notes WHERE note_id = :noteId")
     suspend fun getById(noteId: Long): NoteWithCategoriesTuple?
-
     @Transaction
     @Query(
         "SELECT * FROM note_categories_table" +

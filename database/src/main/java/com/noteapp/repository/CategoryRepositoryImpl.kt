@@ -14,24 +14,17 @@ class CategoryRepositoryImpl @Inject constructor(
     private val dao: CategoryDao
 ) : CategoryRepository, BaseRepository() {
 
-    override suspend fun add(elem: Category): Result<Long> {
-        return doRequest(UniqueConstraints.CATEGORY_TITLE) { dao.insert(elem.toEntity()) }
-    }
+    override suspend fun add(elem: Category): Result<Long> =
+        doRequest(UniqueConstraints.CATEGORY_TITLE) { dao.insert(elem.toEntity()) }
 
-    override suspend fun delete(id: Long) {
-        dao.deleteById(id)
-    }
+    override suspend fun delete(id: Long) = dao.deleteById(id)
 
-    override suspend fun update(elem: Category): Result<Int> {
-        return doRequest(UniqueConstraints.CATEGORY_TITLE) { dao.update(elem.toEntity()) }
-    }
+    override suspend fun update(elem: Category): Result<Int> =
+        doRequest(UniqueConstraints.CATEGORY_TITLE) { dao.update(elem.toEntity()) }
 
-    override suspend fun getById(id: Long): Category? {
-        return dao.getById(id)?.toCategory()
-    }
+    override suspend fun getById(id: Long): Category? = dao.getById(id)?.toCategory()
 
-    override fun getAll(): Flow<List<Category>> {
-        return dao.getAll()
-            .map { list -> list.map { it.toCategory() } }
-    }
+    override fun getAll(): Flow<List<Category>> =
+        dao.getAll().map { list -> list.map { it.toCategory() } }
+
 }

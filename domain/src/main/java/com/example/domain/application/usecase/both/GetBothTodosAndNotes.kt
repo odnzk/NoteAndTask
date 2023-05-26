@@ -12,13 +12,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
-class GetBothTodosAndNotes
-    (
+class GetBothTodosAndNotes(
     private val noteRepository: NoteRepository,
     private val todoRepository: TodoRepository,
     private val dispatcher: CoroutineDispatcher
 ) {
-
     operator fun invoke(
         filterInfo: FiltersInfo
     ): Flow<List<NoteItem>> {

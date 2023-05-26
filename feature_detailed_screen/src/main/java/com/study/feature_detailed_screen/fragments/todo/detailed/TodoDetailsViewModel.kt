@@ -9,7 +9,11 @@ import com.example.domain.util.exceptions.InvalidNavArgumentsException
 import com.example.domain.util.exceptions.NotFoundException
 import com.noteapp.core.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,7 +22,6 @@ internal class TodoDetailsViewModel @Inject constructor(
     private val todoUseCases: TodoUseCases,
     private val state: SavedStateHandle
 ) : ViewModel() {
-
     val todoId: Long by lazy {
         state.get<Long>("todoId") ?: throw InvalidNavArgumentsException()
     }
@@ -29,15 +32,14 @@ internal class TodoDetailsViewModel @Inject constructor(
         loadData()
     }
 
-    private fun loadData() {
-        viewModelScope.launch {
-            todoUseCases.getTodoFlowById(todoId).distinctUntilChanged().collectLatest { todo ->
-                _todo.update {
-                    todo?.let { UiState.Success(todo) } ?: UiState.Error(NotFoundException())
-                }
+    private fun loadData() = viewModelScope.launch {
+        todoUseCases.getTodoFlowById(todoId).distinctUntilChanged().collectLatest { todo ->
+            _todo.update {
+                todo?.let { UiState.Success(todo) } ?: UiState.Error(NotFoundException())
             }
         }
     }
+
 
     fun onEvent(event: TodoDetailedEvent) = viewModelScope.launch {
         when (event) {
@@ -47,7 +49,6 @@ internal class TodoDetailsViewModel @Inject constructor(
                 }
             }
             is TodoDetailedEvent.DeleteTodo -> {
-                // if UiState.Loading or UiState.Error do nothing
                 _todo.value.data?.let {
                     todoUseCases.deleteTodo(it.id)
                 }
