@@ -7,8 +7,6 @@
 - [X] Link task and note to categories to filter and sort them
 - [X] Filter ans sort tasks and notes by categories and etc
 - [X] Search tasks and notes
-- [-] Set reminder, periodicity and deadline date for task
-- [-] Customize settings
 
 <br>
 
